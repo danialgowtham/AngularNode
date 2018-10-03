@@ -1,0 +1,13 @@
+/* .shadow-left{
+    box-shadow: 5px 0px 60px -10px rgba(27,132,231,1)
+}
+.shadow-right{
+    box-shadow: -5px 0px 60px -10px rgba(27,132,231,1)
+} */
+.row{
+    justify-content: center;
+}
+.mat-form-field{
+    width: 100%;
+}
+

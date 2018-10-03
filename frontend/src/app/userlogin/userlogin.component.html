@@ -1,0 +1,43 @@
+<div class="slim-mainpanel pd-t-20">
+  <div class="container">
+      <form [formGroup]="formdata" (ngSubmit) = "onClickSubmit(formdata.value)" >
+    <div class="row no-gutters">
+        <div class="col-4 bg-primary shadow-right">
+            <div class="pd-40 pd-b-10-force">
+              <h1 class="tx-white">iDeal</h1>
+              <p class="tx-white op-7 mg-b-30 tx-13">
+                  Hinduja Tech (earlier 'Defiance Technologies') is a Hinduja Group Company incorporated in 2009, with a focus to provide Engineering, Manufacturing and Enterprise (EME) Services and Solutions for Automotive, Aerospace, Defense, Industrial and General Manufacturing industries. Hinduja Tech provides Integrated Engineering, Manufacturing and Enterprise Solutions to Automotive and Manufacturing Customers across Globe. 
+                  It is led by a management team with global experience in delivering high-end solutions in Design, Engineering, ERP and IT services. As a business solution focused company, Hinduja Tech has established Centres of Excellence (CoE) to develop solutions to address key customer business imperatives in the Product Engineering, Manufacturing and Enterprise domains.</p>
+            </div>
+          </div>
+        <div class="col-4 shadow-left border-primary border">
+          <div class="pd-30">
+            <div class="ht-40">
+                <alert></alert>
+            </div>
+            <div class="pd-xs-x-30 pd-y-10">
+              <h5 class="tx-xs-28 tx-inverse mg-b-5">Welcome back!</h5>
+              <p class="mg-b-0">Sign in to your account to continue</p>
+              <br>
+             
+              <div class="form-group">
+                  <mat-form-field>
+                    <input matInput type="text" name="user_name" formControlName="user_name" class="form-control" placeholder="Enter your user name">
+                  </mat-form-field>
+              </div><!-- form-group -->
+              <div class="form-group mg-b-20">
+                  <mat-form-field>
+                    <input matInput type="password" id="password" name="password" formControlName="password"  class="form-control" placeholder="Enter your password">
+                  </mat-form-field>
+                <a href="" class="tx-12 d-block mg-t-10">Forgot password?</a>
+              </div><!-- form-group -->
+
+              <button [disabled]="!formdata.valid" class="btn btn-primary btn-block" id="submit_btn">Sign In</button>
+
+            </div>
+          </div><!-- pd-20 -->
+        </div><!-- col-6 -->
+    </div>
+    </form>
+  </div>
+</div>

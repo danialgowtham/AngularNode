@@ -1,0 +1,36 @@
+<div class="slim-mainpanel mg-t-20">
+    <div class="container">
+        <label class="section-title">Employee Info</label>
+      <div class="table-responsive">
+        <table class="table table-striped mg-b-0 border border-bottom-0">
+          <thead>
+            <tr>
+              <th>Employee Number</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Band</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let employee_details of employee_detail">
+                  <td>{{employee_details.username}}</td>
+                  <td>{{employee_details.first_name}} {{employee_details.last_name}}</td>
+                  <td>{{employee_details.designation}}</td>
+                  <td>{{employee_details.band_name}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="border">
+          <div class="mg-t-10 mg-l-10">
+              <ngb-pagination  (pageChange)="changePage($event)"   class="d-flex justify-content-start"  [collectionSize]="total_record" [pageSize]="15" [maxSize]="8" [boundaryLinks]="true"></ngb-pagination>
+          </div>
+        </div>
+       
+        <!-- <div class="row">
+            <div class="col-xs-12 col-12">
+              <pagination [boundaryLinks]="true" [totalItems]="55"></pagination>
+            </div>
+        </div> -->
+      </div><!-- bd -->
+    </div>
+</div>

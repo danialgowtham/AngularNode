@@ -1,0 +1,52 @@
+    <div class="slim-mainpanel">
+      <div class="container">
+        <div class="slim-pageheader">
+          <ol class="breadcrumb slim-breadcrumb">
+          </ol>
+          <h6 class="slim-pagetitle">My Profile</h6>
+        </div><!-- slim-pageheader -->
+
+        <div class="row row-sm">
+          <div class="col-lg-8">
+            <div class="card card-profile">
+              <div class="card-body pd-20-force">
+                <div class="media">
+                  <img [src]="profile_pic" alt="">
+                  <div class="media-body">
+                    <h3 class="card-profile-name" id="employee_name">{{user_name}}</h3>
+                    <p class="card-profile-position">{{designation}}</p>
+                    <p>{{country_city}}</p>
+                    <!-- <p class="mg-b-0 card-profile-position">Reporting Manager:{{manager_name}}</p> -->
+                  </div><!-- media-body -->
+                </div><!-- media -->
+              </div><!-- card-body -->
+            </div><!-- card --> 
+          </div>
+          <div class="col-lg-4 mg-t-20 mg-lg-t-0">
+            <div class="card card-connection">
+              <div class="row row-xs">
+                <div class="col-4 tx-primary tx-14-force">Reporting Manager</div>
+                <div class="col-8">{{manager_name}}</div>
+              </div><!-- row -->
+              <hr>
+              <div class="row row-xs">
+                <div class="col-4 tx-primary tx-14-force">Department</div>
+                <div class="col-8">{{structure_name}}                         
+                </div>
+              </div><!-- row -->
+              <hr>
+              <div class="row row-xs">
+                <div class="col-4 tx-primary tx-14-force">Band</div>
+                <div class="col-8">{{band_name}}                         
+                </div>
+              </div>
+            </div><!-- card -->            
+        </div><!-- row -->
+
+      </div><!-- container -->
+    </div><!-- slim-mainpanel -->
+  </div>
+
+
+
+
