@@ -1,0 +1,28 @@
+id,address_line1,address_line2,country_id,region_id,city_id,zip_code,phone_number,fax_number,weekend_days,deleted,location_code,company_working_hrs
+4,ASV Ramana Towers,Venkatnarayana Road,113,2191,13147,600017,91 44 4501 177,91 44 4501 1799,"6,7",1,LOC004,09:00
+2,Khivraj Building,Nandanam,113,2191,13147,600017,91 44  4501 177,91 44 4501 1799,"6,7",1,LOC002,09:00
+23,"4th Floor, ?Kapil Zenith? , Survey No. 55, Hissa N","Behind Maratha Mandhir, Bavadhan (Kh)",113,2182,4062,411 021,+91 20 3234 2107,,"6,7",1,,09:00
+19,Chengu V Chambers,"2nd Floor Door No 135/5, 15th Cross, J.P Nagar- II",113,2185,4058,560078, 080 1 80 4090 820,91 80 4090 8209,"6,7",1,LOC019,09:00
+20,"Rheinlanddamm 199, 44139, Dortmund",,91,1918,42019,50679,  221  221 5694118,49 221 5694200,"6,7",0,LOC020,08:00
+21,GmbH-Altrottstrasse 31,D-69190,91,1912,3761,69190,49 6227 733640,49 6227 733650,"6,7",0,LOC021,08:00
+22,SKCL Towers - Triton Square,"Unit No. C3 to C7, TVK Industrial Estate, Guindy",113,2191,13147,600032,91 044 4501 177,91 44 4501 1799,"6,7",0,LOC022,09:00
+24,1628 Northwood Drive,,254,147,9433,48084,91 248 4585900,2484585901,"6,7",0,LOC024,08:00
+25,Office No.B-201 Dubai Silicon Oasis,"Dubai, UAE",252,4998,42906,341184,97 1428 28946,(484) 201-2231,"6,7",1,LOC025,09:00
+26,Ground Floor Twickenham Building,The Campus 57Sloane CNR Main Road Bryanston,224,3689,11832,2021,91 11 5750103,27115750103,"6,7",1,LOC026,09:00
+27,"15th Floor, La Grande Arche, La Defense, Paris",,82,5401,42920,92044,,,,0,LOC027,08:00
+28,"13th Floor,New Zealand House, 80 Haymarket,London ",,253,5392,4948,,,,"6,7",0,LOC028,08:00
+29,United States,United States,254,791,42921,,,,"6,7",0,LOC029,08:00
+30,"Regus Columbia Centre, 39555 Orchard Hill Place","Suite 600, Novi, MI 48375",254,144,32040,48375,,,"6,7",0,LOC030,08:00
+31,Yokohama World Porters,"6th Floor, 2-2-1 Shinko, Naka-ku, Yokohama, Kangaw",122,2344,4391,2310001,,,"6,7",0,LOC031,08:00
+32,Slovakia,,220,2589,5013,,,,"6,7",1,LOC032,09:00
+33,"HINDUJA TECH LTD. GIGA SPACE,DELTA-1, 3rd Floor,",VIMAN NAGAR,113,2182,4062, 411014,91 20 66209399,,"6,7",1,LOC033,09:00
+35,"Kentucky Street, Waterfill R??o Bravo,",,159,196,1345,32599,,,"6,7",1,LOC035,09:00
+36,"Robert-Bosch-Stra??e 43, 50769 K??ln",,91,5406,42930,50769,,49 221 5694200,"6,7",0,LOC036,08:00
+37,"EINSTEIN STRASSE 25, 28309 BREMEN, GERMANY",,91,1915,3688,,,49 221 5694200,"6,7",1,LOC037,09:00
+38,RNTBCI,,113,2191,13147,600032,91 44 4501177,914445011799,"6,7",1,LOC038,09:00
+39,Chengu V Chambers,"2nd Floor Door No 135/5, 15th Cross, J.P Nagar- II",113,2185,4058,560078,,91 80 4090 8209,"6,7",1,LOC039,09:00
+42,"BLR - HTL: No.12,17h Main Road, Off 100 ft Road","HAL Second É??AÉ?ùStage,",113,2185,4058,560008,91 080 48148012,91 44 3023 1330,"6,7",0,LOC042,09:00
+40,Tennesse State,,254,164,39012,,,,"6,7",0,LOC040,
+41,North Carolina State,North Carolina State,254,155,22180,,,,"6,7",0,LOC041,
+43,"BLR - HTL: No.12,17h Main Road, Off 100 ft Road",HAL Second É??AÉ?ùStage,113,2185,4058,560008,91 080 48148012,91 44 3023 1330,"6,7",1,LOC043,09:00
+44,ICC-Devi Gaurav Technology Park,"2nd Flr,Unit 201,PropertyS.No191-192,Pimpri",113,2182,4062,411018,91 20 67129900,91 44 3023 1330,"6,7",0,LOC044,09:00
