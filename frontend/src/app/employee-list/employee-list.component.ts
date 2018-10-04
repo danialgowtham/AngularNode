@@ -1,9 +1,9 @@
 import { Component, OnInit,NgModule} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router} from '@angular/router';
 import { first } from 'rxjs/operators';
 import{UserService} from '../services/user.service';
+import{sharedData} from '../services/shared.data';
 import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
-
 
 
 
@@ -20,7 +20,7 @@ export class EmployeeListComponent implements OnInit {
     employee_detail: any = [];
     total_record:string;
     res:any;
-    constructor(private http: HttpClient,private users:UserService) { }
+    constructor(private users:UserService, private shared:sharedData,private router: Router) { }
    ngOnInit() {
     this.users.getUsers(1)
     .pipe(first())
@@ -36,6 +36,10 @@ export class EmployeeListComponent implements OnInit {
     .subscribe(response => {
         this.employee_detail=response['data']['docs'];    
     });
+  }
+  view_employee_details(employee_id){
+    this.shared.setEmployeeId(employee_id)
+    this.router.navigate(['/employee_view']);
   }
 }
 

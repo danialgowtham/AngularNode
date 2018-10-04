@@ -16,7 +16,6 @@ export class UserService {
     }
 
     createUser(user: User) {
-        console.log(user);
         return this.http.post(`http://localhost:3695/users/register`, user);
     }
 

@@ -2,6 +2,7 @@
   <app-header *ngIf="showLoginHeader()"></app-header>
   <app-commonheader *ngIf="!showLoginHeader()"></app-commonheader>
   <div class="mainpage">
+      <app-top-menu></app-top-menu>
       <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>

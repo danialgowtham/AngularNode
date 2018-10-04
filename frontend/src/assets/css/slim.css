@@ -12011,7 +12011,7 @@ textarea.parsley-success:focus {
         position: relative; } }
     @media (min-width: 1200px) {
       .slim-navbar .nav-item {
-        flex: 1 1 0; } }
+        flex: 0 0 200px; } }
     .slim-navbar .nav-item.active .nav-link {
       background-color: #1b84e7;
       background-image: linear-gradient(to right, #1b84e7 0%, #1515af 100%);

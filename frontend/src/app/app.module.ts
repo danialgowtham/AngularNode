@@ -18,12 +18,15 @@ import { UserloginComponent } from './userlogin/userlogin.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
 
 import { AuthGuard } from './guards';
-import { AlertService, AuthenticationService, UserService } from './services';
+import { AlertService, AuthenticationService, UserService,sharedData } from './services';
 import { JwtInterceptor, ErrorInterceptor } from './helpers';
 import { AlertComponent } from './directives';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { EmployeeViewComponent } from './employee-view/employee-view.component';
+import { TopMenuComponent } from './layout/top-menu/top-menu.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
 
 
 const appRoutes: Routes = [
@@ -41,6 +44,16 @@ const appRoutes: Routes = [
     component: EmployeeListComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'employee_view',
+    component: EmployeeViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'add_employee',
+    component:AddEmployeeComponent,
+    canActivate:[AuthGuard]
+  },
    { path: '**', redirectTo: '/login' },
 ];
 
@@ -54,6 +67,9 @@ const appRoutes: Routes = [
     AlertComponent,
     CommonheaderComponent,
     EmployeeListComponent,
+    EmployeeViewComponent,
+    TopMenuComponent,
+    AddEmployeeComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +86,7 @@ const appRoutes: Routes = [
     AuthGuard,
     AlertService,
     AuthenticationService,
+    sharedData,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

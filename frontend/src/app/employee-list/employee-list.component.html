@@ -1,6 +1,6 @@
 <div class="slim-mainpanel mg-t-20">
     <div class="container">
-        <label class="section-title">Employee Info</label>
+        <label class="section-title">Employee List</label>
       <div class="table-responsive">
         <table class="table table-striped mg-b-0 border border-bottom-0">
           <thead>
@@ -9,6 +9,7 @@
               <th>Name</th>
               <th>Designation</th>
               <th>Band</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -17,6 +18,7 @@
                   <td>{{employee_details.first_name}} {{employee_details.last_name}}</td>
                   <td>{{employee_details.designation}}</td>
                   <td>{{employee_details.band_name}}</td>
+                  <td  class="text-center wd-10 cursor-pointer"><i class="fa fa-eye" (click)="view_employee_details(employee_details.id)"></i></td>
             </tr>
           </tbody>
         </table>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,FormBuilder, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AlertService, AuthenticationService } from '../services';
 import { first } from 'rxjs/operators';
@@ -16,7 +16,6 @@ export class UserloginComponent implements OnInit {
    submitted = false;
    returnUrl: string;
    constructor(
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,

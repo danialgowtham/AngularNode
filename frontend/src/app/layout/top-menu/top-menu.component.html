@@ -1,0 +1,21 @@
+<div class="slim-navbar">
+  <div class="container">
+    <ul class="nav cursor-pointer">
+      <li class="nav-item with-sub">
+        <a class="nav-link">
+          <i class="icon ion-ios-home-outline"></i>
+          <span>Home</span>
+        </a>
+        <div class="sub-item">
+          <ul>
+            <li><a (click)="change_page('/homepage')">Home Page</a></li>
+            <li><a (click)="change_page('/employee_list')">Employee List</a></li>
+            <li><a (click)="change_page('/add_employee')">Add Employee</a></li>
+          </ul>
+        </div><!-- dropdown-menu -->
+      </li>
+      
+      
+    </ul>
+  </div><!-- container -->
+</div>
