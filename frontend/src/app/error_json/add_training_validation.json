@@ -1,0 +1,25 @@
+{
+    "title": [
+      { "type": "required", "message": "Title is required" }
+    ],
+    "venue": [
+      { "type": "required", "message": "Venue is required" }
+    ],
+    "date": [
+      { "type": "required", "message": "Date is required" }
+    ],
+    "band": [
+      { "type": "required", "message": "Band is required" }
+    ],
+    "program_detail": [
+      { "type": "required", "message": "Program Detail is required" }
+    ],
+    "nomination_type": [
+      { "type": "required", "message": "Nomination type is required" }
+    ],
+    "maximum_nomination": [
+      { "type": "required", "message": "Maximum Number of Nomination is required" },
+      { "type": "pattern", "message": "Maximum number of nomination should be number.Maximum 3 digit number is allowed" }
+    ]
+    
+    }

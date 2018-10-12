@@ -1,0 +1,73 @@
+<div class="slim-mainpanel mg-t-20">
+  <div class="container">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <a (click)="redirectPage('/add_training')" class="mg-l-10  text-primary cursor-pointer"><i class="fa fa-plus"></i>
+          Add Training</a>
+      </ol>
+      <h6 class="slim-pagetitle">Training List</h6>
+    </div>
+    <div class="section-wrapper pd-10 pd-l-20">
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input #title matInput class="form-control" type="text" placeholder="Enter Training name"
+              id="training_name" value="">
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select  [(value)]="nom_type" placeholder="Enter Nomination Type" id="nomination_type">
+              <mat-option value="">None</mat-option>
+              <mat-option value="Restricted">Restricted</mat-option>
+              <mat-option value="General">General</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div><!-- col -->
+        <div  class="col-md-1">
+            <button (click)="onClickSearch(title.value,nom_type)"class="btn btn-primary bd-0" >Search</button>
+        </div>
+      </div><!-- row -->
+    </div>
+    <div class="table-responsive">
+      <table ng-class="{true: 'border-bottom-0', false: ''}[training_detail.length != 0]" class="table table-striped mg-b-0 border">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Venue</th>
+            <th>Date</th>
+            <th>Band</th>
+            <th>Unit</th>
+            <th>No of seats remaining</th>
+            <th>Training Type</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let training_details of training_detail">
+            <td>{{training_details.title}}</td>
+            <td>{{training_details.city | filter : customFilter}}</td>
+            <td>{{training_details.date | date : "dd-MM-yyyy"}}</td>
+            <td>{{training_details.band | filter :customFilter}}</td>
+            <td>{{training_details.unit | filter : customFilter}}</td>
+            <td>{{training_details.maximum_nomination}}</td>
+            <td>{{training_details.nomination_type}}</td>
+            <td>{{training_details.status}}</td>
+            <td class="text-center wd-10 cursor-pointer tx-15"><i class="fa fa-eye" (click)="redirectPage('/view',training_details._id)"></i><i
+                class="fa fa-edit mg-l-5" (click)="redirectPage('/add_training',training_details._id)"></i></td>
+          </tr>
+          <tr *ngIf='training_detail.length==0'>
+            <td class="text-center" colspan="8">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="training_detail.length != 0" class="border">
+        <div class="mg-t-10 mg-l-10">
+          <ngb-pagination (pageChange)="changePage($event)" class="d-flex justify-content-start" [collectionSize]="total_record"
+            [pageSize]="15" [maxSize]="8" [boundaryLinks]="true"></ngb-pagination>
+        </div>
+      </div>
+    </div><!-- bd -->
+  </div>
+</div>

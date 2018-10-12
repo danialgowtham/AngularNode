@@ -5,8 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+// var index = require('./routes/index');
 var users = require('./routes/users.route');
+var training_calanders=require('./routes/training_calander.route')
 
 const cors = require('cors');
 const jwt = require('./public/javascripts/jwt');
@@ -23,7 +24,7 @@ var app = express();
 
 var mongoose = require('mongoose')
 mongoose.Promise = bluebird
-mongoose.connect('mongodb://localhost:27017/ideal2')
+mongoose.connect('mongodb://localhost:27017/ideal2',{useMongoClient:true})
 .then(()=> { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://localhost:27017/ideal2`)})
 .catch(()=> { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`)})
 
@@ -54,6 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/', index);
 app.use(jwt());
 app.use('/users', users);
+app.use('/training_calanders',training_calanders);
 app.use(errorHandler);
 // app.use('/api', api);
 
