@@ -2,7 +2,7 @@ import { Component, OnInit,NgModule} from '@angular/core';
 import { Router} from '@angular/router';
 import { first } from 'rxjs/operators';
 import{UserService} from '../services/user.service';
-import{sharedData} from '../services/shared.data';
+import{sharedData} from '../shared/shared.data';
 import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 
 

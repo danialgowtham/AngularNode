@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators,FormGroup } from '@angular/forms';
 import { TrainingService } from '../services/training_service';
-import { sharedData } from '../services/shared.data';
+import { sharedData } from '../shared/shared.data';
 import { first } from 'rxjs/operators';
 import { Router} from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from './dialog/dialog.component';
 // import validation from '../error_json/add_training_validation.json';
 
 
 @Component({
   selector: 'app-add-training',
   templateUrl: './add-training.component.html',
-  styleUrls: ['./add-training.component.css']
+  styleUrls: ['./add-training.component.css'],
+  entryComponents: [DialogComponent],
 })
 export class AddTrainingComponent implements OnInit {
   training_detail_formdata_save:FormGroup;
@@ -28,8 +31,7 @@ export class AddTrainingComponent implements OnInit {
       '', 'maximum_nomination': ''
   };
 
-  constructor(private router:Router,private training_service: TrainingService, private share_data_service: sharedData, private formBuilder: FormBuilder) { }
-
+  constructor(public dialog: MatDialog,private router:Router,private training_service: TrainingService, private share_data_service: sharedData, private formBuilder: FormBuilder) { }
   //validation
   ngOnInit() {
     //setting mindate
@@ -141,9 +143,22 @@ export class AddTrainingComponent implements OnInit {
       );
     }
     console.log(training_data);
-   
-    
-
+  }
+  fileUploader(){
+    let dialogRef = this.dialog.open(DialogComponent, { width: '50%', height: '50%' });
+  }
+  individualFileUpload(file){
+    console.log(file);
+    this.training_service.individual_upload(file.target.files[0])
+      .pipe(first())
+      .subscribe(
+        data => {
+         console.log('success');
+        },
+        error => {
+          console.log('error');          
+        }
+      );
   }
 
 }

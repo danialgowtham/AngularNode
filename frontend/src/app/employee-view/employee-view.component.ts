@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import{UserService} from '../services/user.service';
-import{sharedData} from '../services/shared.data';
+import{sharedData} from '../shared/shared.data';
 import { first } from 'rxjs/operators';
 
 @Component({

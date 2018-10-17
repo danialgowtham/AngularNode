@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { TrainingService } from '../services/training_service';
-import { sharedData } from '../services/shared.data';
+import { sharedData } from '../shared/shared.data';
 import {RedirectService} from '../services/redirect';
-import { FormBuilder, FormControl, Validators,FormGroup } from '@angular/forms';
+import * as FileSaver from 'file-saver';
+
+
+// import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-training-calendars',
@@ -17,14 +20,24 @@ export class TrainingCalendarsComponent implements OnInit {
   total_record: string;
   res: any;
   validations:any;
-  constructor(private training: TrainingService, private formBuilder: FormBuilder, private router: Router, private shared: sharedData, private redirect :RedirectService) { }
+  //angular material table
+  // displayedColumns: string[] = ['title', 'venue', 'date', 'band','unit','maximum_nomination','training_type','status','action'];
+  // dataSource:any;
+ 
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private training: TrainingService, private router: Router, private shared: sharedData, private redirect :RedirectService) { }
   ngOnInit() {
+ 
       var data= [{}];
       this.training.getTrainings(data)
       .pipe(first())
       .subscribe(response => {
         this.training_detail = response['data']['data'];
         this.total_record = response['data']['totalCount'];
+        //angular material table
+        // this.dataSource = new MatTableDataSource( response['data']['data']);
+        // this.dataSource.paginator = this.paginator;
       });
     
   }
@@ -34,7 +47,10 @@ export class TrainingCalendarsComponent implements OnInit {
     this.training.getTrainings(data)
       .pipe(first())
       .subscribe(response => {
-        this.training_detail = response['data']['docs'];
+        //angular material table
+        // this.dataSource = new MatTableDataSource( response['data']['data']);
+        // this.dataSource.paginator = this.paginator;
+        this.training_detail = response['data']['data'];
       });
   }
   redirectPage(page_route,training_id) {
@@ -59,6 +75,25 @@ export class TrainingCalendarsComponent implements OnInit {
       },
       error=>{
           console.log('error while searching');
+      });
+  }
+  onClickExport(title,nom_type){
+    console.log(title);
+    console.log(nom_type);
+    var data= [{}];
+    data['title']=title;
+    data['nomination_type']=nom_type;
+    data['type']='export';
+    console.log(data);
+    this.training.getTrainings(data)
+      .pipe()
+      .subscribe(res => {
+        // new Blob([res],{ type: 'application/vnd.ms-excel' });
+           FileSaver.saveAs(res,'training_calander.xlsx');
+      },
+      error=>{
+        console.log(error);
+          console.log('Error while Export');
       });
   }
   

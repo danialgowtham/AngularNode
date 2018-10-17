@@ -104,5 +104,10 @@
         </form>
       </div>
     </div>
+    <input type="file" #fileupload  (change)="individualFileUpload($event)">
   </div>
+
+  <div class="form-group col-md-6" >
+      <button mat-raised-button (click)="fileUploader()">Upload</button>
+</div>
 </div>

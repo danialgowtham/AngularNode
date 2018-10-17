@@ -4,7 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes} from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatInputModule, MatDatepickerModule, MatNativeDateModule,MatSelectModule } from '@angular/material';
+import { MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule,MatSelectModule } from '@angular/material';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { HttpModule} from "@angular/http";
@@ -18,7 +19,8 @@ import { UserloginComponent } from './userlogin/userlogin.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
 
 import { AuthGuard } from './guards';
-import { AlertService, AuthenticationService, UserService,sharedData,TrainingService,RedirectService } from './services';
+import { AlertService, AuthenticationService, UserService,TrainingService,RedirectService } from './services';
+import { sharedData } from './shared/shared.data'
 import { JwtInterceptor, ErrorInterceptor } from './helpers';
 import { AlertComponent } from './directives';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +31,7 @@ import { TopMenuComponent } from './layout/top-menu/top-menu.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { TrainingCalendarsComponent } from './training-calendars/training-calendars.component';
 import { AddTrainingComponent } from './add-training/add-training.component';
+import { AddTrainingModule } from './add-training/add-training.module';
 
 import { customFilter } from './pipe/training_pipe'
 
@@ -85,11 +88,11 @@ const appRoutes: Routes = [
     TopMenuComponent,
     AddEmployeeComponent,
     TrainingCalendarsComponent,
-    AddTrainingComponent,
     customFilter
   ],
   imports: [
     BrowserModule,
+    AddTrainingModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
@@ -98,7 +101,9 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatButtonModule,
     MatInputModule,
+    MatPaginatorModule, 
     HttpClientModule,
     NgbModule
   ],
@@ -110,6 +115,7 @@ const appRoutes: Routes = [
     TrainingService,
     RedirectService,
     UserService,
+    {provide: 'rootVar', useValue: 'hello'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

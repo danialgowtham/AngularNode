@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {BACK_END_URL} from '../shared/app.globals'
 
 import { User } from '../models';
 
@@ -8,22 +9,22 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getUsers(page_number:number) {       
-        return this.http.get<User[]>(`http://localhost:3695/users/getUsers/`+page_number);
+        return this.http.get<User[]>(BACK_END_URL+`users/getUsers/`+page_number);
     }
 
     getById(id: number) {
-        return this.http.get(`http://localhost:3695/users/` + id);
+        return this.http.get(BACK_END_URL+`users/` + id);
     }
 
     createUser(user: User) {
-        return this.http.post(`http://localhost:3695/users/register`, user);
+        return this.http.post(BACK_END_URL+`users/register`, user);
     }
 
     update(user: User) {
-        return this.http.put(`http://localhost:3695/users/` + user.id, user);
+        return this.http.put(BACK_END_URL+`users/` + user.id, user);
     }
 
     delete(id: number) {
-        return this.http.delete(`http://localhost:3695/users/` + id);
+        return this.http.delete(BACK_END_URL+`users/` + id);
     }
 }

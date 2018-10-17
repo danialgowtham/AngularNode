@@ -24,13 +24,73 @@
             </mat-select>
           </mat-form-field>
         </div><!-- col -->
-        <div  class="col-md-1">
-            <button (click)="onClickSearch(title.value,nom_type)"class="btn btn-primary bd-0" >Search</button>
+        <div  class="col-md-1 mg-t-10 mg-r-10">
+            <button mat-raised-button color="primary" (click)="onClickSearch(title.value,nom_type)" >Search</button>
+        </div>
+        <div  class="col-md-1 mg-t-10">
+            <button mat-raised-button  color="primary" (click)="onClickExport(title.value,nom_type)" >Export</button>
         </div>
       </div><!-- row -->
     </div>
     <div class="table-responsive">
-      <table ng-class="{true: 'border-bottom-0', false: ''}[training_detail.length != 0]" class="table table-striped mg-b-0 border">
+          <!-- Pagination and angular material table  -->
+        <!-- <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+          
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="venue">
+                <th mat-header-cell *matHeaderCellDef> Venue </th>
+                <td mat-cell *matCellDef="let element"> {{element.venue }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.date | date:"dd-MM-yyyy"}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="band">
+                <th mat-header-cell *matHeaderCellDef> Band </th>
+                <td mat-cell *matCellDef="let element"> {{element.band}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unit">
+                <th mat-header-cell *matHeaderCellDef> Unit </th>
+                <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="maximum_nomination">
+                <th mat-header-cell *matHeaderCellDef> Maximum Number of Nomination </th>
+                <td mat-cell *matCellDef="let element"> {{element.maximum_nomination}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="training_type">
+                <th mat-header-cell *matHeaderCellDef> Training Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.training_type}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td  mat-cell *matCellDef="let element" class="text-center wd-10 cursor-pointer tx-15"><i class="fa fa-eye" (click)="redirectPage('/view',training_details._id)"></i><i
+                  class="fa fa-edit mg-l-5" (click)="redirectPage('/add_training',training_details._id)"></i></td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[1, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div> -->
+          <!-- ng-class="{true: 'border-bottom-0'}[training_detail.length > 0]" -->
+      <table [ngClass]="{'border-bottom-0':training_detail.length >0}"  class="table table-striped mg-b-0 border">
         <thead>
           <tr>
             <th>Title</th>
@@ -38,7 +98,7 @@
             <th>Date</th>
             <th>Band</th>
             <th>Unit</th>
-            <th>No of seats remaining</th>
+            <th>Maximum Number of Nomination</th>
             <th>Training Type</th>
             <th>Status</th>
             <th>Action</th>
@@ -58,7 +118,7 @@
                 class="fa fa-edit mg-l-5" (click)="redirectPage('/add_training',training_details._id)"></i></td>
           </tr>
           <tr *ngIf='training_detail.length==0'>
-            <td class="text-center" colspan="8">No Records Found</td>
+            <td class="text-center" colspan="9">No Records Found</td>
           </tr>
         </tbody>
       </table>

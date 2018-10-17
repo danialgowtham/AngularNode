@@ -24,6 +24,7 @@
     "mongoose-paginate": "^5.0.3",
     "mongoose-plugin-autoinc": "^1.1.9",
     "morgan": "~1.9.0",
+    "node-excel-export": "^1.4.4",
     "nodemon": "^1.18.4",
     "nstall": "^0.2.0",
     "update-mongo": "0.0.4"

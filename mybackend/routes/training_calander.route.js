@@ -22,6 +22,10 @@ router.get('/get_units',TrainingCalanderController.get_units)
 
 router.get('/get_locations',TrainingCalanderController.get_locations)
 
+router.post('/upload',TrainingCalanderController.upload)
+
+
+
 router.put('/:id', TrainingCalanderController.updateTraining)
 
 router.get('/:id', TrainingCalanderController.getTrainingById)

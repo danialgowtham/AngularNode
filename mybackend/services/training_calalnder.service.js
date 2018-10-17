@@ -10,7 +10,7 @@ var CompanyLocation=require('../models/company_locations.model');
 _this = this
 
 // Async function to get the To do List
-exports.getTrainings = async function (query, page, limit, condition) {
+exports.getTrainings = async function (query, page, limit, condition, isExport) {
 
     // Options setup for the mongoose paginate
     var options = {
@@ -32,9 +32,6 @@ exports.getTrainings = async function (query, page, limit, condition) {
                 as: "unit"
             }
         },
-        // {
-        //     "$unwind": "$unit"
-        // },
         {
             $lookup:
             {
@@ -44,9 +41,6 @@ exports.getTrainings = async function (query, page, limit, condition) {
                 as: "band"
             }
         },
-        // {
-        //     "$unwind": "$band"
-        // },
         {
             $lookup:
             {
@@ -56,9 +50,6 @@ exports.getTrainings = async function (query, page, limit, condition) {
                 as: "venue"
             }
         },
-        // {
-        //      "$unwind": "$venue"
-        // },
         {
             $lookup:
             {
@@ -68,9 +59,6 @@ exports.getTrainings = async function (query, page, limit, condition) {
                 as: "city"
             }
         },
-        // {
-        //      "$unwind": "$city"
-        // },
         {
             $project: {
               "_id":1,
@@ -81,19 +69,24 @@ exports.getTrainings = async function (query, page, limit, condition) {
               "nomination_type":1,
               "maximum_nomination":1,
               "status":1,
-              "band.name": 1,
               "unit.name": 1,
               "city.city":1,
+              "band.name": 1,
 
             }
         }
     ]);
- 
+    if(isExport=='export'){
+        return aggregate;
+    }else{
         // var trainings = await Training.paginate(query, options);
         var trainings = await Training.aggregatePaginate(aggregate,query, options);
        
         // Return the users list that was retured by the mongoose promise
         return trainings;
+    }
+ 
+        
 
     } catch (e) {
         console.log(e);
