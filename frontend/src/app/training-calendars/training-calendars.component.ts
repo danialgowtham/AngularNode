@@ -56,7 +56,6 @@ export class TrainingCalendarsComponent implements OnInit {
   redirectPage(page_route,training_id) {
     console.log(page_route);
     console.log(training_id);
-    if(training_id)
     this.shared.setTrainingId(training_id)
     this.redirect.change_page(page_route);
   }

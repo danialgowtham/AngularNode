@@ -47,6 +47,7 @@ export class DialogComponent implements OnInit {
     this.uploading = true;
 
     // start the upload and save the progress map
+    console.log(this.files);
     this.progress = this.trainingService.upload(this.files);
     console.log(this.progress);
     for (const key in this.progress) {
@@ -82,10 +83,6 @@ export class DialogComponent implements OnInit {
 
       // ... and the component is no longer uploading
       this.uploading = false;
-      console.log( this.canBeClosed);
-      console.log(this.dialogRef.disableClose);
-      console.log( this.uploadSuccessful);
-      console.log(this.uploading);
     });
   }
 }

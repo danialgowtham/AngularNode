@@ -4,6 +4,10 @@ var TraingCalanderService = require('../services/training_calalnder.service')
 //for export
 const excel = require('node-excel-export');
 
+const mail=require('../public/javascripts/mail');
+
+var formidable = require('formidable');
+
 
 var url = require('url');
 
@@ -138,6 +142,7 @@ exports.createTraining = async function (req, res, next) {
         // Calling the Service function with the new object from the Request Body
 
         var createtraing = await TraingCalanderService.createTraining(req.body)
+        send_mail('create');
         return res.status(201).json({ status: 201, data: createtraing, message: "Succesfully Created Training" })
     } catch (e) {
 
@@ -159,6 +164,7 @@ exports.updateTraining = async function (req, res, next) {
 
     try {
         var updatedTraining = await TraingCalanderService.updateTraining(req.params.id, req.body)
+        send_mail('update');
         return res.status(200).json({ status: 200, data: updatedTraining, message: "Succesfully Updated Training" })
     } catch (e) {
         return res.status(400).json({ status: 400., message: e.message })
@@ -197,8 +203,53 @@ exports.get_locations = async function (req, res, next) {
 }
 
 exports.upload = async function (req, res, next) {
-    console.log(req.body);
-    return res.status(200).json({ status: 200, message: "Succesfully File Recevied" })
+   
+    var form = new formidable.IncomingForm()
+    form.parse(req);
+    form.on('fileBegin', function(name, file) {
+        file.path="D:\\AngularNode\\AngularNode\\mybackend\\public\\uploads"+'\\'+file.name;
+    })
+    form.on('field', function(name, field) {
+        console.log(field);
+        console.log('Got a field:', name);
+    })
+    form.on('error', function(err) {
+        res.status(400).json({ status: 200, message: "Error While Uploading File" });
+    })
+    form.on('end', function() {
+        res.status(200).json({ status: 200, message: "Succesfully File Recevied" });
+    });
+    // return res.status(200).json({ status: 200, message: "Succesfully File Recevied" })
+}
+
+function send_mail(type){
+    var subject='';
+    var body='';
+    if(type == 'create'){
+        subject="Add Training Calander";
+        body="Training calander created successfully!!!";
+    }else if(type== 'update'){
+        subject="Update Training Calander";
+        body="Training calander modified successfully!!!";
+
+    }
+
+    
+    var mailOptions = {
+        from: 'gowdham.kasi@hindujatech.com',
+        to: 'gowdham.kasi@hindujatech.com',
+        subject:subject,
+        text: body
+      };
+      
+      mail.transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+   
 }
 
 

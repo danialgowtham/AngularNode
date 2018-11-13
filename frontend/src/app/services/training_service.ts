@@ -16,9 +16,10 @@ export class TrainingService {
         params = params.append('title', trainingData.title ? trainingData.title : '');
         params = params.append('nom_type', trainingData.nomination_type ? trainingData.nomination_type : '');
         params = params.append('type', trainingData.type ? trainingData.type : '');
-        var options={ params: params, responseType: (trainingData.type) ? 'blob' : 'json'};
-        console.log(options);
-         return this.http.get(BACK_END_URL + `training_calanders/getTrainings/`,options )
+        if (trainingData.type)
+            return this.http.get(BACK_END_URL + `training_calanders/getTrainings/`, { params: params, responseType:'blob' } )
+        else
+            return this.http.get(BACK_END_URL + `training_calanders/getTrainings/`,{ params: params, responseType:'json' } )
     }
 
     getTrainingById(id: String) {
@@ -42,28 +43,18 @@ export class TrainingService {
         return this.http.get(BACK_END_URL + `training_calanders/get_locations`);
     }
 
-    exportExcel(trainingData) {
-        console.log(trainingData);
-        let params = new HttpParams();
-        params = params.append('title', trainingData.title ? trainingData.title : '');
-        params = params.append('nom_type', trainingData.nomination_type ? trainingData.nomination_type : '');
-        return this.http.get(BACK_END_URL + `training_calanders/exportTrainings/`, { params: params, responseType: 'blob' })
-    }
+    // exportExcel(trainingData) {
+    //     console.log(trainingData);
+    //     let params = new HttpParams();
+    //     params = params.append('title', trainingData.title ? trainingData.title : '');
+    //     params = params.append('nom_type', trainingData.nomination_type ? trainingData.nomination_type : '');
+    //     return this.http.get(BACK_END_URL + `training_calanders/exportTrainings/`, { params: params, responseType: 'blob' })
+    // }
 
     //individual Upload
     individual_upload(file) {
-        var headers = new Headers();
         return this.http.post(BACK_END_URL + `training_calanders/upload`, file);
     }
-
-    // public getJSON() {
-    //     console.log('inside');
-    //     return this.http.get("../error_json/add_training_validation.json")
-    //                      .pipe(map(response  => response));
-    //                     // .catch((error:any) => console.log(error));
-
-    // }
-
 
     public upload(files: Set<File>): { [key: string]: Observable<number> } {
         // this will be the our resulting map
@@ -72,11 +63,11 @@ export class TrainingService {
         files.forEach(file => {
             // create a new multipart-form for every file
             const formData: FormData = new FormData();
-            formData.append('file', file, file.name);
+            formData.append('file', file);
 
             // create a http-post request and pass the form
             // tell it to report the upload progress
-            const req = new HttpRequest('POST', BACK_END_URL, formData, {
+            const req = new HttpRequest('POST', BACK_END_URL+`training_calanders/upload`, formData, {
                 reportProgress: true
             });
 
@@ -105,7 +96,7 @@ export class TrainingService {
                 progress: progress.asObservable()
             };
         });
-
+    
         // return the map of progress.observables
         return status;
     }
