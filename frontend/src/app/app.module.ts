@@ -28,7 +28,6 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { EmployeeViewComponent } from './employee-view/employee-view.component';
 import { TopMenuComponent } from './layout/top-menu/top-menu.component';
-import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { TrainingCalendarsComponent } from './training-calendars/training-calendars.component';
 import { AddTrainingComponent } from './add-training/add-training.component';
 import { AddTrainingModule } from './add-training/add-training.module';
@@ -57,11 +56,6 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path:'add_employee',
-    component:AddEmployeeComponent,
-    canActivate:[AuthGuard]
-  },
-  {
     path:'training_list',
     component:TrainingCalendarsComponent,
     canActivate:[AuthGuard]
@@ -86,7 +80,6 @@ const appRoutes: Routes = [
     EmployeeListComponent,
     EmployeeViewComponent,
     TopMenuComponent,
-    AddEmployeeComponent,
     TrainingCalendarsComponent,
     customFilter
   ],
@@ -115,7 +108,7 @@ const appRoutes: Routes = [
     TrainingService,
     RedirectService,
     UserService,
-    {provide: 'rootVar', useValue: 'hello'},
+    // {provide: 'rootVar', useValue: 'hello'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

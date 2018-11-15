@@ -114,8 +114,7 @@
             <td>{{training_details.maximum_nomination}}</td>
             <td>{{training_details.nomination_type}}</td>
             <td>{{training_details.status}}</td>
-            <td class="text-center wd-10 cursor-pointer tx-15"><i class="fa fa-eye" (click)="redirectPage('/view',training_details._id)"></i><i
-                class="fa fa-edit mg-l-5" (click)="redirectPage('/add_training',training_details._id)"></i></td>
+            <td class="text-center wd-10 cursor-pointer tx-15"><i class="fa fa-edit mg-l-5" (click)="redirectPage('/add_training',training_details._id)"></i></td>
           </tr>
           <tr *ngIf='training_detail.length==0'>
             <td class="text-center" colspan="9">No Records Found</td>

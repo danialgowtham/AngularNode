@@ -11,6 +11,8 @@ var formidable = require('formidable');
 
 var url = require('url');
 
+var path = require("path");
+
 
 _this = this
 
@@ -203,11 +205,13 @@ exports.get_locations = async function (req, res, next) {
 }
 
 exports.upload = async function (req, res, next) {
-   
+   console.log(__dirname);
+    console.log(path.join(__dirname, '..'));
     var form = new formidable.IncomingForm()
     form.parse(req);
     form.on('fileBegin', function(name, file) {
-        file.path="D:\\AngularNode\\AngularNode\\mybackend\\public\\uploads"+'\\'+file.name;
+        file.path=path.join(__dirname, '..')+"\\public\\uploads\\"+file.name;
+        console.log(file.path)
     })
     form.on('field', function(name, field) {
         console.log(field);
