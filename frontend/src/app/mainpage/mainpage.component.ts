@@ -17,6 +17,7 @@ export class MainpageComponent implements OnInit {
     manager_name:string;
     structure_name:string;
     band_name:string;
+    nasa_pic:string;
     res:any;
     constructor(private http: HttpClient,private users:UserService) { }
    ngOnInit() {
@@ -28,7 +29,6 @@ export class MainpageComponent implements OnInit {
     this.band_name=jsonObj.band_name;
     
     this.users.getById(jsonObj.manager)
-    .pipe(first())
     .subscribe(response => {
         this.res=response[0];
         this.manager_name=this.res.username+' '+this.res.first_name+' '+this.res.last_name;
@@ -41,8 +41,15 @@ export class MainpageComponent implements OnInit {
         this.profile_pic="assets/employee_pics/profile_picture.jpg";
     }
     // document.getElementById("employee_name").innerHTML=jsonObj.first_name+' '+jsonObj.last_name;
+
+    //NASA  Astronomy Picture of the Day API Integration. 
+    this.users.getNASAAPOD()
+    .subscribe(response => {
+        console.log(response);
+        this.nasa_pic=response['data']['url'];
+        console.log( this.nasa_pic);
+    });
+
    }
-   onClickSubmit(data) {
-      
-   }
+   
 }

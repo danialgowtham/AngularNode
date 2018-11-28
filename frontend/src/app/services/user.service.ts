@@ -27,4 +27,9 @@ export class UserService {
     delete(id: number) {
         return this.http.delete(BACK_END_URL+`users/` + id);
     }
+
+    //For API Call
+    getNASAAPOD(){
+        return this.http.post(BACK_END_URL+`users/getNasaData`,'');
+    }
 }

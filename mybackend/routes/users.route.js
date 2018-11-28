@@ -20,5 +20,7 @@ router.post('/authenticateUser', UserController.authenticateUser)
 
 router.delete('/:id',UserController.removeUser)
 
+router.post('/getNasaData', UserController.getNasaData)
+
 // Export the Router
 module.exports = router;

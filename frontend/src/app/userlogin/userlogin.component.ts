@@ -46,7 +46,6 @@ export class UserloginComponent implements OnInit {
       this.submitted = true;
       this.loading = true;
       this.authenticationService.login(data.user_name, data.password)
-      .pipe(first())
       .subscribe(        
           data => {
               this.router.navigate([this.returnUrl]);

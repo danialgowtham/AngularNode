@@ -92,21 +92,18 @@ export class AddTrainingComponent implements OnInit {
     this.training_detail_formdata_save = this.training_detail_formdata_submit.get('form_data_save')
 
     this.training_service.getBand()
-      .pipe(first())
       .subscribe(
         response => {
           this.bands = response
         }
       );
     this.training_service.getUnit()
-      .pipe(first())
       .subscribe(
         response => {
           this.units = response
         }
       )
     this.training_service.getLoction()
-      .pipe(first())
       .subscribe(
         response => {
           this.locations = response
@@ -116,7 +113,6 @@ export class AddTrainingComponent implements OnInit {
     this.training_id = this.share_data_service.getTrainingId();
     if (this.training_id) {
       this.training_service.getTrainingById(this.training_id)
-        .pipe(first())
         .subscribe(
           response => {
             this.training_detail = response[0];
@@ -151,7 +147,6 @@ export class AddTrainingComponent implements OnInit {
     training_data['status'] = type;
     if (this.training_id) {
       this.training_service.updateTraing(training_data, this.training_id)
-        .pipe(first())
         .subscribe(
           data => {
             this.router.navigate(['/training_list']);
@@ -162,7 +157,6 @@ export class AddTrainingComponent implements OnInit {
         );
     } else {
       this.training_service.createTraining(training_data)
-        .pipe(first())
         .subscribe(
           data => {
             this.router.navigate(['/training_list']);
@@ -212,7 +206,6 @@ export class AddTrainingComponent implements OnInit {
     const formData = new FormData();
     formData.append("file", file.item(0));
     this.training_service.individual_upload(formData)
-      .pipe(first())
       .subscribe(
         data => {
          console.log('success');

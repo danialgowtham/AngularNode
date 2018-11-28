@@ -23,7 +23,6 @@ export class EmployeeListComponent implements OnInit {
     constructor(private users:UserService, private shared:sharedData,private router: Router) { }
    ngOnInit() {
     this.users.getUsers(1)
-    .pipe(first())
     .subscribe(response => {
         this.employee_detail=response['data']['docs'];
         this.total_record=response['data']['total'];      
@@ -32,7 +31,6 @@ export class EmployeeListComponent implements OnInit {
    }
   changePage(page_number){
     this.users.getUsers(page_number)
-    .pipe(first())
     .subscribe(response => {
         this.employee_detail=response['data']['docs'];    
     });

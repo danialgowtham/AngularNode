@@ -17,7 +17,6 @@ export class EmployeeViewComponent implements OnInit {
   ngOnInit() {
     this.employee_id=this.shared.getEmployeeId()
     this.users.getById(this.employee_id )
-    .pipe(first())
     .subscribe(response => {     
       this.employee_info =response[0]
       if(response[0] && response[0]['employee_photo']){

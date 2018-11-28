@@ -13,6 +13,9 @@ var url = require('url');
 
 var path = require("path");
 
+//For Api and webservice Fun
+// var http = require('http');
+
 
 _this = this
 
@@ -32,6 +35,30 @@ exports.getTrainings = async function (req, res, next) {
     try {
 
         var trainings = await TraingCalanderService.getTrainings({}, page, limit, condition, isExport)
+
+
+        //Test Api
+        // var testing="Send from Nodejs";
+        // var reqGet = http.request("http://10.18.1.59:80/ideal/kra_masters/just_for_fun?test="+testing, function(res) {
+        //     console.log("statusCode: ", res.statusCode);
+        //     // uncomment it for header details
+        // //  console.log("headers: ", res.headers);
+         
+         
+        //     res.on('data', function(d) {
+        //         console.info('GET result:\n');
+        //         process.stdout.write(d);
+        //         console.info('\n\nCall completed');
+        //     });
+         
+        // });
+         
+        // reqGet.end();
+        // reqGet.on('error', function(e) {
+        //     console.log("inside error");
+        //     console.error(e);
+        // });
+
 
         // Return the training list with the appropriate HTTP Status Code and Message.
         if (isExport == 'export') {
