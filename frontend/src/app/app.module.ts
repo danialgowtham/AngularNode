@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes} from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule,MatSelectModule } from '@angular/material';
+import { MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule,MatSelectModule,MatCardModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -31,8 +31,14 @@ import { TopMenuComponent } from './layout/top-menu/top-menu.component';
 import { TrainingCalendarsComponent } from './training-calendars/training-calendars.component';
 import { AddTrainingComponent } from './add-training/add-training.component';
 import { AddTrainingModule } from './add-training/add-training.module';
+import {EmployeeSkillMappingModule} from './employee-skill-mapping/employee-skill-mapping.module';
 
-import { customFilter } from './pipe/training_pipe'
+import { customFilter } from './pipe/training_pipe';
+import { EmployeeSkillMappingComponent } from './employee-skill-mapping/employee-skill-mapping.component';
+import { EmployeeSkillListComponent } from './employee-skill-list/employee-skill-list.component';
+import { EmployeeSkillViewComponent } from './employee-skill-view/employee-skill-view.component';
+import {EmployeeSkillApproveComponent} from './employee-skill-approve/employee-skill-approve.component'
+
 
 
 const appRoutes: Routes = [
@@ -65,7 +71,27 @@ const appRoutes: Routes = [
     component:AddTrainingComponent,
     canActivate:[AuthGuard]
   },
-   { path: '**', redirectTo: '/login' },
+  {
+    path:'employee_skill',
+    component:EmployeeSkillMappingComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'employee_skill_view',
+    component:EmployeeSkillViewComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'employee_skill_approve_list',
+    component:EmployeeSkillListComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'employee_skill_approve',
+    component:EmployeeSkillApproveComponent,
+    canActivate:[AuthGuard]
+  },
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
@@ -81,7 +107,10 @@ const appRoutes: Routes = [
     EmployeeViewComponent,
     TopMenuComponent,
     TrainingCalendarsComponent,
-    customFilter
+    customFilter,
+    EmployeeSkillListComponent,
+    EmployeeSkillViewComponent,
+    EmployeeSkillApproveComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +127,9 @@ const appRoutes: Routes = [
     MatInputModule,
     MatPaginatorModule, 
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    EmployeeSkillMappingModule,
+    MatCardModule
   ],
   providers: [
     AuthGuard,
@@ -115,7 +146,7 @@ const appRoutes: Routes = [
     // provider used to create fake backend
     //fakeBackendProvider
 ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 
 export class AppModule { }

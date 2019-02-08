@@ -1,0 +1,49 @@
+<form [formGroup]="row_form_data">
+    <div class="row mg-b-5">
+        <div class="col-lg-2 pd-r-0-force">
+            <mat-form-field>
+                <mat-select formControlName="unit" placeholder="Select Unit" id="unit" (selectionChange)="get_units($event.value,'practice')">
+                    <mat-option *ngFor="let unit of units" [value]="unit?.id">
+                        {{unit.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2 pd-r-0-force">
+            <mat-form-field>
+                <mat-select formControlName="practice" placeholder="Select Practice" id="practice" (selectionChange)="get_units($event.value,'sub_practice')">
+                    <mat-option *ngFor="let practice of practices" [value]="practice?.id">
+                        {{practice.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2 pd-r-0-force">
+            <mat-form-field>
+                <mat-select  formControlName="sub_practice" placeholder="Select Sub Practice" id="sub_practice"
+                    (selectionChange)="get_competency($event.value)">
+                    <mat-option *ngFor="let sub_practice of sub_practices" [value]="sub_practice?.id">
+                        {{sub_practice.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2 pd-r-0-force">
+            <mat-form-field>
+                <mat-select formControlName="competency" placeholder="Select Competency" id="competency"
+                    (selectionChange)="get_skill($event.value)">
+                    <mat-option *ngFor="let competency of competencies" [value]="competency?.id">
+                        {{competency.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+            <button class="tx-12-force" mat-stroked-button color="basic" (click)="openSkill()">Select Skill</button>
+        </div>
+        <div class="col-lg-1 pd-r-0-force pd-t-10">
+            <span class="font-weight-bold"><i class="fa fa-close tx-20-force text-danger remove_row cursor-pointer"
+                    (click)="onRemoveRow(row)"></i></span>
+        </div>
+    </div>
+</form>

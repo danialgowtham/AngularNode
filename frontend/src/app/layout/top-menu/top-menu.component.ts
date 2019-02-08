@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router} from '@angular/router';
-import {RedirectService} from '../../services/redirect';
+import { Router } from '@angular/router';
+import { RedirectService } from '../../services/redirect';
 
 @Component({
   selector: 'app-top-menu',
@@ -13,9 +13,9 @@ export class TopMenuComponent implements OnInit {
 
   ngOnInit() {
   }
-  change_page(page_link){
+  change_page(page_link) {
     this.redirect.change_page(page_link);
-      console.log(page_link);
+    console.log(page_link);
   }
 
 }

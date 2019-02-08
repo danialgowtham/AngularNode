@@ -104,7 +104,6 @@ exports.deleteUser = async function (id) {
 }
 
 exports.authenticateUser = async function ({ username, password }) {
-    console.log(User);
     const user = await User.findOne({ username });
     // md5 = new Md5();
     console.log(username);
@@ -115,7 +114,8 @@ exports.authenticateUser = async function ({ username, password }) {
     // if (user && bcrypt.compareSync(password, user.password:)) {
     if (user && (compare_pass == user.password)) {
         const { hash, ...userWithoutHash } = user.toObject();
-        const token = jwt.sign({ sub: user.id }, config.secret);
+        const token = jwt.sign({ sub: user.id }, config.secret,{expiresIn: config.token_life // expires in 24 hours
+          });
         return {
             ...userWithoutHash,
             token

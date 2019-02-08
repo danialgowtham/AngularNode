@@ -45,9 +45,7 @@ export class MainpageComponent implements OnInit {
     //NASA  Astronomy Picture of the Day API Integration. 
     this.users.getNASAAPOD()
     .subscribe(response => {
-        console.log(response);
         this.nasa_pic=response['data']['url'];
-        console.log( this.nasa_pic);
     });
 
    }

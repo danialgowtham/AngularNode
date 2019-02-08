@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AlertService, AuthenticationService } from '../services';
-import { first } from 'rxjs/operators';
+import { AddTrainingComponent } from '../add-training/add-training.component';
+
 
 @Component({
   selector: 'app-userlogin',
   templateUrl: './userlogin.component.html',
-  styleUrls:['./userlogin.component.css']
+  styleUrls:['./userlogin.component.css'],
 })
 export class UserloginComponent implements OnInit {
    formdata;
@@ -48,6 +49,7 @@ export class UserloginComponent implements OnInit {
       this.authenticationService.login(data.user_name, data.password)
       .subscribe(        
           data => {
+            console.log(data);
               this.router.navigate([this.returnUrl]);
           },
           error => {

@@ -123,15 +123,12 @@ exports.authenticateUser= async function (req, res, next) {
 
 exports.getNasaData= async function(req, respon, next){
     var reqGet = https.request("https://api.nasa.gov/planetary/apod?api_key=Lj7sis5GJfiylchwVDPX1qODqq7yz0t19dfDwzAS&hd=true", function(res) {
-        console.log("statusCode: ", res.statusCode);
         // uncomment it for header details
     //  console.log("headers: ", res.headers);
      
      
         res.on('data', function(d) {
-            console.info('GET result:\n');
-            process.stdout.write(d);
-            console.info('\n\nCall completed');
+            //process.stdout.write(d);
             return respon.status(200).json({ status: 200, data: JSON.parse(d), message: "Succesfully get Image From Nasa Api" });
         });
      

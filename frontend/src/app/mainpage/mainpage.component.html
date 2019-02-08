@@ -1,56 +1,74 @@
-    <div class="slim-mainpanel">
-      <div class="container">
-        <div class="slim-pageheader">
-          <ol class="breadcrumb slim-breadcrumb">
-          </ol>
-          <h6 class="slim-pagetitle">My Profile</h6>
-        </div><!-- slim-pageheader -->
+<div class="slim-mainpanel">
+  <div class="container">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+      </ol>
+      <h6 class="slim-pagetitle">My Profile</h6>
+    </div><!-- slim-pageheader -->
 
-        <div class="row row-sm">
-          <div class="col-lg-8">
-            <div class="card card-profile">
-              <div class="card-body pd-20-force">
-                <div class="media">
-                  <img [src]="profile_pic" alt="">
-                  <div class="media-body">
-                    <h3 class="card-profile-name" id="employee_name">{{user_name}}</h3>
-                    <p class="card-profile-position">{{designation}}</p>
-                    <p>{{country_city}}</p>
-                    <!-- <p class="mg-b-0 card-profile-position">Reporting Manager:{{manager_name}}</p> -->
-                  </div><!-- media-body -->
-                </div><!-- media -->
-              </div><!-- card-body -->
-            </div><!-- card --> 
+    <div class="row row-sm">
+      <div class="col-lg-8">
+        <div class="card card-profile">
+          <div class="card-body pd-20-force">
+            <div class="media">
+              <img [src]="profile_pic" alt="">
+              <div class="media-body">
+                <h3 class="card-profile-name" id="employee_name">{{user_name}}</h3>
+                <p class="card-profile-position">{{designation}}</p>
+                <p>{{country_city}}</p>
+                <!-- <p class="mg-b-0 card-profile-position">Reporting Manager:{{manager_name}}</p> -->
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card-body -->
+        </div><!-- card -->
+      </div>
+      <div class="col-lg-4 mg-t-20 mg-lg-t-0">
+        <div class="card card-connection pd-20-force">
+          <div class="row row-xs">
+            <div class="col-4 tx-primary tx-14-force">Manager</div>
+            <div class="col-8">{{manager_name}}</div>
+          </div><!-- row -->
+          <hr>
+          <div class="row row-xs">
+            <div class="col-4 tx-primary tx-14-force">Department</div>
+            <div class="col-8">{{structure_name}}
+            </div>
+          </div><!-- row -->
+          <hr>
+          <div class="row row-xs">
+            <div class="col-4 tx-primary tx-14-force">Band</div>
+            <div class="col-8">{{band_name}}
+            </div>
           </div>
-          <div class="col-lg-4 mg-t-20 mg-lg-t-0">
-            <div class="card card-connection">
-              <div class="row row-xs">
-                <div class="col-4 tx-primary tx-14-force">Reporting Manager</div>
-                <div class="col-8">{{manager_name}}</div>
-              </div><!-- row -->
-              <hr>
-              <div class="row row-xs">
-                <div class="col-4 tx-primary tx-14-force">Department</div>
-                <div class="col-8">{{structure_name}}                         
-                </div>
-              </div><!-- row -->
-              <hr>
-              <div class="row row-xs">
-                <div class="col-4 tx-primary tx-14-force">Band</div>
-                <div class="col-8">{{band_name}}                         
-                </div>
+        </div><!-- card -->
+      </div><!-- row -->
+      <!-- <div class="col-lg-8">
+        <div class="card card-experience mg-t-20">
+          <div class="card-body">
+            <div class="slim-card-title">Work Experience</div>
+            <div class="media">
+              <div class="experience-logo">
+                <i class="icon ion-briefcase"></i>
               </div>
-            </div><!-- card -->            
-        </div><!-- row -->
-        <div class="col-lg-12 mg-t-10">
-            <h6 class="slim-pagetitle  mg-b-10">Astronomy Picture of the Day (Using NASA API)</h6>
-            <img [src]="nasa_pic" alt="">
+              <div class="media-body">
+                <h6 class="position-name">Full Stack Developer / Web Developer</h6>
+                <p class="position-company">Hinduja Tech.</p>
+                <p class="position-year">Nov 2018 - Present (1 years +)</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="">Show more<span class="d-none d-sm-inline"> experiences (4)</span> <i class="fa fa-angle-down"></i></a>
+            <a href="">Add new</a>
+          </div>
         </div>
+      </div> -->
+      <!-- <div class="col-lg-12 mg-t-10">
+        <h6 class="slim-pagetitle  mg-b-10">Astronomy Picture of the Day (Using NASA API)</h6>
+        <img [src]="nasa_pic" class="wd-100p" alt="">
+      </div> -->
 
-      </div><!-- container -->
-    </div><!-- slim-mainpanel -->
-  </div>
 
-
-
-
+    </div><!-- container -->
+  </div><!-- slim-mainpanel -->
+</div>

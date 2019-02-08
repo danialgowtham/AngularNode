@@ -1,9 +1,10 @@
 .mainpage{
-   min-height:74.5vh;
-   /* background: linear-gradient(to top,rgba(255,255,255,1.5), rgba(255,255,255,.5)),url(../assets/img/background.jpeg);
+    min-height:79vh; 
+    padding-bottom: 10px;
+ /* background: linear-gradient(to top,rgba(255,255,255,1.5), rgba(255,255,255,.5)),url(../assets/img/background.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   width: auto;
   height: auto;
-  padding-bottom: 50px; */
-}
+  padding-bottom: 50px;   */
+} 

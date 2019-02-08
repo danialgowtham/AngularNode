@@ -162,7 +162,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 body {
   margin: 0;
   font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.5;
   color: #868ba1;
@@ -430,7 +430,7 @@ h5, .h5 {
   font-size: 1.09375rem; }
 
 h6, .h6 {
-  font-size: 0.875rem; }
+  font-size: 12px; }
 
 .lead {
   font-size: 1.09375rem;
@@ -12866,7 +12866,7 @@ textarea.parsley-success:focus {
   margin-left: 15px; }
   .card-dash-one .dash-content label {
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 1px;
     margin-bottom: 2px; }

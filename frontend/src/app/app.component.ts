@@ -9,7 +9,7 @@ import { Router} from '@angular/router';
 
 export class AppComponent {
   constructor(private router: Router) {}
-  title = 'myangular2';
+
   showLoginHeader(){
     if (this.router.url.startsWith('/login')|| this.router.url=='/') {
       return true;
