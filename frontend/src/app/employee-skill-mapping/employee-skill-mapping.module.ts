@@ -6,13 +6,12 @@ import {EmployeeSkillMappingComponent} from './employee-skill-mapping.component'
 import {RowComponent} from './dynamic-row/row.component'
 import {SkillList} from './dynamic-row/row.component'
 import {EmployeeSkillMappingService} from '../services/employee_skill_mapping.service';
-import {SkillDataService} from '../shared/skill.data';
 import {PopupModalComponent} from "../popup-modal/popup-modal"
 
 @NgModule({
     imports: [MatDialogModule,CommonModule,ReactiveFormsModule,MatCardModule,MatButtonModule, MatInputModule,MatSelectModule,MatBottomSheetModule, MatTabsModule],
     declarations: [ RowComponent,EmployeeSkillMappingComponent,SkillList,PopupModalComponent],
-    providers:[EmployeeSkillMappingService,SkillDataService],
+    providers:[EmployeeSkillMappingService],
     entryComponents: [RowComponent,SkillList,PopupModalComponent], // Add the DialogComponent as entry component
   })
   export class EmployeeSkillMappingModule {}

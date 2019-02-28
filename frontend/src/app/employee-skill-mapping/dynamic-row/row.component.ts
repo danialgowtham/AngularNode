@@ -2,13 +2,11 @@ import { Component, EventEmitter, Output, Input, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeSkillMappingService } from '../../services/employee_skill_mapping.service';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-// import {SkillDataService} from '../../shared/skill.data';
-
 
 @Component({
   selector: 'app-row',
   templateUrl: './row.component.html',
-  styles:['.mat-form-field{display:block !important;}','width:100%']
+  styles: ['.mat-form-field{display:block !important;}', 'width:100%']
 })
 export class RowComponent {
   @Output() onRemove = new EventEmitter<any>();
@@ -17,8 +15,9 @@ export class RowComponent {
 
   @Input() row: { id: Number };
   @Input() overall_competency_list: Array<any>;
-  @Input() already_selected_skill:Array<any>;
-  selected_sub_practice:String;
+  @Input() already_selected_skill: Array<any>;
+  @Input() overall_experience_month: Number;
+  selected_sub_practice: String;
   units: any;
   practices: any;
   sub_practices: any;
@@ -42,6 +41,7 @@ export class RowComponent {
     if (this.row_form_data.status == "VALID") {
       let total_skill = new Map();
       total_skill.set("skills", this.skills);
+      total_skill.set("overall_experience_month", this.overall_experience_month)
       if (this.skills_with_experience)
         total_skill.set("skills_with_experience", this.skills_with_experience);
       else
@@ -102,7 +102,7 @@ export class RowComponent {
     this.skills_with_experience = new Map();
   }
   get_skill(com_str_map_id) {
-    this.skill_service.getSkill(com_str_map_id,this.already_selected_skill)
+    this.skill_service.getSkill(com_str_map_id, this.already_selected_skill)
       .subscribe(
         response => {
           this.skills = response
@@ -126,6 +126,8 @@ export class RowComponent {
 })
 export class SkillList {
   public skills: any;
+  public overall_experience_month: Number;
+  skill_list_error = {};
   // public skills_with_experience: any;
   constructor(private bottomSheetRef: MatBottomSheetRef, @Inject(MAT_BOTTOM_SHEET_DATA) public total_data: any) { }
   skill_set = new Map();
@@ -133,6 +135,8 @@ export class SkillList {
     this.skills = this.total_data.get('skills');
     // this.skills_with_experience = this.total_data.get('skills_with_experience');
     this.skill_set = this.total_data.get('skills_with_experience');
+    this.overall_experience_month = this.total_data.get('overall_experience_month');
+    console.log(this.total_data);
   }
   keyPress(event: any) {
     const pattern = /[0-9]/;
@@ -141,15 +145,20 @@ export class SkillList {
       event.preventDefault();
     }
   }
-  update_json(com_skl_map_id: Number, experience_month: Number) {
+  update_json(com_skl_map_id, experience_month: Number) {
     if (com_skl_map_id && !experience_month && this.skill_set.has(com_skl_map_id))
       this.skill_set.delete(com_skl_map_id)
-    else if (com_skl_map_id && experience_month) {
+    if (this.skill_list_error[com_skl_map_id])
+      delete this.skill_list_error[com_skl_map_id]
+    if (Number(experience_month) == 0 || Number(experience_month) >= this.overall_experience_month)
+      this.skill_list_error[com_skl_map_id] = "error";
+    else if (com_skl_map_id && experience_month && experience_month <= this.overall_experience_month) {
       this.skill_set.set(com_skl_map_id, experience_month)
     }
   }
   dismissBottomSheet() {
-    this.bottomSheetRef.dismiss(this.skill_set);
+    if (Object.keys(this.skill_list_error).length == 0)
+      this.bottomSheetRef.dismiss(this.skill_set);
   }
   closeBottomSheet() {
     this.bottomSheetRef.dismiss();

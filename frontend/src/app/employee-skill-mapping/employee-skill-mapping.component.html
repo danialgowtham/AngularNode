@@ -105,16 +105,23 @@
               </div>
               <div class="col-lg-12 mg-t-20 pd-0">
                 <div class="row mg-b-5">
-                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Unit<span class="tx-danger">*</span></span></div>
-                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Practice<span class="tx-danger">*</span></span></div>
-                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Sub Practice<span class="tx-danger">*</span></span></div>
-                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Competency<span class="tx-danger">*</span></span></div>
-                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Skill<span class="tx-danger">*</span></span></div>
+                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Unit<span
+                        class="tx-danger">*</span></span></div>
+                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Practice<span
+                        class="tx-danger">*</span></span></div>
+                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Sub Practice<span
+                        class="tx-danger">*</span></span></div>
+                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Competency<span
+                        class="tx-danger">*</span></span></div>
+                  <div class="col-lg-2 pd-r-0-force"><span class="font-weight-bold">Skill<span
+                        class="tx-danger">*</span></span></div>
                   <div class="col-lg-1 pd-r-0-force"><span class="font-weight-bold">Remove</span></div>
                 </div>
                 <app-row *ngFor="let row of rowList" (selectedCompetency)="pushCompetency($event)" [row]="row"
-                  [already_selected_skill]="already_selected_skill" (selectedCompetecnyList)="pushCompetencyList($event)"
-                  [overall_competency_list]="selected_competency" (onRemove)="onDeleteRow($event)"></app-row>
+                  [already_selected_skill]="already_selected_skill"
+                  [overall_experience_month]="overall_experience_month"
+                  (selectedCompetecnyList)="pushCompetencyList($event)" [overall_competency_list]="selected_competency"
+                  (onRemove)="onDeleteRow($event)"></app-row>
               </div>
             </mat-card>
           </mat-tab>
@@ -137,11 +144,16 @@
                       <td>{{individual_skill?.skill_name}}</td>
                       <td class="pd-0-force pd-l-10-force pd-r-10-force">
                         <mat-form-field>
-                          <input matInput type="text" #validation  (keypress)="keyPress($event)" (change)="update_skill(individual_skill.employee_skill_set_id,individual_skill.skill_id,$event.target.value)" maxlength="3" value="{{individual_skill?.experience_month}}">
+                          <input matInput #validation type="text" (keypress)="keyPress($event)"
+                            (change)="update_skill(individual_skill.employee_skill_set_id,individual_skill.skill_id,$event.target.value)"
+                            maxlength="3" value="{{individual_skill?.experience_month}}">
                         </mat-form-field>
                         <mat-error *ngIf="validation.value<1">
-                            Must be greater than zero
-                          </mat-error>
+                          Must be greater than zero
+                        </mat-error>
+                        <mat-error *ngIf="validation.value>overall_experience_month">
+                          Must be less than your overall experience
+                        </mat-error>
                       </td>
                     </tr>
                   </tbody>

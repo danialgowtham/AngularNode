@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 // var index = require('./routes/index');
 var users = require('./routes/users.route');
-var training_calanders=require('./routes/training_calander.route')
 var employee_skill_mapping=require('./routes/employee_skill_mapping.route');
 
 const cors = require('cors');
@@ -56,7 +55,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/', index);
 app.use(jwt());
 app.use('/users', users);
-app.use('/training_calanders',training_calanders);
 app.use('/employee_skill_mapping',employee_skill_mapping);
 app.use(errorHandler);
 // app.use('/api', api);

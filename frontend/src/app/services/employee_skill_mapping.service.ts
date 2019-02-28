@@ -34,7 +34,7 @@ export class EmployeeSkillMappingService {
     getProficiency(){
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_proficiency/`);
     }
-    saveManagerProficiency(mapping_data,employee_id){
-        return this.http.post(BACK_END_URL + `employee_skill_mapping/save_manger_proficiency/`+employee_id,mapping_data);
+    saveManagerProficiency(mapping_data,employee_id,manager_id){
+        return this.http.post(BACK_END_URL + `employee_skill_mapping/save_manger_proficiency/`+employee_id+"/"+manager_id,mapping_data);
     }
 }

@@ -280,7 +280,6 @@ exports.get_proficiency = async function () {
                 "deleted": "0"
             }
         },
-
         {
             $project: {
                 "_id": 0,
@@ -290,10 +289,16 @@ exports.get_proficiency = async function () {
         }
     ]);
 }
-exports.save_manger_proficiency = async function (save_data, employee_id) {
+exports.save_manger_proficiency = async function (save_data, employee_id, manager_id) {
     await EmployeeCompetencyMaster.updateMany(
         { "employee_id": employee_id },
-        { $set: { "status": "a" } }
+        {
+            $set: {
+                "status": "a",
+                "approved_by": manager_id,
+                "approved_on": new Date()
+            }
+        }
     )
     for (var key in save_data) {
         console.log(key)
@@ -365,37 +370,21 @@ async function get_proficiency(mapping_id) {
 
 }
 
-exports.get_employee_mapping_list = async function (manager_id) {
+exports.get_employee_mapping_list = async function (employees_id) {
     return await EmployeeCompetencyMaster.aggregate([
-        {
-            $lookup: {
-                from: "users",
-                localField: "employee_id",
-                foreignField: "id",
-                as: "employee"
-            }
-        },
-        {
-            $unwind: {
-                path: "$employee"
-            }
-        },
+
         {
             $match: {
-                "employee.manager": manager_id,
+                "employee_id": { $in: employees_id },
                 "deleted": false
             }
         },
         {
             $project: {
                 "_id": 0,
-                "employee.username": 1,
-                "employee.first_name": 1,
-                "employee.last_name": 1,
                 "created_on": 1,
                 "status": 1,
-                "employee.band_name": 1,
-                "employee.id": 1
+                "employee_id": 1
             }
         }
     ]);

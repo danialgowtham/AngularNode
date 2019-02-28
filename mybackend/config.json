@@ -1,5 +1,5 @@
 ﻿{
-    "connectionString": "mongodb://192.168.1.75:27017/ideal2",
-    "secret": "Learing Angular6 and Node",
-    "token_life":900
+    "secret": "HINDUJATECH_IDEAL_2.0_BY_GOWDHAM",
+    "token_life":86400,
+    "webservice_url":"http://10.18.1.59:3000/"
 }

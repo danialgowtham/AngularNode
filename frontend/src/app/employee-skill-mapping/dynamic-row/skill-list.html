@@ -12,12 +12,13 @@
                     <td>{{skill.name}}</td>
                     <td class="pd-0-force pd-l-10-force pd-r-10-force">
                         <mat-form-field>
-                            <input matInput (keypress)="keyPress($event)" (change)="update_json(skill.id,$event.target.value)"
-                                type="text" maxlength="3" placeholder="Enter Experience" value="{{skill_set.get(skill.id)}}">
-                            <!-- <mat-error *ngIf="training_detail_formdata_submit.get('maximum_nomination').hasError('pattern')">
-                                Enter numeric value and maximum 3 digit number acceptable
-                            </mat-error> -->
+                            <input matInput (keypress)="keyPress($event)"
+                                (change)="update_json(skill.id,$event.target.value)" type="text" #validation
+                                maxlength="3" placeholder="Enter Experience" value="{{skill_set.get(skill.id)}}">
                         </mat-form-field>
+                        <mat-error *ngIf="validation.value>overall_experience_month">
+                            Must be less than your overall experience
+                        </mat-error>
                     </td>
                 </tr>
             </tbody>

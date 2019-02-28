@@ -8,10 +8,12 @@ import { RedirectService } from '../../services/redirect';
   styleUrls: ['./top-menu.component.css']
 })
 export class TopMenuComponent implements OnInit {
-
+  is_manager:boolean;
   constructor(private redirect: RedirectService) { }
 
   ngOnInit() {
+    var jsonObj = JSON.parse(sessionStorage.currentUser);
+    this.is_manager=jsonObj.is_manager;
   }
   change_page(page_link) {
     this.redirect.change_page(page_link);

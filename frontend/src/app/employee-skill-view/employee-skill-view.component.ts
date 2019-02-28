@@ -22,7 +22,7 @@ export class EmployeeSkillViewComponent implements OnInit {
     if(this.route.snapshot.params.employee_id){
       employee_id=this.route.snapshot.params.employee_id;
     }else{
-      var jsonObj = JSON.parse(localStorage.currentUser);
+      var jsonObj = JSON.parse(sessionStorage.currentUser);
       employee_id = jsonObj.id
     }
     

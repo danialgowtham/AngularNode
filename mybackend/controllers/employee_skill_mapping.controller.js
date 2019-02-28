@@ -2,6 +2,7 @@
 
 var EmployeeSkillMappingService = require('../services/employee_skill_mapping.service')
 var http = require('http');
+const config = require('../config.json');
 //for export
 // const excel = require('node-excel-export');
 
@@ -40,17 +41,20 @@ exports.save_competency_mapping = async function (req, res, next) {
 }
 exports.get_competency_mapping = async function (req, res, next) {
     try {
-        console.log(req.params);
+
         var condition = { $match: { $and: [{ deleted: false }, { 'employee_id': req.params.employee_id }] } }
-        if (req.params.type !='null') {
+        if (req.params.type != 'null') {
             condition.$match.$and.push({ 'employee_skill_set.status': req.params.type });
         }
-        console.log(condition)
         var skill_data = await EmployeeSkillMappingService.get_competency_mapping(condition)
         var mapping_data = {};
-        webservice(req.params.employee_id, function (response) {
+        getEmployeeDetail(req.params.employee_id, function (error, response) {
+            console.log(error);
+            if (error)
+                return res.status(400).json({ status: 201, data: response, message: "Something went wrong. Unable connect mysql webservices" })
             mapping_data["employee_detail"] = response
             mapping_data["skill"] = skill_data;
+            console.log(mapping_data);
             return res.status(201).json({ status: 201, data: mapping_data, message: "Skills Get Succesfully" })
         })
     } catch (e) {
@@ -59,7 +63,9 @@ exports.get_competency_mapping = async function (req, res, next) {
 }
 
 exports.get_employee_detail = async function (req, res, next) {
-    webservice(req.params.employee_id, function (response) {
+    getEmployeeDetail(req.params.employee_id, function (error, response) {
+        if (error)
+            return res.status(400).json({ status: 201, data: response, message: "Something went wrong. Unable connect mysql webservices" })
         return res.status(201).json({ status: 201, data: response, message: "Employee Details Got Succesfully" })
     })
 }
@@ -67,10 +73,22 @@ exports.get_employee_detail = async function (req, res, next) {
 
 exports.get_employee_mapping_list = async function (req, res, next) {
     try {
-        console.log(req.params.manager_id)
-        var employee_skill_data = await EmployeeSkillMappingService.get_employee_mapping_list(req.params.manager_id)
-        console.log(employee_skill_data);
-        return res.status(201).json({ status: 201, data: employee_skill_data, message: "Employee Skill Data Get Succesfully" })
+        geReporteeList(req.params.manager_id, function (error, response) {
+            if (error)
+                return res.status(400).json({ status: 400, data: response, message: "Something went wrong. Unable connect mysql webservices" })
+            var reportee_list = Object.keys(response)
+
+            EmployeeSkillMappingService.get_employee_mapping_list(reportee_list)
+                .then(employee_skill_data => {
+
+                    for (var index in employee_skill_data) {
+                        Object.assign(employee_skill_data[index], response[employee_skill_data[index].employee_id]);
+                    }
+                    console.log(employee_skill_data);
+                    employee_skill_data ? res.status(201).json({ status: 201, data: employee_skill_data, message: "Employee Skill Data Get Succesfully" }) : res.status(400).json({ message: 'Something Went Wrong' })
+                })
+            // return res.status(201).json({ status: 201, data: employee_skill_data, message: "Employee Skill Data Get Succesfully" })
+        })
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" })
     }
@@ -88,20 +106,34 @@ exports.get_proficiency = async function (req, res, next) {
 exports.save_manger_proficiency = async function (req, res, next) {
     console.log(req.body);
     try {
-        await EmployeeSkillMappingService.save_manger_proficiency(req.body,req.params.employee_id)
+        await EmployeeSkillMappingService.save_manger_proficiency(req.body, req.params.employee_id, req.params.manager_id)
         return res.status(201).json({ status: 201, message: "Skill Set Approved Succesfully" })
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" })
     }
 }
 
-function webservice(employee_id, callback) {
-    console.log("inside webservice");
+function getEmployeeDetail(employee_id, callback) {
     var return_data;
-    var reqGet = http.request("http://10.18.1.78:8080/ideal_attendance/testWebService.htm?employee_id=" + employee_id, function (res) {
+    var reqGet = http.request(config.webservice_url + "getEmployeeDetail/" + employee_id, function (res) {
         res.on('data', function (data) {
             return_data = JSON.parse(data);
-            return callback(return_data);
+            return callback(null, return_data);
+        });
+    });
+    reqGet.end();
+    reqGet.on('error', function (e) {
+        console.log("inside error");
+        console.error(e);
+    });
+
+}
+function geReporteeList(manager_id, callback) {
+    var return_data;
+    var reqGet = http.request(config.webservice_url + "getReporteeList/" + manager_id, function (res) {
+        res.on('data', function (data) {
+            return_data = JSON.parse(data);
+            return callback(null, return_data);
         });
     });
     reqGet.end();

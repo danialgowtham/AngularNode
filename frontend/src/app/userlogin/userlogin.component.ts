@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AlertService, AuthenticationService } from '../services';
-import { AddTrainingComponent } from '../add-training/add-training.component';
 
 
 @Component({
@@ -30,12 +29,12 @@ export class UserloginComponent implements OnInit {
          ])),
          password: new FormControl("", this.passwordvalidation)     
       });
-      if(localStorage.currentUser){
-        this.router.navigate(['/homepage']);
+      if(sessionStorage.currentUser){
+        this.router.navigate(['/employee_skill']);
       }else{
         this.authenticationService.logout();
       }
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/homepage';
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/employee_skill';
    }
    passwordvalidation(formcontrol) {
       if (formcontrol.value.length < 5 || formcontrol.value.length>13) {
@@ -49,7 +48,6 @@ export class UserloginComponent implements OnInit {
       this.authenticationService.login(data.user_name, data.password)
       .subscribe(        
           data => {
-            console.log(data);
               this.router.navigate([this.returnUrl]);
           },
           error => {

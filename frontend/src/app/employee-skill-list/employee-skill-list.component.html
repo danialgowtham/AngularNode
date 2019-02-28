@@ -13,13 +13,13 @@
 
           <ng-container matColumnDef="employee_name">
             <th mat-header-cell *matHeaderCellDef> Employee </th>
-            <td mat-cell *matCellDef="let element"> {{element.employee?.username}} - {{element.employee?.first_name}}
-              {{element.employee?.last_name}} </td>
+            <td mat-cell *matCellDef="let element"> {{element?.employee_number}} - {{element?.first_name}}
+              {{element?.last_name}} </td>
           </ng-container>
 
           <ng-container matColumnDef="band_name">
             <th mat-header-cell *matHeaderCellDef> Band </th>
-            <td mat-cell *matCellDef="let element"> {{element.employee?.band_name}} </td>
+            <td mat-cell *matCellDef="let element"> {{element?.band_name}} </td>
           </ng-container>
 
           <ng-container matColumnDef="submitted_on">
@@ -35,8 +35,8 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td  class="text-center wd-10 cursor-pointer tx-15" mat-cell *matCellDef="let element">
-              <i class="fa fa-eye" (click)="redirectPage('/employee_skill_view',element.employee?.id)"></i>
-              <i *ngIf="element.status =='m'" class="fa fa-edit mg-l-5" (click)="redirectPage('/employee_skill_approve',element.employee?.id)"></i>
+              <i class="fa fa-eye" (click)="redirectPage('/employee_skill_view',element?.id)"></i>
+              <i *ngIf="element.status =='m'" class="fa fa-edit mg-l-5" (click)="redirectPage('/employee_skill_approve',element?.id)"></i>
             </td>
           </ng-container>
 

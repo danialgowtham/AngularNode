@@ -16,10 +16,11 @@ export class EmployeeSkillListComponent implements OnInit {
 
   }
   ngOnInit() {
-    var jsonObj = JSON.parse(localStorage.currentUser);
+    var jsonObj = JSON.parse(sessionStorage.currentUser);
     this.skill_service.getEmployeeSkillMappingList(jsonObj.id)
       .subscribe(
         response => {
+          console.log(response);
           this.mapping_data = new MatTableDataSource(response["data"]);
           this.mapping_data.paginator = this.paginator;
           console.log(response["data"])

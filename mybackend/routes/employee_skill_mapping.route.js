@@ -24,7 +24,7 @@ router.get('/get_employee_mapping_list/:manager_id', EmployeeSkillMappingControl
 
 router.get('/get_proficiency/', EmployeeSkillMappingController.get_proficiency)
 
-router.post('/save_manger_proficiency/:employee_id', EmployeeSkillMappingController.save_manger_proficiency)
+router.post('/save_manger_proficiency/:employee_id/:manager_id', EmployeeSkillMappingController.save_manger_proficiency)
 
 // router.get('/get_mapping_detail/:employee_id', EmployeeSkillMappingController.get_mapping_detail)
 // Export the Router

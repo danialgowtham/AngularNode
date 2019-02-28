@@ -12,7 +12,7 @@ export class CommonheaderComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,   private router: Router   ) {}
 
   ngOnInit() {
-    var jsonObj=JSON.parse(localStorage.currentUser);
+    var jsonObj=JSON.parse(sessionStorage.currentUser);
     document.getElementById("user_name").innerHTML=jsonObj.first_name;
     if(jsonObj.employee_photo){
       this.profile_pic="assets/employee_pics/"+jsonObj.employee_photo;

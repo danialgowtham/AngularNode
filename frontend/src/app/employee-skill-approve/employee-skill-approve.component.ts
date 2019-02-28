@@ -48,7 +48,8 @@ export class EmployeeSkillApproveComponent implements OnInit {
       return true;
   }
   submit_data(){
-    this.skill_service.saveManagerProficiency(this.approve_data,this.employee_id)
+    var jsonObj = JSON.parse(sessionStorage.currentUser);
+    this.skill_service.saveManagerProficiency(this.approve_data,this.employee_id,jsonObj.id)
       .subscribe(
         response => {
           console.log(response)

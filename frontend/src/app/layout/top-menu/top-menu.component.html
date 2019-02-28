@@ -8,12 +8,12 @@
         </a>
         <div class="sub-item">
           <ul>
-            <li><a (click)="change_page('/homepage')">Home Page</a></li>
+            <!-- <li><a (click)="change_page('/homepage')">Home Page</a></li> -->
             <!-- <li><a (click)="change_page('/employee_list')">Employee List</a></li> -->
             <!-- <li><a (click)="change_page('/training_list')">Training Calanders</a></li> -->
             <li><a (click)="change_page('/employee_skill')">Add/Edit Skill</a></li>
             <li><a (click)="change_page('/employee_skill_view')">View Skill</a></li>
-            <li><a (click)="change_page('/employee_skill_approve_list')">Approve Skill</a></li>
+            <li><a *ngIf="is_manager" (click)="change_page('/employee_skill_approve_list')">Approve Skill</a></li>
           </ul>
         </div><!-- dropdown-menu -->
       </li>

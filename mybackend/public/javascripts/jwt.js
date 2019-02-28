@@ -1,27 +1,32 @@
 const expressJwt = require('express-jwt');
 const config = require('../../config.json');
-const userService = require('../../services/users.service');
+var http = require('http');
 
 module.exports = jwt;
 function jwt() {
-    console.log("inside jwt");
     const secret = config.secret;
-    return expressJwt({ secret, isRevoked }).unless({
+    return expressJwt({ secret}).unless({
         path: [
             // public routes that don't require authentication
-            '/users/authenticateUser',
-            '/users/createUser'
+            '/users/authenticateUser'
         ]
     });
 }
 
 async function isRevoked(req, payload, done) {
-    console.log("inside revoke");
-    const user = await userService.getUserById(payload.sub);
-    // revoke token if user no longer exists
-    if (!user) {
-        return done(null, true);
-    }
-
-    done();
+    var reqGet = http.request(config.webservice_url + "getEmployeeById/" + payload.sub, function (res) {
+        res.on('data', function (data) {
+            user_detail = JSON.parse(data);
+            if (user_detail) {
+                return done(true);
+            }else{
+                done();
+            }
+        });
+    });
+    reqGet.end();
+    reqGet.on('error', function (e) {
+        console.log("inside error");
+        console.error(e);
+    });
 };
