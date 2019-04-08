@@ -1,0 +1,8 @@
+<div class="back_button">
+    <!-- <h5 mat-dialog-title >Employee Skill</h5> -->
+    <span class="font-weight-bold"><i class="fa fa-close tx-20-force text-danger remove_row cursor-pointer"
+            (click)="closeDialog()"></i></span>
+</div>
+<div mat-dialog-content>
+    <app-employee-skill-view [selected_employee_id]="employee_id"></app-employee-skill-view>
+</div>

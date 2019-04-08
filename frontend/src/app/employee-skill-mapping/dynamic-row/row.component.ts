@@ -46,7 +46,8 @@ export class RowComponent {
         total_skill.set("skills_with_experience", this.skills_with_experience);
       else
         total_skill.set("skills_with_experience", new Map());
-      const bottomSheetRef = this.bottomSheet.open(SkillList, { data: total_skill, disableClose: true }
+      this.bottomSheet.dismiss();
+      const bottomSheetRef = this.bottomSheet.open(SkillList, { closeOnNavigation: true, data: total_skill, disableClose: true }
       );
       bottomSheetRef.afterDismissed().subscribe(result => {
         if (result)
@@ -64,6 +65,10 @@ export class RowComponent {
       .subscribe(
         response => {
           if (type == "unit") {
+            this.row_form_data.controls["unit"].setValue(null);
+            this.row_form_data.controls["practice"].setValue(null);
+            this.row_form_data.controls["sub_practice"].setValue(null);
+            this.row_form_data.controls["competency"].setValue(null);
             this.units = response;
             this.practices = [];
             this.sub_practices = [];
@@ -72,19 +77,22 @@ export class RowComponent {
             this.skills_with_experience = new Map();
           }
           else if (type == "practice") {
+            this.row_form_data.controls["practice"].setValue(null);
+            this.row_form_data.controls["sub_practice"].setValue(null);
+            this.row_form_data.controls["competency"].setValue(null);
             this.practices = response;
             this.sub_practices = [];
             this.competencies = [];
             this.skills = [];
             this.skills_with_experience = new Map();
-
           }
           else {
+            this.row_form_data.controls["sub_practice"].setValue(null);
+            this.row_form_data.controls["competency"].setValue(null);
             this.sub_practices = response;
             this.competencies = [];
             this.skills = [];
             this.skills_with_experience = new Map();
-
           }
 
         }
@@ -94,8 +102,8 @@ export class RowComponent {
     this.skill_service.getCompetency(sub_sbu_id, this.overall_competency_list)
       .subscribe(
         response => {
+          this.row_form_data.controls["competency"].setValue(null);
           this.competencies = response
-
         }
       );
     this.skills = [];
@@ -106,7 +114,6 @@ export class RowComponent {
       .subscribe(
         response => {
           this.skills = response
-
         }
       );
     this.selectedCompetency.emit({ old_value: this.old_competency_value, new_value: com_str_map_id })
@@ -115,6 +122,9 @@ export class RowComponent {
   }
   onRemoveRow(row: { id: Number }): void {
     this.onRemove.emit(row);
+  }
+  ngOnDestroy() {
+    this.bottomSheet.dismiss();
   }
 
 }
@@ -136,7 +146,6 @@ export class SkillList {
     // this.skills_with_experience = this.total_data.get('skills_with_experience');
     this.skill_set = this.total_data.get('skills_with_experience');
     this.overall_experience_month = this.total_data.get('overall_experience_month');
-    console.log(this.total_data);
   }
   keyPress(event: any) {
     const pattern = /[0-9]/;
@@ -150,7 +159,7 @@ export class SkillList {
       this.skill_set.delete(com_skl_map_id)
     if (this.skill_list_error[com_skl_map_id])
       delete this.skill_list_error[com_skl_map_id]
-    if (Number(experience_month) == 0 || Number(experience_month) >= this.overall_experience_month)
+    if (Number(experience_month) == 0 || Number(experience_month) > this.overall_experience_month)
       this.skill_list_error[com_skl_map_id] = "error";
     else if (com_skl_map_id && experience_month && experience_month <= this.overall_experience_month) {
       this.skill_set.set(com_skl_map_id, experience_month)

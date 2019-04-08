@@ -10,7 +10,6 @@ export class RedirectService {
         this.router.navigate([page_link]);
     }
     change_page_with_data(page_link,data){
-        console.log(page_link);
         this.router.navigate([page_link,data]);
     }
 }

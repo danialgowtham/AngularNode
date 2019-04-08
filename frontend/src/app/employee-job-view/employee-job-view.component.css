@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+  }
+.bg-purple{
+      color: #673AB7
+  }
+  /* ::ng-deep.my-tooltip {
+    white-space: pre-line;
+}  */
+/* ::ng-deep.mat-tooltip {
+  font-size: 13px;
+} */
+ 

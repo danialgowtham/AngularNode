@@ -24,7 +24,7 @@ var app = express();
 
 var mongoose = require('mongoose')
 mongoose.Promise = bluebird
-mongoose.connect('mongodb://localhost:27017/ideal2',{useMongoClient:true})
+mongoose.connect('mongodb://localhost:27017/ideal_new',{useMongoClient:true})
 .then(()=> { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://localhost:27017/ideal2`)})
 .catch(()=> { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`)})
 

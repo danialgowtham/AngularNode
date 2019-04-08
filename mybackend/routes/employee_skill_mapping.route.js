@@ -20,12 +20,31 @@ router.get('/get_competency_mapping/:employee_id/:type', EmployeeSkillMappingCon
 
 router.get('/get_employee_detail/:employee_id', EmployeeSkillMappingController.get_employee_detail)
 
-router.get('/get_employee_mapping_list/:manager_id', EmployeeSkillMappingController.get_employee_mapping_list)
+router.get('/get_reportee_mapping_list/:manager_id', EmployeeSkillMappingController.get_reportee_mapping_list)
 
 router.get('/get_proficiency/', EmployeeSkillMappingController.get_proficiency)
 
 router.post('/save_manger_proficiency/:employee_id/:manager_id', EmployeeSkillMappingController.save_manger_proficiency)
 
-// router.get('/get_mapping_detail/:employee_id', EmployeeSkillMappingController.get_mapping_detail)
+router.get('/get_bands/', EmployeeSkillMappingController.get_bands)
+
+router.get('/get_proficiency_list/:id', EmployeeSkillMappingController.get_proficiency_list)
+
+router.get('/get_roles/:unit_id/:band_name', EmployeeSkillMappingController.get_roles)
+
+router.get('/get_job_codes/:role_name/:band_name', EmployeeSkillMappingController.get_job_codes)
+
+// router.post('/get_job_detail/:id/:employee_id', function (req, res) {
+//     EmployeeSkillMappingController.get_job_detail
+// });
+router.get('/get_job_detail/:id/:employee_id', EmployeeSkillMappingController.get_job_detail);
+
+router.get('/get_employee_list/', EmployeeSkillMappingController.get_employee_list)
+
+router.get('/get_reportee_list/:employee_id', EmployeeSkillMappingController.get_reportee_list)
+
+router.post('/get_employee_mapping_list/', EmployeeSkillMappingController.get_employee_mapping_list)
+
+router.get('/get_skill_list/', EmployeeSkillMappingController.get_skill_list)
 // Export the Router
 module.exports = router;

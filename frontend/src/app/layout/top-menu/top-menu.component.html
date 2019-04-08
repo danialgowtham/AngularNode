@@ -1,24 +1,50 @@
 <div class="slim-navbar">
   <div class="container">
     <ul class="nav cursor-pointer">
-      <li class="nav-item with-sub">
-        <a class="nav-link">
-          <i class="icon ion-ios-home-outline"></i>
+      <li class="nav-item {{tabs?.home}}">
+        <a class="nav-link" (click)="change_page('/My Profile','employee')">
+          <i class="icon ion-ios-home"></i>
           <span>Home</span>
+        </a>
+      </li>
+      <li class="nav-item with-sub {{tabs?.employee}}">
+        <a class="nav-link">
+          <i class="icon ion-person"></i>
+          <span>Employee</span>
         </a>
         <div class="sub-item">
           <ul>
-            <!-- <li><a (click)="change_page('/homepage')">Home Page</a></li> -->
-            <!-- <li><a (click)="change_page('/employee_list')">Employee List</a></li> -->
-            <!-- <li><a (click)="change_page('/training_list')">Training Calanders</a></li> -->
-            <li><a (click)="change_page('/employee_skill')">Add/Edit Skill</a></li>
-            <li><a (click)="change_page('/employee_skill_view')">View Skill</a></li>
-            <li><a *ngIf="is_manager" (click)="change_page('/employee_skill_approve_list')">Approve Skill</a></li>
+            <li><a (click)="change_page('/employee_skill','employee')">Add/Edit/View Skill</a></li>
+            <li><a (click)="change_page('/employee_job_mapping','employee')">Role Fitment</a></li>
+          </ul>
+        </div>
+      </li>
+      <li *ngIf="is_manager" class="nav-item with-sub {{tabs?.manager}}">
+        <a class="nav-link">
+          <i class="icon fa ion-person-stalker mg-r-3"></i>
+          <span>Manager</span>
+        </a>
+        <div class="sub-item">
+          <ul>
+            <li><a (click)="change_page('/employee_skill_approve_list','manager')">Approve Skill</a></li>
+            <li><a (click)="change_page('/manager_job_mapping','manager')">Reportees Role Fitment</a></li>
           </ul>
         </div><!-- dropdown-menu -->
       </li>
-      
-      
+      <li *ngIf="is_rmg" class="nav-item with-sub {{tabs?.rmg}}">
+        <a class="nav-link">
+          <i class="icon fa fa-users mg-r-3"></i>
+          <span>RMG</span>
+        </a>
+        <div class="sub-item">
+          <ul>
+            <li><a (click)="change_page('/rmg_job_mapping','rmg')">Employee Role Fitment</a></li>
+            <li><a (click)="change_page('/employee_search','rmg')">Employee Search</a></li>
+          </ul>
+        </div><!-- dropdown-menu -->
+      </li>
+
+
     </ul>
   </div><!-- container -->
 </div>

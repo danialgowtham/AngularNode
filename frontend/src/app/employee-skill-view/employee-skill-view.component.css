@@ -1,3 +1,16 @@
 table {
     width: 100%;
   }
+.slim-pageheader{
+    padding-top: 10px !important;
+}
+ table th {
+ width:20% !important;
+  } 
+  /* ::ng-deep.my-tooltip {
+    white-space: pre-line;
+} 
+::ng-deep.mat-tooltip {
+  font-size: 13px;
+} */
+  

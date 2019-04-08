@@ -12,6 +12,8 @@ router.get('/getEmployeeDetail/:employee_id', WebServiceController.getEmployeeDe
 router.get('/getEmployeeByID/:employee_id', WebServiceController.getEmployeeByID);
 router.get('/login/:username/:password', WebServiceController.login);
 router.get('/getReporteeList/:manager_id', WebServiceController.getReporteeList);
+router.get('/getBands/', WebServiceController.getBands);
+router.get('/getEmployeeList/', WebServiceController.getEmployeeList);
 
 // Export the Router
 module.exports = router;

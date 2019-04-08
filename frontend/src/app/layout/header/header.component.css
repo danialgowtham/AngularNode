@@ -1,3 +1,5 @@
-/* .slim-header{
-    height: 10vh !important;
-} */
+.slim-header{
+    height: 8vh !important;
+    /* height: 8vh !important; */
+    min-height: 50px;
+}

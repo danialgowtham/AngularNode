@@ -3,9 +3,9 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 var EmployeeSkillSetSchema = new mongoose.Schema({
     employee_competency_master_id: { type: ObjectId, required: true },
-    sub_sbu_id: { type: String, required: true },
+    sub_sbu_id: { type: String, required: false },
     competency_skill_mapping_id: { type: String, required: true },
-    experience_month: { type: String, required: true },
+    experience_month: { type: String, required: false },
     employee_proficiency: { type: String, required: true },
     manager_proficiency: { type: String, required: false },
     status:{type:String,required: true},

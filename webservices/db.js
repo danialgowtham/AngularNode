@@ -18,7 +18,7 @@ var db_config =
   host: "192.168.1.103",
   user: "ideal2",
   password: "$$103iDeal@BeTa##",
-  database: "ideal_kra",
+  database: "ideal_beta",
   port: "3306"
 };
 

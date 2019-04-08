@@ -1,0 +1,86 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <!-- <span style="color:#1b84e7" class="cursor-pointer" (click)="open_job_code_description_popup()">Job
+          Code Description <i class="fa fa-eye mg-l-1"></i></span> -->
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" [matTooltip]="help_text"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>Role Fitment</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z3 pd-20">
+      <form [formGroup]="formdata">
+        <div class="">
+          <div class="row mg-1">
+            <div class="col-lg-3 pd-0 pd-r-25-force" *ngIf="employee_search==false">
+              <mat-form-field>
+                <input formControlName="employee" type="text" (keyup)="update_employee_list($event)"
+                  placeholder="Select Employee" aria-label="Select Employee" matInput [matAutocomplete]="employee">
+                <mat-autocomplete #employee="matAutocomplete" id="employee" [displayWith]="displayFn"
+                  (optionSelected)="update_band($event)">
+                  <mat-option *ngFor="let key of Object.keys(filtered_employee_list)"
+                    [value]="filtered_employee_list[key]">
+                    {{filtered_employee_list[key]["employee_name"]}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-0 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="unit" #unit placeholder="Select Unit" id="unit"
+                  (selectionChange)="clearAllSelected()">
+                  <mat-option>Select Unit</mat-option>
+                  <mat-option *ngFor="let unit of units" [value]="unit?.id">
+                    {{unit?.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="band" #band placeholder="Select Band" id="band"
+                  (selectionChange)="get_roles()">
+                  <mat-option>Select Band</mat-option>
+                  <mat-option *ngFor="let band of bands" [value]="band">
+                    {{band}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="role" #role placeholder="Select Role" id="role"
+                  (selectionChange)="get_job_codes()">
+                  <mat-option>Select Role</mat-option>
+                  <mat-option *ngFor="let role of roles" [value]="role.role">
+                    {{role.role}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="job_code" #job_code placeholder="Job Code" id="job_code"
+                  (selectionChange)="get_job_detail()">
+                  <mat-option>Select Job Code</mat-option>
+                  <mat-option *ngFor="let job_code of job_codes" [value]="job_code?.id">
+                    {{job_code.job_code}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- <div class="col-lg-3 pd-r-0-force">
+            <button mat-raised-button color="primary" [disabled]="compare_skill_mapping(band.value,role.value,job_code.value)"  id="submit_btn">Compare</button>
+          </div> -->
+          </div>
+        </div>
+      </form>
+      <app-employee-job-view *ngIf="mapping_detail['mapping_data']" [mapping_detail]="mapping_detail">
+      </app-employee-job-view>
+    </div>
+  </div>
+</div>
+
+<!--  (optionSelected)="selectedEmployee($event.option.value)" -->

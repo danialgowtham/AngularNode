@@ -1,0 +1,119 @@
+<div class="pd-t-10">
+  <div class="row">
+    <h6 class="mg-10 pd-t-10 col-4 ">
+      <label class="section-title">Role Detail </label>
+    </h6>
+    <div class="mg-10  col-6 d-flex">
+      <h6>
+        <label class="text-dark pd-t-10">Job Fitment Score :</label>
+      </h6>
+      <ngb-progressbar type="success" height="25px" class="col-8 pd-t-5" [striped]="true" [showValue]="true"
+        [value]="job_fitment_score" [max]="100"></ngb-progressbar>
+    </div>
+  </div>
+
+  <div class="pd-b-20">
+
+    <div class="card card-dash-one mg-b-20">
+      <!-- <app-employee-detail [employee_detail]="employee_detail" *ngIf="employee_search==false"></app-employee-detail> -->
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Color Code Description
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="table-responsive col-4">
+            <table class="table table-bordered mg-b-0">
+              <thead>
+                <th>Color</th>
+                <th>Description</th>
+              </thead>
+              <tr>
+                <td class="text-center"><span class="pd-10 bg-danger "></span></td>
+                <td>Not Qualified</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="pd-10 bg-warning "></span></td>
+                <td>Nearly Qualifed</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="pd-10 bg-success "></span></td>
+                <td>Qualified</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="pd-10 bg-purple "></span></td>
+                <td>Over Qualified</td>
+              </tr>
+            </table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="section-wrapper pd-0">
+      <table mat-table [dataSource]="mapping_data">
+        <ng-container matColumnDef="checked" *ngIf="!employee_search">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Check </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <mat-checkbox [hidden]="element?.fixed_competency_flag" color="primary" [(ngModel)]="element.checked"
+              (change)="updateJobDetail()"></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="competency_name">
+          <th mat-header-cell *matHeaderCellDef> Competency </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              *ngIf="(element.competency_definition && element.competency_proficiency_description );else show_compentency"
+              class="cursor-pointer tx-primary" title="Click to view Competency Description"
+              (click)="open_competency_popup(element?.competency_definition,element?.competency_proficiency_description,element?.competency_proficiency_name)">
+              {{element.competency_name}} <i class="fa fa-eye mg-l-5"></i>
+            </span>
+            <ng-template #show_compentency>
+              <span> {{element.competency_name}}</span>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="skill_name">
+          <th mat-header-cell *matHeaderCellDef> Skill </th>
+          <td mat-cell *matCellDef="let element"> <span>{{element.skill_name}}</span>
+            <!-- <span *ngIf="element?.skill_array ; else show_skill" style="color:#1b84e7"
+            class="cursor-pointer" [matTooltip]="element?.skill_array.join('\n')" [matTooltipClass]="'my-tooltip'">
+            {{element.skill_name}}
+          </span>
+          <ng-template #show_skill>
+            <span>{{element.skill_name}}</span>
+          </ng-template> -->
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="skill_proficiency_name">
+          <th mat-header-cell *matHeaderCellDef> Required Proficiecy </th>
+          <td mat-cell *matCellDef="let element"> {{element.skill_proficiency_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employee_proficiency">
+          <ng-container *ngIf="employee_search;else show_employee">
+            <th mat-header-cell *matHeaderCellDef> Your Proficiency </th>
+          </ng-container>
+          <ng-template #show_employee>
+            <th mat-header-cell *matHeaderCellDef> Employee Proficiency</th>
+          </ng-template>
+          <td mat-cell *matCellDef="let element"> {{element.employee_proficiency}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="color_code">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Fitment </th>
+          <td mat-cell *matCellDef="let element" class="text-center"><span class="{{element?.color_code}} pd-10"></span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>

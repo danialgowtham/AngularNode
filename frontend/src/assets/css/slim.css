@@ -3543,7 +3543,7 @@ tbody.collapse.show {
     position: relative;
     border: 1px solid transparent;
     border-radius: 3px;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .alert {
@@ -8906,7 +8906,7 @@ textarea.parsley-error:active {
   border-radius: 0; }
 
 .progress-bar {
-  height: 15px;
+  height: 25px;
   font-size: 11px; }
 
 .progress-bar-xs {
@@ -11771,7 +11771,7 @@ textarea.parsley-success:focus {
     width: 45px;
     height: 45px;
     padding: 3px;
-    border: 1px solid #1b84e7;
+    border: 1px solid #ec9c21;
     border-radius: 100%; }
   .logged-user span {
     margin-left: 10px;
@@ -11992,7 +11992,7 @@ textarea.parsley-success:focus {
 /* ############### TEMPLATE NAVBAR STYLES ############### */
 /* ------------------------------------------------------ */
 .slim-navbar {
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: #fff;
   border-bottom: 1px solid #ced4da; }
   .slim-navbar .container {
@@ -12011,10 +12011,12 @@ textarea.parsley-success:focus {
         position: relative; } }
     @media (min-width: 1200px) {
       .slim-navbar .nav-item {
-        flex: 0 0 200px; } }
+        flex: 0 0 150px; } }
     .slim-navbar .nav-item.active .nav-link {
-      background-color: #1b84e7;
-      background-image: linear-gradient(to right, #1b84e7 0%, #1515af 100%);
+      background-color: #ec9c21;
+      /* background-image: linear-gradient(to right, #3993e8 0%, #7575b5 100%); */
+      /* background-image: linear-gradient(to right, #1b84e7 0%, #1515af 100%); */
+      background-image: linear-gradient(to right, #001635 0%, #ec9c21 100%);
       background-repeat: repeat-x;
       border-width: 0;
       color: #fff; }
@@ -12042,7 +12044,7 @@ textarea.parsley-success:focus {
     letter-spacing: .7px;
     font-weight: 500;
     color: #656d75;
-    height: 46px;
+    height: 35px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -12053,7 +12055,7 @@ textarea.parsley-success:focus {
     .slim-navbar .nav-link .icon {
       font-size: 24px;
       line-height: 0;
-      color: #1b84e7; }
+      color: #ec9c21; }
       @media (min-width: 992px) {
         .slim-navbar .nav-link .icon {
           margin-right: 8px; } }
@@ -12098,7 +12100,7 @@ textarea.parsley-success:focus {
   .slim-navbar .sub-item {
     background-color: #fff;
     position: absolute;
-    top: 46px;
+    top: 35px;
     left: 0;
     border: 1px solid #ced4da;
     border-top: 0;
@@ -12111,7 +12113,7 @@ textarea.parsley-success:focus {
     display: none; }
     @media (min-width: 992px) {
       .slim-navbar .sub-item {
-        width: 200px; } }
+        width: 150px; } }
     .slim-navbar .sub-item ul {
       list-style: none;
       padding: 0;
@@ -12123,7 +12125,7 @@ textarea.parsley-success:focus {
         margin: 0 10px;
         color: #495057; }
         .slim-navbar .sub-item ul a:hover, .slim-navbar .sub-item ul a:focus {
-          color: #1b84e7;
+          color: #ec9c21;
           background-color: #f2f4f6; }
     .slim-navbar .sub-item .sub-with-sub {
       position: relative; }
@@ -12363,7 +12365,7 @@ textarea.parsley-success:focus {
   margin-bottom: 10px;
   color: #343a40;
   padding-left: 10px;
-  border-left: 4px solid #4662D4;
+  border-left: 4px solid #ec9c21;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 18px;
@@ -34171,7 +34173,7 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   color: #000; }
 
 .tx-primary {
-  color: #1b84e7; }
+  color: #ea8e00; }
 
 .tx-success {
   color: #23BF08; }

@@ -1,0 +1,45 @@
+<div class="slim-pageheader">
+  <ol class="breadcrumb slim-breadcrumb">
+  </ol>
+  <h6 class="slim-pagetitle mg-l-10">
+    <span>My Profile</span>
+  </h6>
+</div><!-- slim-pageheader -->
+<div class="pd-10">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+      <ul class="no-list-style">
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            Name:</span><span class="pd-l-10">{{employee_detail?.employee_name}}</span></li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            {{employee_detail?.practice_lable}}:</span><span class="pd-l-10">{{employee_detail?.unit}}</span></li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            Designation:</span><span class="pd-l-10">{{employee_detail?.designation}}</span></li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <ul class="no-list-style">
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            Manager:</span><span class="pd-l-10">{{employee_detail?.manager_name}}</span></li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            {{employee_detail?.sub_practice_lable}}:</span><span class="pd-l-10">{{employee_detail?.practice}}</span>
+        </li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            HT Experience:</span><span class="pd-l-10">{{employee_detail?.htl_experience}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <ul class="no-list-style">
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            Band:</span><span class="pd-l-10">{{employee_detail?.band}}</span></li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            Category:</span><span class="pd-l-10">{{employee_detail?.category}}</span>
+        </li>
+        <li class="mb-2"><span class="tx-13 tx-dark font-weight-bold">
+            OverAll Experience:</span><span class="pd-l-10">{{employee_detail?.overall_experience}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -8,84 +8,7 @@
       </h6>
     </div><!-- slim-pageheader -->
     <div class="section-wrapper">
-      <div class="card card-dash-one mg-b-20 mat-elevation-z3">
-        <div class="row no-gutters">
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-analytics-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Name</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.employee_name}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Reporting Manager</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.manager_name}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Band</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.band}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Category</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.category}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">HT Experience</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.htl_experience}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <!-- row -->
-        </div>
-        <div class="row no-gutters">
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white ">
-            <!--<i class="icon ion-ios-analytics-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Designation</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.designation}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-pie-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.unit}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.practice}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.sub_practice}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Overall Experience</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.overall_experience}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-        </div>
-      </div>
+      <app-employee-detail [employee_detail]="employee_detail"></app-employee-detail>
       <div class="mat-elevation-z8 mg-t-20">
         <div class="table-responsive">
           <table class="table table-bordered mg-b-0">
@@ -94,9 +17,9 @@
                 <th>Practice</th>
                 <th>Competency</th>
                 <th>Skill</th>
-                <th>Experience (Month)</th>
-                <th>Employee Proficiency</th>
-                <th>Manager Proficiency</th>
+                <th>Experience in Months</th>
+                <th>Standard Proficiency</th>
+                <th>Manager Assessment</th>
               </tr>
             </thead>
             <tbody>
@@ -112,10 +35,15 @@
                   </span>
                   <ng-template #select_proficiency>
                     <mat-form-field>
-                      <mat-select placeholder="Select Proficiency" (selectionChange)="update_approve_list(skill_set.employee_skill_set_id,$event.value)">
-                        <mat-option *ngFor="let proficiency of proficiencies" [value]="proficiency?.id">
-                          {{proficiency.proficiency_name}}
-                        </mat-option>
+                      <mat-select placeholder="Select Proficiency" [(value)]="skill_set.employee_proficiency_id"
+                        (selectionChange)="update_approve_list(skill_set.employee_skill_set_id,$event.value)">
+                        <ng-container *ngFor="let proficiency of proficiencies;index as index">
+                          <mat-option
+                            *ngIf="(!skill_set.experience_month && !skill_set.strucure)|| (skill_set.experience_month && skill_set.strucure && index!=proficiencies.length-1)"
+                            [value]="proficiency?.id">
+                            {{proficiency.proficiency_name}}
+                          </mat-option>
+                        </ng-container>
                       </mat-select>
                     </mat-form-field>
                   </ng-template>

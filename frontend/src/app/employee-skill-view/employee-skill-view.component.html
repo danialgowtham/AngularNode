@@ -1,125 +1,74 @@
 <div class="slim-mainpanel">
-  <div class="container mg-b-20">
-    <div class="slim-pageheader">
+  <div class="container mg-b-20 pd-0">
+    <div *ngIf="disable_popup" class="slim-pageheader ">
       <ol class="breadcrumb slim-breadcrumb">
       </ol>
       <h6 class="slim-pagetitle">
         <span>View Skill</span>
       </h6>
     </div><!-- slim-pageheader -->
-    <div class="section-wrapper">
-      <div class="card card-dash-one mg-b-20 mat-elevation-z3">
-        <div class="row no-gutters">
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-analytics-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Name</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.employee_name}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Reporting Manager</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.manager_name}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Band</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.band}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Category</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.category}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bd-b bg-white">
-            <!--<i class="icon ion-ios-world-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">HT Experience</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.htl_experience}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <!-- row -->
-        </div>
-        <div class="row no-gutters">
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white ">
-            <!--<i class="icon ion-ios-analytics-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Designation</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.designation}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-pie-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.unit}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.practice}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.sub_practice}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-          <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
-            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
-            <div class="dash-content">
-              <label class="tx-primary">Overall Experience</label>
-              <h6 class="text-dark card_heading">{{employee_detail?.overall_experience}}</h6>
-            </div><!-- dash-content -->
-          </div><!-- col-3 -->
-        </div>
+    <div class="pd-0 ">
+      <div class="mg-t-10">
+        <app-employee-detail *ngIf="disable_popup" [employee_detail]="employee_detail"></app-employee-detail>
       </div>
-      <div class="mat-elevation-z8 mg-t-20">
-        <table mat-table [dataSource]="mapping_data">
+      <div class="section-wrapper pd-0">
+        <table mat-table [dataSource]="mapping_data"  matSort>
 
           <ng-container matColumnDef="strucure">
-            <th mat-header-cell *matHeaderCellDef> Practice </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Practice </th>
             <td mat-cell *matCellDef="let element"> {{element.strucure}} </td>
           </ng-container>
 
           <ng-container matColumnDef="competency_name">
-            <th mat-header-cell *matHeaderCellDef> Competency </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Competency </th>
             <td mat-cell *matCellDef="let element"> {{element.competency_name}} </td>
           </ng-container>
 
           <ng-container matColumnDef="skill_name">
-            <th mat-header-cell *matHeaderCellDef> Skill </th>
-            <td mat-cell *matCellDef="let element"> {{element.skill_name}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Skill </th>
+            <td mat-cell *matCellDef="let element"> <span>{{element.skill_name}}</span>
+              <!-- <span *ngIf="element?.skill_array ; else show_skill" style="color:#1b84e7"
+                class="cursor-pointer" [matTooltip]="element?.skill_array.join('\n')" [matTooltipClass]="'my-tooltip'">
+                {{element.skill_name}}
+              </span>
+              <ng-template #show_skill>
+                <span>{{element.skill_name}}</span>
+              </ng-template> -->
+            </td>
           </ng-container>
 
-          <ng-container matColumnDef="experience_month">
-            <th mat-header-cell *matHeaderCellDef> Experience Month </th>
-            <td mat-cell *matCellDef="let element"> {{element.experience_month}} </td>
+          <ng-container matColumnDef="experience_month" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Experience in Months </th>
+            <td mat-cell *matCellDef="let element" class="pd-l-20-force">
+              <span *ngIf="element.experience_month;else NA">
+                {{element.experience_month}}
+              </span>
+              <ng-template #NA>
+                <span>Not Applicable</span>
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="employee_proficiency">
-            <th mat-header-cell *matHeaderCellDef> Employee Proficiency </th>
-            <td mat-cell *matCellDef="let element"> {{element.employee_proficiency}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Relative Proficiency </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="!disable_popup && element.experience_month ; else show_proficiency"
+                class="cursor-pointer tx-primary" title="Click to View Proficiency Description"
+                (click)="open_proficiency_popup(element?.mapping_id)">
+                {{element.employee_proficiency}} <i class="fa fa-eye mg-l-5"></i>
+              </span>
+              <ng-template #show_proficiency>
+                <span>{{element.employee_proficiency}}</span>
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="manager_proficiency">
-            <th mat-header-cell *matHeaderCellDef> Manager Proficiency </th>
+            <th mat-header-cell *matHeaderCellDef class="wd-40p" mat-sort-header> Manager Assessment </th>
             <td mat-cell *matCellDef="let element"> {{element?.manager_proficiency}} </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 

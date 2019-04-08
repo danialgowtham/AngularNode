@@ -12,7 +12,7 @@ export class CommonheaderComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,   private router: Router   ) {}
 
   ngOnInit() {
-    var jsonObj=JSON.parse(sessionStorage.currentUser);
+    var jsonObj=JSON.parse(localStorage.currentUser);
     document.getElementById("user_name").innerHTML=jsonObj.first_name;
     if(jsonObj.employee_photo){
       this.profile_pic="assets/employee_pics/"+jsonObj.employee_photo;
@@ -21,6 +21,9 @@ export class CommonheaderComponent implements OnInit {
     }
     
    
+  }
+  change_page() {
+    this.router.navigate(['/my_profile']);
   }  
   Onlogout(){
     console.log("inside of logout")

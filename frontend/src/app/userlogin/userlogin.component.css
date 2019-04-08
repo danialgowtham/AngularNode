@@ -10,4 +10,23 @@
 .mat-form-field{
     width: 100%;
 }
+.login_background{
+    background: url(../../assets/img/loginpage_bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: auto;
+    height: 84.9vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding-bottom: 65px; */
+}
+.mat-card {
+    padding: 0px !important;
+}
+.mat-grid-list{
+    position: initial !important;
+}
+
+
 

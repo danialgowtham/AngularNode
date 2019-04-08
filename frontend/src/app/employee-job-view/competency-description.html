@@ -1,0 +1,58 @@
+<div class="back_button">
+    <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='competency';else skillHeader">Competency Details</h5>
+    <ng-template #skillHeader>
+        <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='skill';else jobCodeHeader">Proficiency Description</h5>
+    </ng-template>
+    <ng-template #jobCodeHeader>
+        <h5 class="mg-0-force" mat-dialog-title>Job Code Description</h5>
+    </ng-template>
+    <span class="font-weight-bold"><i class="fa fa-close tx-20-force text-danger remove_row cursor-pointer"
+            (click)="closeDialog()"></i></span>
+</div>
+<div mat-dialog-content>
+    <div class="section-wrapper mg-t-20" *ngIf="competency_data.type=='competency';else skillBlock">
+        <label class="section-title" style="text-transform:capitalize">Competency Description</label>
+        <p class="mg-b-20 mg-sm-b-40">{{competency_data.definition}}</p>
+        <label class="section-title" style="text-transform:capitalize">Performance Indicator</label>
+        <span class="mg-b-20 mg-sm-b-40">{{competency_data.description}}</span>
+    </div>
+    <ng-template #skillBlock>
+        <div class="table-responsive" *ngIf="competency_data.type=='skill';else jobCodeBlock">
+            <table class="table table-bordered mg-t-10">
+                <thead>
+                    <tr>
+                        <th>Experience in Months</th>
+                        <th>Proficiency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let proficiency of skill_array">
+                        <td>{{proficiency?.experience_month}}</td>
+                        <!-- <ng-template #lastRow>
+                            <td>{{competency_data.proficiency_list[i-1]["experience_month"]}} and above</td>
+                        </ng-template> -->
+                        <td>{{proficiency?.proficiency_name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- bd -->
+    </ng-template>
+    <ng-template #jobCodeBlock>
+        <div class="table-responsive">
+            <table class="table table-bordered mg-t-10">
+                <thead>
+                    <tr>
+                        <th>Band</th>
+                        <th>Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let value of job_code_data">
+                        <td>{{value?.name}}</td>
+                        <td>{{value?.code}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- bd -->
+    </ng-template>
+</div>

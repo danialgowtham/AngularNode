@@ -1,0 +1,80 @@
+.mat-form-field{
+    display:block;
+}
+.mat-option{
+    font-size: 13px !important;
+    height: 35px !important;
+}
+table {
+    width: 100%;
+}
+#cover_pic{
+    background: url(../../assets/img/homepagetopbg_1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-color: #1b84e7; */
+    /* background-image: linear-gradient(to right, #3993e8 0%, #7575b5 100%); */
+    background-color: #1b84e7;
+    background-image: linear-gradient(to right, #001635 0%, #ec9c21 100%);
+    /* background-image: linear-gradient(to right, #1b84e7 0%, #1515af 100%); */
+    background-repeat: repeat-x;
+    border-width: 0;
+    width: auto;
+}
+.profil-cover-details {
+    margin-top: -50px;
+}
+.card-title{
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #fff;
+}
+.media{
+    margin-top: -50px;
+}
+#profile_pic {
+    border: 5px solid #fff;
+}
+#employee_name{
+    font-size: 15px;
+    color: #444343;
+    font-weight: 500;
+}
+.profile-menu{
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+}
+.profile-menu .active{
+    border-bottom: 5px solid;
+    margin-bottom: -2px;
+    /* border-color: rgb(134, 139, 161); */
+}
+
+/* Animation */
+
+.profile-menu li span {
+    line-height: 1;
+    text-decoration: none;
+    transition: all .3s ease-out;
+    border-bottom:solid transparent 5px;
+}
+.slider {
+    position: absolute;
+    display:block;
+    left: 0;
+    top:100%;
+    margin:0 auto;
+    height: 5px;
+    background-color: #001635;
+    width: 0%;
+    transition: width 1s ease;
+}
+.tab{
+    position:relative;
+    display:inline-block;
+    transition: all 0.3s ease-out;
+}
+.tab:hover .slider {
+    width: 100%;
+}

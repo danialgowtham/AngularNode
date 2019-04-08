@@ -2,10 +2,12 @@
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {BACK_END_URL} from '../shared/app.globals';
+import {MatDialog,MatBottomSheet} from '@angular/material';
+
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,private dialogRef: MatDialog,private bottomSheetRef: MatBottomSheet) { }
 
     login(username: string, password: string) {
         return this.http.post<any>(BACK_END_URL+`users/authenticateUser`, { username: username, password: password })
@@ -14,7 +16,7 @@ export class AuthenticationService {
                 console.log(user);
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    sessionStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUser', JSON.stringify(user));
                 }
                 return user;
             }));
@@ -22,6 +24,8 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        sessionStorage.removeItem('currentUser');
+        this.bottomSheetRef.dismiss();
+        this.dialogRef.closeAll();
+        localStorage.removeItem('currentUser');
     }
 }
