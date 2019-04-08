@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { EmployeeSkillMappingService } from '../services/employee_skill_mapping.service';
 import { MatDialog } from '@angular/material';
 import { PopupModalComponent } from '../popup-modal/popup-modal';
+import { LoaderService } from '../shared/loader.subject'
 
 @Component({
   selector: 'app-employee-skill-mapping',
@@ -28,9 +29,10 @@ export class EmployeeSkillMappingComponent implements OnInit {
   @Output() selected_competency = new Array();
   overall_competecny_list = new Map();
   submit_data = new Array();
-  constructor(private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
+  constructor(private loader_subject: LoaderService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
 
   ngOnInit() {
+    this.loader_subject.setLoader(true);
     this.view_skill_show();
     this.onAddNew();
     var jsonObj = JSON.parse(localStorage.currentUser);
@@ -42,7 +44,9 @@ export class EmployeeSkillMappingComponent implements OnInit {
           this.mapping_detail = response["data"]["skill"];
         }
       );
-
+  }
+  ngAfterViewInit() {
+    this.loader_subject.setLoader(false);
   }
 
   view_skill_show() {
@@ -110,11 +114,14 @@ export class EmployeeSkillMappingComponent implements OnInit {
     }
     var jsonObj = JSON.parse(localStorage.currentUser);
     var data = { "band_name": jsonObj.band_name, "employee_id": jsonObj.id, "data": this.submit_data, "updated_data": this.updated_skill_list };
+    this.loader_subject.setLoader(true);
     this.skill_service.saveCompetencyMapping(data)
       .subscribe(
         response => {
-          this.router.navigateByUrl('/employee_skill_view', { skipLocationChange: true }).then(() =>
-            this.router.navigate(["employee_skill"]));
+          this.router.navigateByUrl('/employee_skill_view', { skipLocationChange: true }).then(() => {
+            this.router.navigate(["employee_skill"]);
+            this.loader_subject.setLoader(false)
+          });
         }
       );
   }

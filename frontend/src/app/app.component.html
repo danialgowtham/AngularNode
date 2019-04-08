@@ -1,10 +1,12 @@
 <div>
+  <div class="spinner_div" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+  </div>
   <app-header *ngIf="showLoginHeader()"></app-header>
   <app-commonheader *ngIf="!showLoginHeader()"></app-commonheader>
   <div class="mainpage">
-      <app-top-menu *ngIf="!showLoginHeader()"></app-top-menu>
-      <router-outlet></router-outlet>
+    <app-top-menu *ngIf="!showLoginHeader()"></app-top-menu>
+    <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>
-

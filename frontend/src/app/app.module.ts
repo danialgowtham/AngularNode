@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSortModule,MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -50,6 +50,7 @@ import { RowComponent } from './employee-skill-mapping/dynamic-row/row.component
 import { SkillList } from './employee-skill-mapping/dynamic-row/row.component'
 import { EmployeeSkillMappingService } from './services/employee_skill_mapping.service';
 import { PopupModalComponent } from "./popup-modal/popup-modal";
+import { LoaderService } from "./shared/loader.subject";
 
 const appRoutes: Routes = [
   {
@@ -160,6 +161,7 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatCheckboxModule,
     MatSortModule,
+    MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
     UserIdleModule.forRoot({ idle: 900, timeout: 1, ping: 1 })
   ],
@@ -170,6 +172,7 @@ const appRoutes: Routes = [
     AuthenticationService,
     RedirectService,
     EmployeeSkillMappingService,
+    LoaderService,
     // {provide: 'rootVar', useValue: 'hello'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

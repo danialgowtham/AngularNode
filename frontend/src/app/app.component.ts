@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 import { AuthenticationService } from './services/authentication.service';
+import { LoaderService } from "./shared/loader.subject"
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { AuthenticationService } from './services/authentication.service';
 })
 
 export class AppComponent {
-  constructor(private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) { }
+  loader: Boolean;
+  constructor(private loader_subject: LoaderService, private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) { }
   ngOnInit() {
     //Start watching for user inactivity.
     this.userIdle.startWatching();
@@ -24,6 +26,7 @@ export class AppComponent {
       this.authenticationService.logout();
       this.router.navigate(['/']);
     });
+    this.loader_subject.getLoader().subscribe(loader => { this.loader = loader });
   }
   stop() {
     this.userIdle.stopTimer();
