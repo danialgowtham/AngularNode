@@ -1,13 +1,13 @@
 <div class="slim-navbar">
   <div class="container">
     <ul class="nav cursor-pointer">
-      <li class="nav-item {{tabs?.home}}">
+      <li class="nav-item {{tabs?.home}}" ngClass="{{tabs?.home}}">
         <a class="nav-link" (click)="change_page('/My Profile','employee')">
           <i class="icon ion-ios-home"></i>
           <span>Home</span>
         </a>
       </li>
-      <li class="nav-item with-sub {{tabs?.employee}}">
+      <li class="nav-item with-sub {{tabs?.employee}}" ngClass="{{tabs?.employee}}">
         <a class="nav-link">
           <i class="icon ion-person"></i>
           <span>Employee</span>

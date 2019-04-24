@@ -18,8 +18,8 @@ export class EmployeeSkillMappingService {
     saveCompetencyMapping(save_data) {
         return this.http.post(BACK_END_URL + `employee_skill_mapping/save_competency_mapping/`, save_data);
     }
-    getCompetencyMapping(employee_id, type) {
-        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_competency_mapping/` + employee_id + '/' + type);
+    getCompetencyMapping(employee_id, type, experience_type) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_competency_mapping/` + employee_id + '/' + type + '/' + experience_type);
     }
     getEmployeeDetail(employee_id) {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_employee_detail/` + employee_id);
@@ -33,8 +33,8 @@ export class EmployeeSkillMappingService {
     getProficiency() {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_proficiency/`);
     }
-    saveManagerProficiency(mapping_data, employee_id, manager_id) {
-        return this.http.post(BACK_END_URL + `employee_skill_mapping/save_manger_proficiency/` + employee_id + "/" + manager_id, mapping_data);
+    saveManagerProficiency(mapping_data, employee_id, manager_id, current_role) {
+        return this.http.post(BACK_END_URL + `employee_skill_mapping/save_manger_proficiency/` + employee_id + "/" + manager_id, { mapping_data, current_role });
     }
     getBands() {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_bands/`);
@@ -61,7 +61,16 @@ export class EmployeeSkillMappingService {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_reportee_mapping_list/` + employee_id);
     }
     getSkillList() {
-        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_skill_list/`);
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_skill_list/`)
+    }
+    getRole(employee_id) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_role/` + employee_id)
+    }
+    getRoleList(filtered_value) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_role_list/` + filtered_value)
+    }
+    getFilteredEmployeeList(filtered_value) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_filtered_employee_list/` + filtered_value);
     }
 
 }

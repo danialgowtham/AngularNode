@@ -3,7 +3,8 @@ import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.
 import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EmployeeViewPopupComponent } from '../employee-view-popup/employee-view-popup';
-
+import { TopmenuService } from "../shared/top-menu.subject";
+import { LoaderService } from "../shared/loader.subject"
 
 
 @Component({
@@ -19,12 +20,22 @@ export class EmployeeSearchComponent implements OnInit {
   Object = Object;
   skill_data: any = [];
   filtered_skill_list: any = [];
+  filtered_role_list: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['employee_name', 'unit', 'band', 'action'];
-  constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) {
+  constructor(private loader_subject: LoaderService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) {
   }
   ngOnInit() {
-    this.getMappingDetail();
+    this.loader_subject.setLoader(true);
+    this.topmenu_service.setActiveTab("rmg");
+    this.skill_service.getEmployeeSkillMappingList({})
+      .subscribe(
+        response => {
+          this.mapping_data = new MatTableDataSource(response["data"]["employee_skill_data"]);
+          this.mapping_data.paginator = this.paginator;
+          this.employee_data = response["data"]["employee_detail"];
+        }
+      );
     this.skill_service.getSkillList()
       .subscribe(
         response => {
@@ -35,25 +46,17 @@ export class EmployeeSearchComponent implements OnInit {
     this.formdata = new FormGroup({
       employee: new FormControl(),
       skill: new FormControl(),
-      skill_search: new FormControl()
+      skill_search: new FormControl(),
+      role: new FormControl()
     });
     this.formdata.controls["skill"].setValue([]);
     this.formdata.controls.skill_search.valueChanges
       .subscribe(() => {
         this.update_skill();
       });
-
   }
-  getMappingDetail() {
-    this.skill_service.getEmployeeSkillMappingList({})
-      .subscribe(
-        response => {
-          this.mapping_data = new MatTableDataSource(response["data"]["employee_skill_data"]);
-          this.mapping_data.paginator = this.paginator;
-          this.employee_data = response["data"]["employee_detail"];
-          this.filtered_employee_list = this.employee_data;
-        }
-      );
+  ngAfterViewInit() {
+    this.loader_subject.setLoader(false);
   }
   openEmployeeSkill(employee_id) {
     this.dialog.closeAll();
@@ -62,9 +65,19 @@ export class EmployeeSearchComponent implements OnInit {
   update_employee_list(event) {
     var value = event.target.value;
     const filterValue = value.toLowerCase();
-    this.filtered_employee_list = Object.keys(this.employee_data).filter(employee_id => {
-      return this.employee_data[employee_id].employee_name.toLowerCase().includes(filterValue)
-    }).map(filteredEmployeeId => this.employee_data[filteredEmployeeId]);
+    if (filterValue) {
+      this.skill_service.getFilteredEmployeeList(filterValue)
+        .subscribe(
+          response => {
+            this.filtered_employee_list = response["data"];
+          }
+        );
+    } else {
+      this.filtered_employee_list = [];
+    }
+    // this.filtered_employee_list = Object.keys(this.employee_data).filter(employee_id => {
+    //   return this.employee_data[employee_id].employee_name.toLowerCase().includes(filterValue)
+    // }).map(filteredEmployeeId => this.employee_data[filteredEmployeeId]);
   }
 
   displayFn(employee): string | undefined {
@@ -78,7 +91,7 @@ export class EmployeeSearchComponent implements OnInit {
     })
   }
   filter_employees() {
-    if (this.formdata.value.employee || this.formdata.value.skill) {
+    if (this.formdata.value.employee || this.formdata.value.skill || this.formdata.value.role) {
       this.skill_service.getEmployeeSkillMappingList(this.formdata.value)
         .subscribe(
           response => {
@@ -87,11 +100,36 @@ export class EmployeeSearchComponent implements OnInit {
           }
         );
     } else {
-      this.getMappingDetail();
+      this.skill_service.getEmployeeSkillMappingList({})
+        .subscribe(
+          response => {
+            this.mapping_data = new MatTableDataSource(response["data"]["employee_skill_data"]);
+            this.mapping_data.paginator = this.paginator;
+          }
+        );
     }
   }
   ngOnDestroy() {
     this.dialog.closeAll();
   }
+  update_role_list(event) {
+    var value = event.target.value;
+    const filterValue = value.toLowerCase();
+    if (filterValue) {
+      this.skill_service.getRoleList(filterValue)
+        .subscribe(
+          response => {
+            this.filtered_role_list = response["data"]["role_list"];
+          }
+        );
+    } else {
+      this.filtered_role_list = [];
+    }
+  }
+
+  displayRole(role): string | undefined {
+    return role ? role : undefined;
+  }
+ 
 
 }

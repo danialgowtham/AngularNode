@@ -2,7 +2,8 @@
   <div class="container mg-b-20">
     <div class="slim-pageheader">
       <ol class="breadcrumb slim-breadcrumb">
-          <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" matTooltip="RMG can share the competencies & skills of all employees in the organization"></i>
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force"
+          matTooltip="RMG can share the competencies & skills of all employees in the organization"></i>
       </ol>
       <h6 class="slim-pagetitle">
         <span>Employee Search</span>
@@ -12,10 +13,10 @@
       <form [formGroup]="formdata">
         <div class="section-wrapper  pd-10 mg-b-20">
           <div class="row ">
-            <div class="col-lg-4 pd-l-10">
+            <div class="col-lg-3 pd-l-10">
               <mat-form-field class="col-lg-12">
                 <input formControlName="employee" type="text" (keyup)="update_employee_list($event)"
-                  placeholder="Select Employee" aria-label="Select Employee" matInput [matAutocomplete]="employee">
+                  placeholder="Select Employee" aria-label="Search Employee" matInput [matAutocomplete]="employee">
                 <mat-autocomplete #employee="matAutocomplete" id="employee" [displayWith]="displayFn">
                   <mat-option *ngFor="let key of Object.keys(filtered_employee_list)"
                     [value]="filtered_employee_list[key]">
@@ -23,10 +24,21 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-            </div><!-- col -->
-            <div class="col-lg-6 pd-l-10">
+            </div>
+            <div class="col-lg-3 pd-l-10">
               <mat-form-field class="col-lg-12">
-                <mat-select formControlName="skill" placeholder="Select Skill" id="skill_id" [multiple]="true">
+                <input formControlName="role" type="text" (keyup)="update_role_list($event)" placeholder="Search Role"
+                  aria-label="Select Role" matInput [matAutocomplete]="role">
+                <mat-autocomplete #role="matAutocomplete" [displayWith]="displayRole">
+                  <mat-option *ngFor="let role of filtered_role_list" [value]="role?.role">
+                    {{role?.role}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4 pd-l-10">
+              <mat-form-field class="col-lg-12">
+                <mat-select  formControlName="skill" placeholder="Select Skill" id="skill_id" [multiple]="true">
                   <ngx-mat-select-search formControlName="skill_search" placeholderLabel="Search Skill"
                     noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let skill of filtered_skill_list" [value]="skill">
@@ -34,7 +46,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-            </div><!-- col -->
+            </div>
             <div class="col-md-1 mg-t-10 mg-r-10">
               <button mat-raised-button color="primary" (click)="filter_employees()">Search</button>
             </div>
@@ -43,7 +55,6 @@
       </form>
       <div class="section-wrapper pd-0">
         <table mat-table [dataSource]="mapping_data">
-
           <ng-container matColumnDef="employee_name">
             <th mat-header-cell *matHeaderCellDef class="wd-40p"> Employee </th>
             <td mat-cell *matCellDef="let element"> {{employee_data[element?.employee_id].employee_name}}</td>
@@ -62,14 +73,11 @@
               <i class="fa fa-eye" (click)="openEmployeeSkill(element?.employee_id)"></i>
             </td>
           </ng-container>
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-
         <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
       </div>
-
     </div>
   </div>
 </div>

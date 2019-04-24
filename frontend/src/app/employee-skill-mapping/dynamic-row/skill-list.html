@@ -5,6 +5,7 @@
                 <tr>
                     <th>Skill</th>
                     <th>Experience in Months</th>
+                    <th>Worked in Last Two Year</th>
                 </tr>
             </thead>
             <tbody>
@@ -13,11 +14,28 @@
                     <td class="pd-0-force pd-l-10-force pd-r-10-force">
                         <mat-form-field>
                             <input matInput (keypress)="keyPress($event)"
-                                (change)="update_json(skill.id,$event.target.value)" type="text" #validation
-                                maxlength="3" placeholder="Enter Experience" value="{{skill_set.get(skill.id)}}">
+                                (change)="update_json(skill.id,input_validation.value,select_validation.value)"
+                                type="text" #input_validation maxlength="3" placeholder="Enter Experience"
+                                value="{{skill_set.get(skill.id)?.experience_month}}">
                         </mat-form-field>
-                        <mat-error *ngIf="validation.value>overall_experience_month">
+                        <mat-error *ngIf="this.skill_list_error[skill.id]?.overall_experience=='error'">
                             Must be less than your overall experience
+                        </mat-error>
+                        <mat-error *ngIf="this.skill_list_error[skill.id]?.not_a_number=='error'">
+                            Must be a Number
+                        </mat-error>
+                    </td>
+                    <td class="pd-0-force pd-l-10-force pd-r-10-force">
+                        <mat-form-field>
+                            <mat-select placeholder="Select" #select_validation value="{{skill_set.get(skill.id)?.gap}}"
+                                (selectionChange)="update_json(skill.id,input_validation.value,select_validation.value)">
+                                <mat-option value="">Select</mat-option>
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="this.skill_list_error[skill.id]?.select=='error'">
+                            Please Select Option
                         </mat-error>
                     </td>
                 </tr>

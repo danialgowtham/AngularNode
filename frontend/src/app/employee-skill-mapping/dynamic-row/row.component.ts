@@ -154,15 +154,22 @@ export class SkillList {
       event.preventDefault();
     }
   }
-  update_json(com_skl_map_id, experience_month: Number) {
-    if (com_skl_map_id && !experience_month && this.skill_set.has(com_skl_map_id))
+  update_json(com_skl_map_id, experience_month: Number, gap: string) {
+    if (com_skl_map_id && !experience_month && !gap && this.skill_set.has(com_skl_map_id))
       this.skill_set.delete(com_skl_map_id)
     if (this.skill_list_error[com_skl_map_id])
       delete this.skill_list_error[com_skl_map_id]
-    if (Number(experience_month) == 0 || Number(experience_month) > this.overall_experience_month)
-      this.skill_list_error[com_skl_map_id] = "error";
-    else if (com_skl_map_id && experience_month && experience_month <= this.overall_experience_month) {
-      this.skill_set.set(com_skl_map_id, experience_month)
+    if (Number(experience_month) > this.overall_experience_month) {
+      this.skill_list_error[com_skl_map_id] = { "overall_experience": "error" };
+    }
+    else if (Number.isNaN(Number(experience_month))) {
+      this.skill_list_error[com_skl_map_id] = { "not_a_number": "error" };
+    }
+    if (!gap && !Number.isNaN(Number(experience_month))) {
+      this.skill_list_error[com_skl_map_id] = { "select": "error" };
+    }
+    if (com_skl_map_id && experience_month && gap && experience_month <= this.overall_experience_month) {
+      this.skill_set.set(com_skl_map_id, { experience_month: experience_month, gap: gap })
     }
   }
   dismissBottomSheet() {

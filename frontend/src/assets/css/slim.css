@@ -11639,8 +11639,8 @@ textarea.parsley-success:focus {
 
 .slim-header-right .dropdown-menu {
   border-top: 0;
-  margin-top: 18px;
-  margin-right: -15px;
+  margin-top: 13px;
+  margin-right: -23px;
   padding: 10px;
   transform: none !important;
   top: 100% !important;
@@ -40278,3 +40278,23 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 
 .mx-wd-1350 {
   max-width: 1350px; }
+/* width */
+::-webkit-scrollbar {
+  width:1px;
+}
+
+/* Track
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px grey; 
+   border-radius: 10px; 
+} */
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ea8e00; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #001635; 
+}

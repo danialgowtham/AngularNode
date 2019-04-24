@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { EmployeeViewPopupComponent } from '../employee-view-popup/employee-view-popup';
-import {RedirectService} from "../services/redirect"
+import { RedirectService } from "../services/redirect";
+import { TopmenuService } from "../shared/top-menu.subject";
 
 @Component({
   selector: 'app-employee-skill-list',
@@ -14,10 +15,11 @@ export class EmployeeSkillListComponent implements OnInit {
   employee_data: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['employee_name', 'band_name', 'submitted_on', 'status', 'action'];
-  constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, public redirect : RedirectService) {
+  constructor(private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, public redirect: RedirectService) {
 
   }
   ngOnInit() {
+    this.topmenu_service.setActiveTab("manager");
     var jsonObj = JSON.parse(localStorage.currentUser);
     this.skill_service.getReporteeSkillMappingList(jsonObj.id)
       .subscribe(
@@ -29,13 +31,13 @@ export class EmployeeSkillListComponent implements OnInit {
       );
   }
   openEmployeeSkill(employee_id) {
-    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation:true, width: '90vw',height:  '80vh', maxWidth: '90vw',maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: false });
+    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation: true, width: '90vw', height: '80vh', maxWidth: '90vw', maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: false });
   }
 
-  redirectPage(page_link,employee_id){
-    this.redirect.change_page_with_data(page_link,{employee_id});
+  redirectPage(page_link, employee_id) {
+    this.redirect.change_page_with_data(page_link, { employee_id });
   }
-  ngOnDestroy (){
+  ngOnDestroy() {
     this.dialog.closeAll();
   }
 

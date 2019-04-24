@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
+import { MatIconModule, MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -51,6 +51,14 @@ import { SkillList } from './employee-skill-mapping/dynamic-row/row.component'
 import { EmployeeSkillMappingService } from './services/employee_skill_mapping.service';
 import { PopupModalComponent } from "./popup-modal/popup-modal";
 import { LoaderService } from "./shared/loader.subject";
+import { TopmenuService } from "./shared/top-menu.subject";
+import { PushNotificationService } from "./services/push_notification.service";
+// import { NgCircleProgressModule } from 'ng-circle-progress';
+
+
+
+//for push notification
+import { ToasterModule } from 'angular5-toaster';
 
 const appRoutes: Routes = [
   {
@@ -161,8 +169,20 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatCheckboxModule,
     MatSortModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
+    ToasterModule,
+    // NgCircleProgressModule.forRoot({
+    //   // set defaults here
+    //   radius: 50,
+    //   outerStrokeWidth: 8,
+    //   innerStrokeWidth: 8,
+    //   outerStrokeColor: "#78C000",
+    //   innerStrokeColor: "#C7E596",
+    //   animationDuration: 1000,
+    //   animation: true
+    // }),
     UserIdleModule.forRoot({ idle: 900, timeout: 1, ping: 1 })
   ],
   entryComponents: [Popup, EmployeeDetailComponent, EmployeeViewPopupComponent, SkillList, PopupModalComponent],
@@ -173,6 +193,8 @@ const appRoutes: Routes = [
     RedirectService,
     EmployeeSkillMappingService,
     LoaderService,
+    PushNotificationService,
+    TopmenuService,
     // {provide: 'rootVar', useValue: 'hello'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -183,4 +205,10 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent],
 })
 
-export class AppModule { }
+export class AppModule {
+  constructor(private push_notification_service: PushNotificationService) {
+    // Consume events: Change
+    this.push_notification_service.consumeEvenOnSkillApprove();
+    this.push_notification_service.consumeEvenOnSkillSubmit();
+  }
+}

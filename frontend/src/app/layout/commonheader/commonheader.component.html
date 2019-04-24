@@ -1,20 +1,37 @@
 <div class="slim-header">
   <div class="container">
-      <div class="slim-header-left">
-          <span class="cursor-pointer" (click)="change_page()">
-              <img height="50px" src="assets/img/fast_logo_new.jpg" class="" alt="FAST">
-      </span>
-      </div><!-- slim-header-left -->
-      <div class="slim-header-right">
-        <div href class="logged-user">
-          <img src="assets/img/profile_picture.jpg" alt="">
-          <span id="user_name"></span>
-        </div>     
-        <i (click)=Onlogout() class="fa fa-sign-out mg-l-5 cursor-pointer" style="font-size:24px" title="logout"></i>
+    <div class="slim-header-left">
+      <a class="cursor-pointer" routerLink="/my_profile">
+        <img height="50px" src="assets/img/fast_logo_new.jpg" class="" alt="FAST">
+      </a>
+    </div><!-- slim-header-left -->
+    <div class="slim-header-right">
+      <!-- <div class="dropdown dropdown-b {{show}}">
+        <mat-icon matBadgeSize="small" matBadge="0" matBadgeHidden="true" class="cursor-pointer" (click)="display()">notifications</mat-icon>
+        <div class="dropdown-menu {{show}}" id="dropdown-menu-custom">
+          <div class="dropdown-menu-header">
+            <h6 class="dropdown-menu-title">Notifications</h6>
+            <div>
+              <span class="tx-primary cursor-pointer">Mark All as Read</span>
+            </div>
+          </div>
+          <div class="dropdown-list">
+            <div class="dropdown-link cursor-pointer">
+              <div class="media">
+                <div class="media-body text-center">
+                  <span>Nothing to show</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div href class="logged-user">
+        <img src="assets/img/profile_picture.jpg" alt="">
+        <span id="user_name"></span>
       </div>
+      <i (click)=Onlogout() class="fa fa-sign-out mg-l-5 cursor-pointer" style="font-size:24px" title="logout"></i>
+    </div>
   </div><!-- container -->
 </div><!-- slim-header -->
-
-
-
-

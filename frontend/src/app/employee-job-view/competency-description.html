@@ -1,7 +1,9 @@
 <div class="back_button">
-    <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='competency';else skillHeader">Competency Details</h5>
+    <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='competency';else skillHeader">Competency
+        Details</h5>
     <ng-template #skillHeader>
-        <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='skill';else jobCodeHeader">Proficiency Description</h5>
+        <h5 class="mg-0-force" mat-dialog-title *ngIf="competency_data.type=='skill';else jobCodeHeader">Proficiency
+            Description</h5>
     </ng-template>
     <ng-template #jobCodeHeader>
         <h5 class="mg-0-force" mat-dialog-title>Job Code Description</h5>
@@ -17,6 +19,10 @@
         <span class="mg-b-20 mg-sm-b-40">{{competency_data.description}}</span>
     </div>
     <ng-template #skillBlock>
+        <!-- <div class="d-flex">
+            <span class="text-dark tx-bold pd-l-10">Note: </span>
+            <p class="pd-0 mg-0 pd-l-5 text-secondary">If you have worked before two years, your proficiency will be one level down</p>
+        </div> -->
         <div class="table-responsive" *ngIf="competency_data.type=='skill';else jobCodeBlock">
             <table class="table table-bordered mg-t-10">
                 <thead>

@@ -16,7 +16,7 @@ router.post('/get_skill/:com_str_map_id', EmployeeSkillMappingController.get_ski
 
 router.post('/save_competency_mapping', EmployeeSkillMappingController.save_competency_mapping)
 
-router.get('/get_competency_mapping/:employee_id/:type', EmployeeSkillMappingController.get_competency_mapping)
+router.get('/get_competency_mapping/:employee_id/:type/:experience_type', EmployeeSkillMappingController.get_competency_mapping)
 
 router.get('/get_employee_detail/:employee_id', EmployeeSkillMappingController.get_employee_detail)
 
@@ -46,5 +46,11 @@ router.get('/get_reportee_list/:employee_id', EmployeeSkillMappingController.get
 router.post('/get_employee_mapping_list/', EmployeeSkillMappingController.get_employee_mapping_list)
 
 router.get('/get_skill_list/', EmployeeSkillMappingController.get_skill_list)
+
+router.get('/get_role/:employee_id', EmployeeSkillMappingController.get_role)
+
+router.get('/get_role_list/:filtered_value', EmployeeSkillMappingController.get_role_list)
+
+router.get('/get_filtered_employee_list/:filtered_value', EmployeeSkillMappingController.get_filtered_employee_list)
 // Export the Router
 module.exports = router;

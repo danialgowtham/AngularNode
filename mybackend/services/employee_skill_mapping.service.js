@@ -108,9 +108,14 @@ exports.save_competency_mapping = async function (save_data) {
     var ess_update_data = {};
     for (var mapping_id in save_data.updated_data) {
         ess_update_data["experience_month"] = save_data.updated_data[mapping_id]["experience"];
+        ess_update_data["gap"] = save_data.updated_data[mapping_id]["gap"];
         var experience_array = await get_proficiency(save_data.updated_data[mapping_id]["skill_id"])
         inner_loop: for (var index in experience_array[0].experience_month) {
             if (parseInt(save_data.updated_data[mapping_id]["experience"]) < parseInt(experience_array[0].experience_month[index])) {
+                // var experience_array_index = index;
+                // if (save_data.updated_data[mapping_id]["gap"] == "yes" && index != 0) {
+                //     experience_array_index = index - 1;
+                // }
                 ess_update_data["employee_proficiency"] = experience_array[0].name[index];
                 ess_update_data["manager_proficiency"] = "";
                 ess_update_data["status"] = "m";
@@ -119,7 +124,6 @@ exports.save_competency_mapping = async function (save_data) {
                     if (err) {
                         console.log(err);
                     }
-                    console.log("inside test")
                 });
                 break inner_loop;
             }
@@ -130,10 +134,15 @@ exports.save_competency_mapping = async function (save_data) {
         if (parseInt(save_data.data[key]["experience"]) > 0) {
             ess_save_data["competency_skill_mapping_id"] = save_data.data[key]["skill_id"];
             ess_save_data["experience_month"] = save_data.data[key]["experience"];
+            ess_save_data["gap"] = save_data.data[key]["gap"];
             ess_save_data["sub_sbu_id"] = save_data.data[key]["sub_sbu_id"];
             var experience_array = await get_proficiency(save_data.data[key]["skill_id"])
             inner_loop: for (var index in experience_array[0].experience_month) {
                 if (parseInt(save_data.data[key]["experience"]) < parseInt(experience_array[0].experience_month[index])) {
+                    // var experience_array_index = index;
+                    // if (save_data.data[key]["gap"] == "yes" && index != 0) {
+                    //     experience_array_index = index - 1;
+                    // }
                     ess_save_data["employee_proficiency"] = experience_array[0].name[index];
                     ess_save_data["status"] = "m";
                     ess_save_data["modified_on"] = new Date();
@@ -309,10 +318,12 @@ exports.get_competency_mapping = async function (condition) {
             {
                 $project: {
                     "_id": 1,
+                    "current_role": 1,
                     "strucure": "$company_structure.name",
                     "competency_name": "$competency_master.competency_name",
                     "skill_name": "$skill_master.skill_name",
                     "experience_month": "$employee_skill_set.experience_month",
+                    "gap": "$employee_skill_set.gap",
                     "employee_proficiency": "$employee_proficiency.proficiency_name",
                     "employee_proficiency_id": "$employee_proficiency.id",
                     "manager_proficiency": "$manager_proficiency.proficiency_name",
@@ -343,14 +354,15 @@ exports.get_proficiency = async function () {
         }
     ]);
 }
-exports.save_manger_proficiency = async function (save_data, employee_id, manager_id) {
+exports.save_manger_proficiency = async function (save_data, employee_id, manager_id, current_role) {
     await EmployeeCompetencyMaster.updateMany(
         { "employee_id": employee_id },
         {
             $set: {
                 "status": "a",
                 "approved_by": manager_id,
-                "approved_on": new Date()
+                "approved_on": new Date(),
+                "current_role": current_role
             }
         }
     )
@@ -809,5 +821,37 @@ exports.get_filtered_employee_mapping_list = async function (condition) {
             }
         ]
     );
+}
+
+exports.get_role = async function (employee_detail) {
+    return await JobMaster.aggregate([
+
+        {
+            $match: {
+                "deleted": "0",
+                "band_name": employee_detail.band_name,
+                "unit_id": employee_detail.unit_id
+            }
+        },
+        {
+            $project: {
+                "_id": 0,
+                "role": 1
+            }
+        }
+    ]);
+}
+exports.get_role_list = async function (condition) {
+    return await JobMaster.aggregate([
+
+        condition,
+        {
+            $project: {
+                "_id": 0,
+                "role": 1
+            }
+        },
+        { $limit : 15 }
+    ]);
 }
 

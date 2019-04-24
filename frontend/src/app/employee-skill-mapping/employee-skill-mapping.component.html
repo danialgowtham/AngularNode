@@ -2,7 +2,7 @@
   <div class="container mg-b-20">
     <div class="slim-pageheader">
       <ol class="breadcrumb slim-breadcrumb">
-          <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" [matTooltip]="help_text"></i>
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" [matTooltip]="help_text"></i>
       </ol>
       <h6 class="slim-pagetitle">
         <span>Add/Edit/View Skill</span>
@@ -12,7 +12,7 @@
     <div class="section-wrapper mat-elevation-z3">
       <app-employee-detail [employee_detail]="employee_detail"></app-employee-detail>
 
-      <mat-tab-group (focusChange)="change_tab($event)" animationDuration="5ms" [selectedIndex]="selectedIndex" >
+      <mat-tab-group (focusChange)="change_tab($event)" animationDuration="5ms" [selectedIndex]="selectedIndex">
         <mat-tab label="Add Skill">
           <mat-card style="color: #868ba1;">
             <div class="back_button col-lg-12 col-md-8 mg-t-30 pd-0 mg-b-30">
@@ -50,8 +50,65 @@
             </div>
           </mat-card>
         </mat-tab>
-        <mat-tab *ngIf="mapping_detail?.length > 0" label="Edit Skill">
-          <div class="mat-elevation-z8 mg-t-20  tx-12">
+        <mat-tab *ngIf="show_edit" label="Edit Skill">
+          <div class="section-wrapper pd-0 mg-t-10">
+            <table mat-table [dataSource]="mapping_detail">
+              <ng-container matColumnDef="practice">
+                <th mat-header-cell *matHeaderCellDef class=""> Practice </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element?.strucure}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="compentency">
+                <th mat-header-cell *matHeaderCellDef> Competency </th>
+                <td mat-cell *matCellDef="let element"> {{element?.competency_name}} </td>
+              </ng-container>
+              <ng-container matColumnDef="skill">
+                <th mat-header-cell *matHeaderCellDef> Skill </th>
+                <td mat-cell *matCellDef="let element"> {{element?.skill_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="experience">
+                <th mat-header-cell *matHeaderCellDef> Experience in Months </th>
+                <td mat-cell *matCellDef="let element;let index = index" class="pd-0-force pd-l-10-force pd-r-10-force">
+                  <mat-form-field>
+                    <input matInput type="text" (keypress)="keyPress($event)" #experience_month
+                      [(ngModel)]="element.experience_month" (change)="update_skill(index)" maxlength="3"
+                      value="{{element?.experience_month}}">
+                  </mat-form-field>
+                  <mat-error *ngIf="this.updated_skill_list_error[element.employee_skill_set_id]?.zero_error=='error'">
+                    Must be greater than zero
+                  </mat-error>
+                  <mat-error
+                    *ngIf="this.updated_skill_list_error[element.employee_skill_set_id]?.overall_experience=='error'">
+                    Must be less than your overall experience
+                  </mat-error>
+                  <mat-error
+                    *ngIf="this.updated_skill_list_error[element.employee_skill_set_id]?.not_a_number=='error'">
+                    Must be a Number
+                  </mat-error>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="worked_in_last_two_year">
+                <th mat-header-cell *matHeaderCellDef> Worked in Last Two Year </th>
+                <td mat-cell *matCellDef="let element;let index = index" class="pd-0-force pd-l-10-force pd-r-10-force">
+                  <mat-form-field>
+                    <mat-select placeholder="Select" #gap value="{{element?.gap}}" [(ngModel)]="element.gap"
+                      (selectionChange)="update_skill(index)">
+                      <mat-option value="Yes">Yes</mat-option>
+                      <mat-option value="No">No</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error *ngIf="this.updated_skill_list_error[element.employee_skill_set_id]?.select=='error'">
+                    Please Select Option
+                  </mat-error>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+          </div>
+          <!-- <div class="mg-t-20  tx-12">
             <div class="table-responsive">
               <table class="table table-bordered mg-b-0">
                 <thead>
@@ -60,6 +117,7 @@
                     <th>Competency</th>
                     <th>Skill</th>
                     <th>Experience in Months</th>
+                    <th>Worked in Last Two Year</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -70,23 +128,39 @@
                       <td>{{individual_skill?.skill_name}}</td>
                       <td class="pd-0-force pd-l-10-force pd-r-10-force">
                         <mat-form-field>
-                          <input matInput #validation type="text" (keypress)="keyPress($event)"
-                            (change)="update_skill(individual_skill.employee_skill_set_id,individual_skill.skill_id,$event.target.value)"
+                          <input matInput #validation type="text" (keypress)="keyPress($event)" #experience_month
+                            (change)="update_skill(individual_skill.employee_skill_set_id,individual_skill.skill_id,experience_month.value,gap.value)"
                             maxlength="3" value="{{individual_skill?.experience_month}}">
                         </mat-form-field>
-                        <mat-error *ngIf="validation.value<1">
+                        <mat-error *ngIf="this.updated_skill_list_error[individual_skill.employee_skill_set_id]?.zero_error=='error'">
                           Must be greater than zero
                         </mat-error>
-                        <mat-error *ngIf="validation.value>overall_experience_month">
+                        <mat-error *ngIf="this.updated_skill_list_error[individual_skill.employee_skill_set_id]?.overall_experience=='error'">
                           Must be less than your overall experience
+                        </mat-error>
+                        <mat-error *ngIf="this.updated_skill_list_error[individual_skill.employee_skill_set_id]?.not_a_number=='error'">
+                          Must be a Number
+                        </mat-error>
+                      </td>
+                      <td class="pd-0-force pd-l-10-force pd-r-10-force">
+                        <mat-form-field>
+                          <mat-select placeholder="Select" #gap value="{{individual_skill?.gap}}"
+                            (selectionChange)="update_skill(individual_skill.employee_skill_set_id,individual_skill.skill_id,experience_month.value,gap.value)">
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error
+                          *ngIf="this.updated_skill_list_error[individual_skill.employee_skill_set_id]?.select=='error'">
+                          Please Select Option
                         </mat-error>
                       </td>
                     </ng-container>
                   </tr>
                 </tbody>
               </table>
-            </div><!-- bd -->
-          </div>
+            </div>
+          </div> -->
         </mat-tab>
         <mat-tab *ngIf="!hide_view_skill" label="View Skill">
           <app-employee-skill-view></app-employee-skill-view>

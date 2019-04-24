@@ -7,29 +7,22 @@ var bodyParser = require('body-parser');
 
 // var index = require('./routes/index');
 var users = require('./routes/users.route');
-var employee_skill_mapping=require('./routes/employee_skill_mapping.route');
+var employee_skill_mapping = require('./routes/employee_skill_mapping.route');
 
 const cors = require('cors');
 const jwt = require('./public/javascripts/jwt');
 const errorHandler = require('./public/javascripts/error-handler');
-
-
-
-// var api = require('./routes/api.route')
-
 var bluebird = require('bluebird')
-
-
 var app = express();
 
 var mongoose = require('mongoose')
 mongoose.Promise = bluebird
-mongoose.connect('mongodb://localhost:27017/ideal_new',{useMongoClient:true})
-.then(()=> { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://localhost:27017/ideal2`)})
-.catch(()=> { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`)})
+mongoose.connect('mongodb://localhost:27017/ideal_new', { useMongoClient: true })
+  .then(() => { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://localhost:27017/ideal2`) })
+  .catch(() => { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`) })
 
 //cross domain access
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -55,12 +48,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/', index);
 app.use(jwt());
 app.use('/users', users);
-app.use('/employee_skill_mapping',employee_skill_mapping);
+app.use('/employee_skill_mapping', employee_skill_mapping);
 app.use(errorHandler);
 // app.use('/api', api);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -68,7 +61,7 @@ app.use(function(req, res, next) {
 
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

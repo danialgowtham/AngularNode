@@ -6,10 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./career-ladder-information.component.css']
 })
 export class CareerLadderInformationComponent implements OnInit {
-
+  jsonObj = JSON.parse(localStorage.currentUser);
   constructor() { }
 
   ngOnInit() {
   }
-
 }

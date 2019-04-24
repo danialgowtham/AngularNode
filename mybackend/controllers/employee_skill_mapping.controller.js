@@ -3,11 +3,9 @@
 var EmployeeSkillMappingService = require('../services/employee_skill_mapping.service')
 var http = require('http');
 const config = require('../config.json');
+const mail = require('../public/javascripts/mail');
 //for export
 // const excel = require('node-excel-export');
-
-const mail = require('../public/javascripts/mail');
-
 
 exports.get_units = async function (req, res, next) {
     EmployeeSkillMappingService.get_units(req.params.parent_id)
@@ -27,6 +25,7 @@ exports.get_skill = async function (req, res, next) {
 }
 exports.save_competency_mapping = async function (req, res, next) {
     try {
+        console.log(req.body);
         await EmployeeSkillMappingService.save_competency_mapping(req.body)
         return res.status(201).json({ status: 201, message: "Skill Set Submitted Succesfully" })
     } catch (e) {
@@ -36,16 +35,22 @@ exports.save_competency_mapping = async function (req, res, next) {
 }
 exports.get_competency_mapping = async function (req, res, next) {
     try {
-
+        var current_role = '';
         var condition = { $match: { $and: [{ deleted: false }, { 'employee_id': req.params.employee_id }] } }
         if (req.params.type != 'null') {
             condition.$match.$and.push({ 'employee_skill_set.status': req.params.type });
         }
+        if (req.params.experience_type != 'null') {
+            condition.$match.$and.push({ 'employee_skill_set.experience_month': { $ne: null } });
+        }
         var skill = await EmployeeSkillMappingService.get_competency_mapping(condition)
         getEmployeeDetail(req.params.employee_id, function (error, employee_detail) {
             if (error)
-                return res.status(400).json({ status: 201, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
-            return res.status(201).json({ status: 201, data: { skill, employee_detail }, message: "Skills Get Succesfully" })
+                return res.status(400).json({ status: 201, data: {}, message: "Something went wrong. Unable connect mysql webservices" });
+            if (skill.length > 0) {
+                current_role = skill[0]["current_role"];
+            }
+            return res.status(201).json({ status: 201, data: { skill, employee_detail, current_role }, message: "Skills Get Succesfully" })
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" })
@@ -87,7 +92,8 @@ exports.get_proficiency = async function (req, res, next) {
 }
 exports.save_manger_proficiency = async function (req, res, next) {
     try {
-        await EmployeeSkillMappingService.save_manger_proficiency(req.body, req.params.employee_id, req.params.manager_id)
+        console.log(req.body);
+        await EmployeeSkillMappingService.save_manger_proficiency(req.body.mapping_data, req.params.employee_id, req.params.manager_id, req.body.current_role)
         return res.status(201).json({ status: 201, message: "Skill Set Approved Succesfully" })
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" })
@@ -197,7 +203,6 @@ exports.get_employee_mapping_list = async function (req, res, next) {
                 if (error)
                     return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
                 var employee_list = Object.keys(employee_detail);
-                console.log(employee_list);
                 EmployeeSkillMappingService.get_employee_mapping_list(employee_list)
                     .then(employee_skill_data => {
                         employee_skill_data ? res.status(201).json({ data: { employee_skill_data, employee_detail }, message: "Employee Skill Data Get Succesfully" }) : res.status(400).json({ message: 'Something Went Wrong' })
@@ -206,8 +211,6 @@ exports.get_employee_mapping_list = async function (req, res, next) {
         } else {
             try {
                 var condition = { $match: { deleted: false } };
-                console.log(req.body);
-                console.log(req.body.skill);
                 if (req.body.employee)
                     condition.$match.employee_id = String(req.body.employee.id);
                 if (req.body.skill.length > 0) {
@@ -216,6 +219,8 @@ exports.get_employee_mapping_list = async function (req, res, next) {
                         condition.$match.$and.push({ merged_object: { "$elemMatch": { "skill_master_id": String(skill.skill_id), "manager_proficiency": String(skill.id) } } });
                     }
                 }
+                if (req.body.role)
+                    condition.$match.current_role = String(req.body.role)
                 EmployeeSkillMappingService.get_filtered_employee_mapping_list(condition)
                     .then(employee_skill_data => {
                         employee_skill_data ? res.status(201).json({ status: 201, data: { employee_skill_data }, message: "Employee Skill Data Get Succesfully" }) : res.status(400).json({ message: 'Something Went Wrong' })
@@ -235,8 +240,6 @@ exports.get_skill_list = async function (req, res, next) {
         var skill_list = await EmployeeSkillMappingService.get_skill_list();
         var proficiency_list = await EmployeeSkillMappingService.get_proficiency();
         var skill_proficiency_array = [];
-        console.log(proficiency_list)
-        // console.log(skill_list)
         for (var skill of skill_list) {
             for (var proficiency of proficiency_list) {
                 if (proficiency.proficiency_name != 'Not Applicable')
@@ -248,11 +251,64 @@ exports.get_skill_list = async function (req, res, next) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" })
     }
 }
+exports.get_role = async function (req, res, next) {
+    try {
+        var employee_id = req.params.employee_id;
+        getEmployeeBandAndUnitDetail(employee_id, function (error, employee_detail) {
+            if (error)
+                return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
+            EmployeeSkillMappingService.get_role(employee_detail)
+                .then(role_list => {
+                    role_list ? res.status(201).json({ data: { role_list }, message: "Employee Role Data Get Succesfully" }) : res.status(400).json({ message: 'Something Went Wrong' })
+                });
+        })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+exports.get_role_list = async function (req, res, next) {
+    try {
+        var condition = { $match: { $and: [{ deleted: "0" }] } }
+        req.params.filtered_value ? condition.$match.$and.push({ 'role': { $regex: req.params.filtered_value, $options: "i" } }) : '';
+        console.log(condition);
+        var role_list = await EmployeeSkillMappingService.get_role_list(condition)
+        return res.status(201).json({ data: { role_list }, message: "Employee Role Data Get Succesfully" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+exports.get_filtered_employee_list = async function (req, res, next) {
+    getFliteredEmployeeList(req.params.filtered_value, function (error, response) {
+        if (error)
+            return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
+        return res.status(201).json({ status: 201, data: response, message: "Employee List Got Succesfully" })
+    })
+}
 
 
 function getEmployeeDetail(employee_id, callback) {
     var return_data;
     var reqGet = http.request(config.webservice_url + "getEmployeeDetail/" + employee_id, function (res) {
+        res.on('data', function (data) {
+            try {
+                return_data = JSON.parse(data);
+                return callback(null, return_data);
+            } catch (err) {
+                console.error(err)
+            }
+        });
+    });
+    reqGet.end();
+    reqGet.on('error', function (e) {
+        console.log("inside error");
+        console.error(e);
+    });
+
+}
+function getEmployeeBandAndUnitDetail(employee_id, callback) {
+    var return_data;
+    console.log("Inside" + employee_id);
+    var reqGet = http.request(config.webservice_url + "getEmployeeBandAndUnitDetail/" + employee_id, function (res) {
         res.on('data', function (data) {
             try {
                 return_data = JSON.parse(data);
@@ -338,35 +394,33 @@ function getEmployeeList(callback) {
     });
 
 }
+function getFliteredEmployeeList(filtered_value, callback) {
+    var return_data;
+    var reqGet = http.request(config.webservice_url + "getFliteredEmployeeList/"+filtered_value, function (res) {
+        var buffers = [];
+        res
+            .on('data', function (chunk) {
+                buffers.push(chunk)
 
-function send_mail(type) {
-    var subject = '';
-    var body = '';
-    if (type == 'create') {
-        subject = "Add Training Calander";
-        body = "Training calander created successfully!!!";
-    } else if (type == 'update') {
-        subject = "Update Training Calander";
-        body = "Training calander modified successfully!!!";
+            })
+            .on('end', function () {
+                try {
+                    return_data = JSON.parse(Buffer.concat(buffers).toString());
+                    return callback(null, return_data);
+                } catch (err) {
+                    console.error(err)
+                }
+            })
 
-    }
-
-
-    var mailOptions = {
-        from: 'gowdham.kasi@hindujatech.com',
-        to: 'gowdham.kasi@hindujatech.com',
-        subject: subject,
-        text: body
-    };
-
-    mail.transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+    });
+    reqGet.end();
+    reqGet.on('error', function (e) {
+        console.log("inside error");
+        console.error(e);
     });
 
 }
+
+
 
 

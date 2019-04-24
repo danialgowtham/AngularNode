@@ -31,6 +31,7 @@
     "nodemon": "^1.18.4",
     "nstall": "^0.2.0",
     "rand-token": "^0.4.0",
+    "socket.io": "^2.2.0",
     "update-mongo": "0.0.4"
   }
 }

@@ -15,6 +15,7 @@ export class EmployeeSkillViewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   disable_popup: Boolean = false;
+  current_role: any;
   displayedColumns: string[] = ['strucure', 'competency_name', 'skill_name', 'experience_month', 'employee_proficiency', 'manager_proficiency'];
   constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, private router: Router) {
 
@@ -32,13 +33,14 @@ export class EmployeeSkillViewComponent implements OnInit {
     if (this.router.url == "/employee_skill_view") {
       this.disable_popup = true
     }
-    this.skill_service.getCompetencyMapping(employee_id, null)
+    this.skill_service.getCompetencyMapping(employee_id, null, null)
       .subscribe(
         response => {
           this.mapping_data = new MatTableDataSource(response["data"]["skill"]);
           this.employee_detail = response["data"]["employee_detail"];
           this.mapping_data.paginator = this.paginator;
           this.mapping_data.sort = this.sort;
+          this.current_role=response["data"]["skill"][0]["current_role"]
         }
       );
   }

@@ -5,10 +5,11 @@ var http = require('http');
 module.exports = jwt;
 function jwt() {
     const secret = config.secret;
-    return expressJwt({ secret}).unless({
+    return expressJwt({ secret }).unless({
         path: [
             // public routes that don't require authentication
-            '/users/authenticateUser'
+            '/users/authenticateUser',
+            '/socket.io/'
         ]
     });
 }
@@ -19,7 +20,7 @@ async function isRevoked(req, payload, done) {
             user_detail = JSON.parse(data);
             if (user_detail) {
                 return done(true);
-            }else{
+            } else {
                 done();
             }
         });

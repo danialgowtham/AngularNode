@@ -1,9 +1,12 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeSkillMappingService } from '../services/employee_skill_mapping.service';
-import { MatDialog } from '@angular/material';
 import { PopupModalComponent } from '../popup-modal/popup-modal';
-import { LoaderService } from '../shared/loader.subject'
+import { LoaderService } from '../shared/loader.subject';
+import { TopmenuService } from "../shared/top-menu.subject";
+import { PushNotificationService } from "../services/push_notification.service";
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+
 
 @Component({
   selector: 'app-employee-skill-mapping',
@@ -27,21 +30,30 @@ export class EmployeeSkillMappingComponent implements OnInit {
   @Output() already_selected_skill = new Array();
   @Output() rowList: Array<{ id: Number }> = [];
   @Output() selected_competency = new Array();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   overall_competecny_list = new Map();
   submit_data = new Array();
-  constructor(private loader_subject: LoaderService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
+  show_edit: Boolean = false;
+  temp_skill = {};
+  displayedColumns: string[] = ['practice', 'compentency', 'skill', 'experience', 'worked_in_last_two_year'];
+  constructor(private push_notification_service: PushNotificationService, private topmenu_service: TopmenuService, private loader_subject: LoaderService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
 
   ngOnInit() {
+    this.topmenu_service.setActiveTab("employee");
     this.loader_subject.setLoader(true);
     this.view_skill_show();
     this.onAddNew();
     var jsonObj = JSON.parse(localStorage.currentUser);
-    this.skill_service.getCompetencyMapping(jsonObj.id, "a")
+    this.skill_service.getCompetencyMapping(jsonObj.id, "a", "true")
       .subscribe(
         response => {
           this.employee_detail = response["data"]["employee_detail"];
           this.overall_experience_month = response["data"]["employee_detail"]["overall_experience_month"];
-          this.mapping_detail = response["data"]["skill"];
+          this.mapping_detail = new MatTableDataSource(response["data"]["skill"]);
+          setTimeout(() => this.mapping_detail.paginator = this.paginator);
+          if (response["data"]["skill"].length > 0) {
+            this.show_edit = true;
+          }
         }
       );
   }
@@ -51,7 +63,7 @@ export class EmployeeSkillMappingComponent implements OnInit {
 
   view_skill_show() {
     var jsonObj = JSON.parse(localStorage.currentUser);
-    this.skill_service.getCompetencyMapping(jsonObj.id, null)
+    this.skill_service.getCompetencyMapping(jsonObj.id, null, null)
       .subscribe(
         response => {
           if (response["data"]["skill"].length > 0) {
@@ -62,7 +74,7 @@ export class EmployeeSkillMappingComponent implements OnInit {
           }
           for (let skill_object of response["data"]["skill"]) {
             this.already_selected_skill.push(skill_object.skill_id)
-            this.approved_skill_list.set(skill_object.employee_skill_set_id, skill_object.experience_month);
+            this.approved_skill_list.set(skill_object.employee_skill_set_id, { experience_month: skill_object.experience_month, gap: skill_object.gap });
           }
         }
       );
@@ -109,7 +121,7 @@ export class EmployeeSkillMappingComponent implements OnInit {
     this.hide_submit_btn = true;
     for (let com_list of this.overall_competecny_list.values()) {
       for (let [key, value] of com_list.skill_list) {
-        this.submit_data.push({ "sub_sbu_id": com_list.sub_sbu, "skill_id": key, "experience": value })
+        this.submit_data.push({ "sub_sbu_id": com_list.sub_sbu, "skill_id": key, "experience": value.experience_month, "gap": value.gap })
       }
     }
     var jsonObj = JSON.parse(localStorage.currentUser);
@@ -118,6 +130,7 @@ export class EmployeeSkillMappingComponent implements OnInit {
     this.skill_service.saveCompetencyMapping(data)
       .subscribe(
         response => {
+          this.push_notification_service.emitEventOnEmployeeSkillSubmit({ "show_employee_id": jsonObj.manager, "first_name": jsonObj.first_name });
           this.router.navigateByUrl('/employee_skill_view', { skipLocationChange: true }).then(() => {
             this.router.navigate(["employee_skill"]);
             this.loader_subject.setLoader(false)
@@ -132,17 +145,25 @@ export class EmployeeSkillMappingComponent implements OnInit {
       event.preventDefault();
     }
   }
-  update_skill(master_id, skill_id, exp_month) {
-    if (this.updated_skill_list[master_id]) {
-      delete this.updated_skill_list[master_id]
-    }
+  update_skill(index) {
+    console.log(index);
+    console.log(this.mapping_detail.data[index])
+    var master_id = this.mapping_detail.data[index]["employee_skill_set_id"];
     if (this.updated_skill_list_error[master_id]) {
       delete this.updated_skill_list_error[master_id]
     }
-    if (Number(exp_month) == 0 || Number(exp_month) > this.overall_experience_month)
-      this.updated_skill_list_error[master_id] = "error";
-    else if (this.approved_skill_list.get(master_id) != exp_month)
-      this.updated_skill_list[master_id] = { "skill_id": skill_id, "experience": exp_month };
+    if (Number.isNaN(Number(this.mapping_detail.data[index]["experience_month"])))
+      this.updated_skill_list_error[master_id] = { "not_a_number": "error" };
+    else if (Number(this.mapping_detail.data[index]["experience_month"]) == 0)
+      this.updated_skill_list_error[master_id] = { "zero_error": "error" };
+    else if (Number(this.mapping_detail.data[index]["experience_month"]) > this.overall_experience_month)
+      this.updated_skill_list_error[master_id] = { "overall_experience": "error" };
+
+    if (!this.mapping_detail.data[index]["gap"])
+      this.updated_skill_list_error[master_id] = { "select": "error" };
+
+    if (this.mapping_detail.data[index]["experience_month"] && this.mapping_detail.data[index]["gap"] && this.approved_skill_list.get(master_id).experience_month != this.mapping_detail.data[index]["experience_month"] || this.approved_skill_list.get(master_id).gap != this.mapping_detail.data[index]["gap"])
+      this.updated_skill_list[master_id] = { "skill_id": this.mapping_detail.data[index]["skill_id"], "experience": this.mapping_detail.data[index]["experience_month"], "gap": this.mapping_detail.data[index]["gap"] };
 
   }
   check_disable() {

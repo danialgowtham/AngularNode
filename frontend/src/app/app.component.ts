@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 import { AuthenticationService } from './services/authentication.service';
-import { LoaderService } from "./shared/loader.subject"
+import { LoaderService } from "./shared/loader.subject";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,9 @@ import { LoaderService } from "./shared/loader.subject"
 
 export class AppComponent {
   loader: Boolean;
-  constructor(private loader_subject: LoaderService, private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) { }
+
+  constructor(private loader_subject: LoaderService, private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) {
+  }
   ngOnInit() {
     //Start watching for user inactivity.
     this.userIdle.startWatching();
@@ -28,6 +30,11 @@ export class AppComponent {
     });
     this.loader_subject.getLoader().subscribe(loader => { this.loader = loader });
   }
+
+  // close_toaster(toast) {
+  //   console.log(toast);
+  //   this.router.navigate(['/' + toast.data.view]);
+  // }
   stop() {
     this.userIdle.stopTimer();
   }
@@ -50,4 +57,5 @@ export class AppComponent {
       return false;
     }
   }
+
 }

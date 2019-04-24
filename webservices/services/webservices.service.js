@@ -50,7 +50,7 @@ exports.getEmployeeDetail = async function (employee_id, result) {
                         try {
                             start_date = res1[0]['start_date']
                             console.log("start_date");
-                            console.log( res1);
+                            console.log(res1);
                         } catch (e) {
                             console.log(e)
                         }
@@ -68,8 +68,8 @@ exports.getEmployeeDetail = async function (employee_id, result) {
                         try {
                             if (res2.length == 0)
                                 start_date = response["joined_date"];
-                               
-                                console.log(response["joined_date"]);
+
+                            console.log(response["joined_date"]);
                             response["htl_experience"] = getYearMonth(response["joined_date"]);
                             response["overall_experience"] = getYearMonth(start_date);
                             response["overall_experience_month"] = getOverallMonth(start_date);
@@ -267,6 +267,88 @@ exports.getEmployeeList = async function (result) {
                 result(error, null);
             }
             connection.query(employee_list_query, function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    try {
+                        if (res.length != 0) {
+                            var employee_detail = {};
+                            for (var emp_data of res) {
+                                employee_detail[emp_data.id] = emp_data;
+                            }
+                            result(null, employee_detail);
+                        } else {
+                            result(null, {});
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+exports.getEmployeeBandAndUnitDetail = async function (employee_id, result) {
+    console.log(employee_id);
+    var employee_detail = "SELECT employees.structure_name,bands.name as band_name FROM employees INNER JOIN bands ON bands.id=band_id WHERE employees.id=? limit 1";
+    var response_object = {};
+    try {
+        createConnection(function (error, connection) {
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(employee_detail, [employee_id], function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    try {
+                        if (res.length != 0) {
+                            response_object["band_name"] = res[0]["band_name"];
+                            if (res[0]["structure_name"] == 2) {
+                                response_object["unit_id"] = "1";
+                            } else if (res[0]["structure_name"] == 5) {
+                                response_object["unit_id"] = "2";
+                            } else {
+                                response_object["unit_id"] = "3";
+                            }
+                            result(null, response_object);
+                        } else {
+                            result(null, {});
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+exports.getFliteredEmployeeList = async function (filtered_value, result) {
+    var filtered_value = "%" + filtered_value + "%";
+    var employee_list_query = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as employee_name, bands.name as band_name,company_structures.name as unit FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name     WHERE (employee_number like ? or first_name like ? or last_name like ? ) and employment_status NOT IN ("r","t","b","q","o") limit 15';
+    try {
+        createConnection(function (error, connection) {
+            console.log("inside Employee List");
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(employee_list_query, [filtered_value, filtered_value, filtered_value], function (err, res) {
                 if (err) {
                     console.log("error: ", err);
                     result(err, null);

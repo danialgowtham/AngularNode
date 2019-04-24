@@ -12,11 +12,24 @@
         <app-employee-detail *ngIf="disable_popup" [employee_detail]="employee_detail"></app-employee-detail>
       </div>
       <div class="section-wrapper pd-0">
-        <table mat-table [dataSource]="mapping_data"  matSort>
+        <div class="d-flex mg-20 mg-b-0-force" *ngIf="current_role">
+          <label class="tx-14 tx-bold tx-dark">Current Role : </label>
+          <span class="tx-14 mg-l-5">{{current_role}} </span>
+        </div>
+        <hr class="mg-b-0">
+        <table mat-table [dataSource]="mapping_data" matSort>
 
           <ng-container matColumnDef="strucure">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Practice </th>
-            <td mat-cell *matCellDef="let element"> {{element.strucure}} </td>
+            <td mat-cell *matCellDef="let element">
+
+              <span *ngIf="element?.strucure ; else show_structure">
+                {{element.strucure}}
+              </span>
+              <ng-template #show_structure>
+                <span>{{employee_detail.practice}}</span>
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="competency_name">
@@ -37,7 +50,7 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="experience_month" >
+          <ng-container matColumnDef="experience_month">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Experience in Months </th>
             <td mat-cell *matCellDef="let element" class="pd-l-20-force">
               <span *ngIf="element.experience_month;else NA">

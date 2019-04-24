@@ -7,3 +7,23 @@
     width: 35px !important;
     height: 35px !important;
 }
+.mat-badge-warn .mat-badge-content{
+    background: #e59822 !important;
+}
+#dropdown-menu-custom{
+    position: absolute;
+    transform: translate3d(-295px, -12px, 0px);
+    top: 0px;
+    left: 0px;
+    will-change: transform;
+    max-height: 350px;
+    min-height: 150px;
+}
+.dropdown-list{
+    max-height: 306px;
+    overflow-y: auto;
+}
+
+  ::ng-deep .mat-badge-small .mat-badge-content{
+    font-size: 10px;
+  }

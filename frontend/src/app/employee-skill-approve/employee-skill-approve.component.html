@@ -7,53 +7,77 @@
         <span>Approve Skill</span>
       </h6>
     </div><!-- slim-pageheader -->
-    <div class="section-wrapper">
+    <div class="section-wrapper mat-elevation-z3">
       <app-employee-detail [employee_detail]="employee_detail"></app-employee-detail>
-      <div class="mat-elevation-z8 mg-t-20">
-        <div class="table-responsive">
-          <table class="table table-bordered mg-b-0">
-            <thead>
-              <tr>
-                <th>Practice</th>
-                <th>Competency</th>
-                <th>Skill</th>
-                <th>Experience in Months</th>
-                <th>Standard Proficiency</th>
-                <th>Manager Assessment</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let skill_set of mapping_data">
-                <td>{{skill_set.strucure}}</td>
-                <td>{{skill_set.competency_name}}</td>
-                <td>{{skill_set.skill_name}}</td>
-                <td>{{skill_set.experience_month}}</td>
-                <td>{{skill_set.employee_proficiency}}</td>
-                <td class="pd-0-force pd-l-10-force pd-r-10-force">
-                  <span *ngIf="skill_set?.manager_proficiency; else select_proficiency">
-                    {{skill_set.manager_proficiency}}
-                  </span>
-                  <ng-template #select_proficiency>
-                    <mat-form-field>
-                      <mat-select placeholder="Select Proficiency" [(value)]="skill_set.employee_proficiency_id"
-                        (selectionChange)="update_approve_list(skill_set.employee_skill_set_id,$event.value)">
-                        <ng-container *ngFor="let proficiency of proficiencies;index as index">
-                          <mat-option
-                            *ngIf="(!skill_set.experience_month && !skill_set.strucure)|| (skill_set.experience_month && skill_set.strucure && index!=proficiencies.length-1)"
-                            [value]="proficiency?.id">
-                            {{proficiency.proficiency_name}}
-                          </mat-option>
-                        </ng-container>
-                      </mat-select>
-                    </mat-form-field>
-                  </ng-template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div><!-- bd -->
-        <div class="col-lg-12 mg-t-10 pd-b-10 text-center">
-          <button [disabled]="check_disable()" mat-raised-button color="primary" (click)="submit_data()">Submit</button>
+      <div class="section-wrapper pd-20">
+        <div class="form-layout form-layout-5">
+          <div class="row">
+            <label class="form-control-label pd-l-20 pd-r-10 tx-bold tx-dark">Choose Current Role:</label>
+            <div class="col-sm-4 mg-t-10 mg-sm-t-0 pd-l-0">
+              <mat-form-field>
+                <mat-select #role placeholder="Select Role" [(value)]="current_role">
+                  <ng-container *ngFor="let role of roles">
+                    <mat-option [value]="role.role">
+                      {{role.role}}
+                    </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <mat-error *ngIf="!role.value && role_error">
+                Please Select Current Role
+              </mat-error>
+            </div>
+          </div><!-- row -->
+        </div>
+        <div class="mg-t-20">
+          <div class="table-responsive">
+            <table class="table table-bordered mg-b-0">
+              <thead>
+                <tr>
+                  <th>Practice</th>
+                  <th>Competency</th>
+                  <th>Skill</th>
+                  <th>Experience in Months</th>
+                  <th>WORKED IN LAST TWO YEAR</th>
+                  <th>Standard Proficiency</th>
+                  <th>Manager Assessment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let skill_set of mapping_data">
+                  <td>{{skill_set.strucure}}</td>
+                  <td>{{skill_set.competency_name}}</td>
+                  <td>{{skill_set.skill_name}}</td>
+                  <td>{{skill_set.experience_month}}</td>
+                  <td>{{skill_set?.gap}}</td>
+                  <td>{{skill_set.employee_proficiency}}</td>
+                  <td class="pd-0-force pd-l-10-force pd-r-10-force">
+                    <span *ngIf="skill_set?.manager_proficiency; else select_proficiency">
+                      {{skill_set.manager_proficiency}}
+                    </span>
+                    <ng-template #select_proficiency>
+                      <mat-form-field>
+                        <mat-select placeholder="Select Proficiency" [(value)]="skill_set.employee_proficiency_id"
+                          (selectionChange)="update_approve_list(skill_set.employee_skill_set_id,$event.value)">
+                          <ng-container *ngFor="let proficiency of proficiencies;index as index">
+                            <mat-option
+                              *ngIf="(!skill_set.experience_month && !skill_set.strucure)|| (skill_set.experience_month && skill_set.strucure && index!=proficiencies.length-1)"
+                              [value]="proficiency?.id">
+                              {{proficiency.proficiency_name}}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                    </ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div><!-- bd -->
+          <div class="col-lg-12 mg-t-10 pd-b-10 text-center">
+            <button [disabled]="check_disable()" mat-raised-button color="primary"
+              (click)="submit_data(role.value)">Submit</button>
+          </div>
         </div>
       </div>
     </div>

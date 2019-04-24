@@ -2,3 +2,6 @@
     /* background-image: linear-gradient(to right, #3993e8 0%, #7575b5 100%); */
     background-image: linear-gradient(to right, #001635 0%, #ec9c21 100%);
 }
+.border-5{
+    border:  5px solid #dee2e6 !important;
+}
