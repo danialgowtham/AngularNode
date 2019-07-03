@@ -1,0 +1,53 @@
+<div class="slim-mainpanel">
+    <div class="container mg-b-20">
+      <div class="slim-pageheader">
+        <ol class="breadcrumb slim-breadcrumb">
+          <!-- <span style="color:#1b84e7" class="cursor-pointer" (click)="open_job_code_description_popup()">Job
+              Code Description <i class="fa fa-eye mg-l-1"></i></span> -->
+          <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force"
+            matTooltip="List of job which you have been applied"></i>
+        </ol>
+        <h6 class="slim-pagetitle">
+          <span>Apllied Job List</span>
+        </h6>
+      </div><!-- slim-pageheader -->
+      <div class="section-wrapper mat-elevation-z3 pd-20">
+        <div class="filter_class">
+          <mat-form-field appearance="outline">
+            <mat-label>Search Job Post</mat-label>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="job_detail" class="section-wrapper">
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Role </th>
+            <td mat-cell *matCellDef="let element">
+              <span> {{element.role}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="applied_on">
+            <th mat-header-cell *matHeaderCellDef> Applied On </th>
+            <td mat-cell *matCellDef="let element"> {{element?.applied_on[0]['applied_on']  | date : "dd-MM-yyyy"}} </td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element?.applied_on[0]['status']}} </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
+              <td class="text-center" mat-cell *matCellDef="let element">
+                <div class="table_row cursor-pointer">
+                  <mat-icon (click)="openDialog(element?.id,element?._id)">remove_red_eye</mat-icon>
+                </div>
+              </td>
+            </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator  class="border border-top-0" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  
+  <!--  (optionSelected)="selectedEmployee($event.option.value)" -->

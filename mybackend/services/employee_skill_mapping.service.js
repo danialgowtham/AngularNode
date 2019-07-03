@@ -8,6 +8,7 @@ var ProficiencyName = require('../models/proficiency_names.model');
 var JobMaster = require('../models/job_masters.model');
 var SkillMaster = require('../models/skill_masters.model');
 var FixedCompetency = require('../models/fixed_competencies.model');
+var JobPost = require('../models/job_posts.model');
 ObjectId = require('mongoose').Types.ObjectId;
 exports.get_units = async function (parent_id) {
     console.log(parent_id)
@@ -478,16 +479,32 @@ exports.get_employee_mapping_list = async function (employees_id) {
     ]);
 }
 
-exports.get_job_detail = async function (job_master_id) {
-
+exports.get_job_detail = async function (job_master_id, job_post_id) {
+    var condition = { $match: { $and: [{ deleted: "0" }, { 'id': job_master_id }] } }
+    if (job_post_id) {
+        var disselected_job_competency_ids = await JobPost.aggregate([
+            {
+                $match: {
+                    "deleted": false,
+                    "_id": ObjectId(job_post_id)
+                }
+            },
+            {
+                $project: {
+                    "_id": 0,
+                    "disselected_job_competency": 1,
+                }
+            }
+        ]);
+        var not_in_ids = [];
+        disselected_job_competency_ids[0].disselected_job_competency.forEach(value => {
+            not_in_ids.push(ObjectId(value));
+        });
+        condition.$match.$and.push({ 'job_competency_mapping._id': { $nin: not_in_ids } });
+    }
     return await JobMaster.aggregate(
         [
             {
-                $match: {
-                    "id": job_master_id,
-                    "deleted": "0"
-                }
-            }, {
                 $lookup: {
                     from: "job_competency_mappings",
                     localField: "id",
@@ -499,7 +516,9 @@ exports.get_job_detail = async function (job_master_id) {
                 $unwind: {
                     path: "$job_competency_mapping",
                 }
-            }, {
+            },
+            condition,
+            {
                 $lookup: {
                     from: 'competency_dictionary',
                     let: {
@@ -851,7 +870,230 @@ exports.get_role_list = async function (condition) {
                 "role": 1
             }
         },
-        { $limit : 15 }
+        { $limit: 15 }
     ]);
 }
 
+
+exports.create_new_internal_job = async function (save_data, created_by) {
+    if (!save_data.min_fitment_score)
+        save_data.min_fitment_score = "0";
+    var save_object = { "created_by": created_by, "status": "Open", "created_on": new Date(), "job_code_id": save_data.job_code, "disselected_job_competency": save_data.disseleceted_job_detail_object, "min_fitment_score": save_data.min_fitment_score };
+    job_post_save_object = new JobPost(save_object);
+    return job_post_save_object.save();
+
+}
+
+exports.get_internal_job = async function () {
+    return await JobPost.aggregate([
+        {
+            $match: {
+                "deleted": false,
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'job_masters',
+                'localField': 'job_code_id',
+                'foreignField': 'id',
+                'as': 'job_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_master"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "job_master.unit_id",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": "$job_master.role",
+                "band_name": "$job_master.band_name",
+                "unit_name": "$company_structure.name",
+                "created_by": "$created_by",
+                "status": "$status",
+                "created_on": "$created_on",
+            }
+        },
+
+    ]);
+}
+
+exports.get_internal_job_detail = async function (job_id) {
+    var job_post_detail = await JobPost.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "_id": ObjectId(job_id)
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'job_masters',
+                'localField': 'job_code_id',
+                'foreignField': 'id',
+                'as': 'job_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_master"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "job_master.unit_id",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": "$job_master.role",
+                "band_name": "$job_master.band_name",
+                "job_code": "$job_master.job_code",
+                "job_master_id": "$job_master.id",
+                "unit_name": "$company_structure.name",
+                "created_by": "$created_by",
+                "status": "$status",
+                "min_fitment_score": "$min_fitment_score",
+                "created_on": "$created_on",
+                "applied_employees": "$applied_employees"
+            }
+        },
+
+    ]);
+    var job_detail = await this.get_job_detail(job_post_detail[0].job_master_id, job_id);
+    return { job_detail, job_post_detail }
+}
+
+exports.update_internal_job_detail = async function (job_post_id, status) {
+    return await JobPost.findByIdAndUpdate(job_post_id, { $set: { "status": status } }, { upsert: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+}
+
+
+exports.get_open_internal_jobs = async function () {
+    return await JobPost.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "status": "Open"
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'job_masters',
+                'localField': 'job_code_id',
+                'foreignField': 'id',
+                'as': 'job_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_master"
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": "$job_master.role",
+                "id": "$job_master.id",
+                "created_on": "$created_on",
+            }
+        },
+
+    ])
+        .sort({ created_on: 'desc' });
+}
+
+
+exports.apply_job = async function (job_post_id, employee_id) {
+
+    return await JobPost.findByIdAndUpdate(job_post_id, {
+        $push: {
+            applied_employees: {
+                "employee_id": employee_id,
+                "applied_on": new Date(),
+                "status": "Applied"
+            }
+        }
+    }, { upsert: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+}
+
+
+exports.check_apply_job = async function (job_post_id, employee_id,fitment_score) {
+    var already_applied_flag = await JobPost.find({ deleted: false, "_id": ObjectId(job_post_id), 'applied_employees.employee_id': employee_id });
+    var min_fitment_score_flag = await JobPost.find({ deleted: false, "_id": ObjectId(job_post_id), 'min_fitment_score': { $gte: fitment_score } });;
+
+    return { already_applied_flag, min_fitment_score_flag }
+}
+
+
+exports.get_applied_job_post = async function (employee_id) {
+    return await JobPost.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "applied_employees.employee_id": employee_id
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'job_masters',
+                'localField': 'job_code_id',
+                'foreignField': 'id',
+                'as': 'job_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_master"
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": "$job_master.role",
+                "id": "$job_master.id",
+                "applied_on": {
+                    $filter: {
+                        input: "$applied_employees",
+                        as: "applied_employee",
+                        cond: { $eq: ["$$applied_employee.employee_id", employee_id] }
+                    }
+                }
+            }
+        },
+
+    ]);
+}

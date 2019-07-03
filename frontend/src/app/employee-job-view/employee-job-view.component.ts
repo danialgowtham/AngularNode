@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Inject, Output } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 
 @Component({
   selector: 'app-employee-job-view',
@@ -11,15 +10,18 @@ import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.
 export class EmployeeJobViewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() mapping_detail: any;
+  @Input() view_type: any;
+  @Input() no_popup: any;
   mapping_data: any;
   job_fitment_score: Number = 0;
   employee_search: Boolean = false;
+  disable_popup: Boolean = false;
   displayedColumns: string[] = ['competency_name', 'skill_name', 'skill_proficiency_name', 'employee_proficiency', 'color_code'];
-  constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, private router: Router) { }
+  constructor(public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
-
-    if (this.router.url == "/employee_job_mapping") {
+    var url = this.router.url.split(";");
+    if (this.view_type == "employee") {
       this.employee_search = true;
       var updated_mapping_data = this.mapping_detail["mapping_data"]["job_detail"]
     } else {
@@ -28,6 +30,10 @@ export class EmployeeJobViewComponent implements OnInit {
         value["checked"] = true;
         return value;
       });
+    }
+
+    if (this.no_popup) {
+      this.disable_popup = true;
     }
     this.job_fitment_score = this.mapping_detail["mapping_data"]["fitment_score_percentage"];
     this.mapping_data = new MatTableDataSource(updated_mapping_data);
@@ -56,7 +62,7 @@ export class EmployeeJobViewComponent implements OnInit {
 
   open_competency_popup(definition, description, proficiency_name) {
     this.dialog.closeAll();
-    this.dialog.open(Popup, { closeOnNavigation: true, data: { definition, description, proficiency_name, type: "competency" }, hasBackdrop: false });
+    this.dialog.open(Popup, { closeOnNavigation: true, data: { definition, description, proficiency_name, type: "competency" }, hasBackdrop: true,disableClose: true });
   }
   ngOnDestroy() {
     this.dialog.closeAll();

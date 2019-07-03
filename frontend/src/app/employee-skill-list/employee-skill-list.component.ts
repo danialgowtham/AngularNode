@@ -31,7 +31,7 @@ export class EmployeeSkillListComponent implements OnInit {
       );
   }
   openEmployeeSkill(employee_id) {
-    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation: true, width: '90vw', height: '80vh', maxWidth: '90vw', maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: false });
+    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation: true, width: '90vw', height: '80vh', maxWidth: '90vw', maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: true,disableClose: true });
   }
 
   redirectPage(page_link, employee_id) {

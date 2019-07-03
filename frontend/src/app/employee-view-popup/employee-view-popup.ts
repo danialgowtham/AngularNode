@@ -1,4 +1,4 @@
-import { Component, Inject, Output,Renderer2 } from '@angular/core';
+import { Component, Inject, Output} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: 'employee-view-popup',

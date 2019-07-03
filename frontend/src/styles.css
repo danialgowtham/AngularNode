@@ -4,5 +4,7 @@
 @import url('assets/lib/Ionicons//css/ionicons.css');
 @import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
 @import url('../node_modules/angular5-toaster/src/toaster.css');
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
 
 

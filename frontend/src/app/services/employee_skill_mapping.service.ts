@@ -45,8 +45,8 @@ export class EmployeeSkillMappingService {
     getJobCodes(role_name, band_name) {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_job_codes/` + role_name + "/" + band_name);
     }
-    getJobDetail(job_master_id, employee_id) {
-        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_job_detail/` + job_master_id + "/" + employee_id);
+    getJobDetail(job_master_id, employee_id, type) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_job_detail/` + job_master_id + "/" + employee_id + "/" + type);
     }
     getproficiencyDecription(mapping_id) {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_proficiency_list/` + mapping_id);
@@ -71,6 +71,30 @@ export class EmployeeSkillMappingService {
     }
     getFilteredEmployeeList(filtered_value) {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/get_filtered_employee_list/` + filtered_value);
+    }
+    creatNewInternalJob(mapping_data, employee_id) {
+        return this.http.post(BACK_END_URL + `employee_skill_mapping/create_new_internal_job/` + employee_id, mapping_data);
+    }
+    getJobPost() {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_internal_job/`);
+    }
+    getJobPosts() {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_open_internal_jobs/`);
+    }
+    getJobPostDetail(job_id) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_internal_job_detail/` + job_id);
+    }
+    updateJobPostDetail(job_post_id, status) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/update_internal_job_detail/` + job_post_id + "/" + status);
+    }
+    applyJob(job_post_id, employee_id) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/apply_job/` + job_post_id + "/" + employee_id);
+    }
+    applyJobCheck(job_post_id, employee_id, employee_fitment_score) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/check_apply_job/` + job_post_id + "/" + employee_id + "/" + employee_fitment_score);
+    }
+    getAppliedJobPost(employee_id) {
+        return this.http.get(BACK_END_URL + `employee_skill_mapping/get_applied_job_post/` + employee_id);
     }
 
 }

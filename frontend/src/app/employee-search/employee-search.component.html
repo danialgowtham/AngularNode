@@ -38,12 +38,14 @@
             </div>
             <div class="col-lg-4 pd-l-10">
               <mat-form-field class="col-lg-12">
-                <mat-select  formControlName="skill" placeholder="Select Skill" id="skill_id" [multiple]="true">
+                <mat-select formControlName="skill" placeholder="Select Skill" id="skill_id" [multiple]="true">
                   <ngx-mat-select-search formControlName="skill_search" placeholderLabel="Search Skill"
                     noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let skill of filtered_skill_list" [value]="skill">
-                    {{skill?.skill_name}} ({{skill?.proficiency_name}})
-                  </mat-option>
+                    <mat-option *ngFor="let skill of filtered_skill_list" [value]="skill">
+                      {{skill?.skill_name}} ({{skill?.proficiency_name}})
+                    </mat-option>
+                        <!-- <cdk-virtual-scroll-viewport itemSize="20" class="example-viewport"> -->
+                  <!-- </cdk-virtual-scroll-viewport> -->
                 </mat-select>
               </mat-form-field>
             </div>

@@ -37,7 +37,9 @@ router.get('/get_job_codes/:role_name/:band_name', EmployeeSkillMappingControlle
 // router.post('/get_job_detail/:id/:employee_id', function (req, res) {
 //     EmployeeSkillMappingController.get_job_detail
 // });
-router.get('/get_job_detail/:id/:employee_id', EmployeeSkillMappingController.get_job_detail);
+router.get('/get_job_detail/:id/:employee_id/:job_post_id', EmployeeSkillMappingController.get_job_detail);
+
+router.get('/get_job_detail/:id/:employee_id/', EmployeeSkillMappingController.get_job_detail);
 
 router.get('/get_employee_list/', EmployeeSkillMappingController.get_employee_list)
 
@@ -52,5 +54,22 @@ router.get('/get_role/:employee_id', EmployeeSkillMappingController.get_role)
 router.get('/get_role_list/:filtered_value', EmployeeSkillMappingController.get_role_list)
 
 router.get('/get_filtered_employee_list/:filtered_value', EmployeeSkillMappingController.get_filtered_employee_list)
+
+router.post('/create_new_internal_job/:employee_id', EmployeeSkillMappingController.create_new_internal_job);
+
+router.get('/get_internal_job/', EmployeeSkillMappingController.get_internal_job);
+
+router.get('/get_internal_job_detail/:job_id', EmployeeSkillMappingController.get_internal_job_detail);
+
+router.get('/update_internal_job_detail/:job_post_id/:status', EmployeeSkillMappingController.update_internal_job_detail);
+
+router.get('/get_open_internal_jobs/', EmployeeSkillMappingController.get_open_internal_jobs);
+
+router.get('/apply_job/:job_post_id/:employee_id', EmployeeSkillMappingController.apply_job);
+
+router.get('/check_apply_job/:job_post_id/:employee_id/:fitment_score', EmployeeSkillMappingController.check_apply_job);
+
+router.get('/get_applied_job_post/:employee_id', EmployeeSkillMappingController.get_applied_job_post);
+
 // Export the Router
 module.exports = router;

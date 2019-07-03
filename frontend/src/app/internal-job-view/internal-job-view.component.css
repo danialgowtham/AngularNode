@@ -1,0 +1,7 @@
+.back_button{
+    display: flex;
+    justify-content: flex-end;
+}
+table{
+    width: 100%;
+}

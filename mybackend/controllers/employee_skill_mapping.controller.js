@@ -4,6 +4,8 @@ var EmployeeSkillMappingService = require('../services/employee_skill_mapping.se
 var http = require('http');
 const config = require('../config.json');
 const mail = require('../public/javascripts/mail');
+var querystring = require('querystring');
+
 //for export
 // const excel = require('node-excel-export');
 
@@ -127,7 +129,7 @@ exports.get_job_codes = async function (req, res, next) {
 }
 exports.get_job_detail = async function (req, res, next) {
     try {
-        var job_detail = await EmployeeSkillMappingService.get_job_detail(req.params.id);
+        var job_detail = await EmployeeSkillMappingService.get_job_detail(req.params.id,req.params.job_post_id);
         var employee_mapping_detail = await EmployeeSkillMappingService.get_employee_mapping_detail(req.params.employee_id);
         var job_fitment_score = 0;
         for (i = 0; i < job_detail.length; i++) {
@@ -285,6 +287,108 @@ exports.get_filtered_employee_list = async function (req, res, next) {
     })
 }
 
+exports.create_new_internal_job = async function (req, res, next) {
+    try {
+        await EmployeeSkillMappingService.create_new_internal_job(req.body, req.params.employee_id)
+        return res.status(201).json({ status: 201, message: "Job Posted Succesfully" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" });
+    }
+}
+
+
+exports.get_internal_job = async function (req, res, next) {
+    try {
+        var job_posts = await EmployeeSkillMappingService.get_internal_job();
+
+        var employee_ids = [];
+        for (var object of job_posts) {
+            employee_ids.push(object.created_by);
+        }
+        getSelectedEmployeeList(employee_ids, function (error, employee_detail) {
+            if (error)
+                return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
+
+            EmployeeSkillMappingService.get_internal_job()
+                .then(internal_job_list => {
+                    internal_job_list ? res.status(201).json({ data: { internal_job_list, employee_detail }, message: "Job List Data Get Succesfully" }) : res.status(400).json({ message: 'Something Went Wrong' })
+                });
+        })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+
+exports.get_internal_job_detail = async function (req, res, next) {
+    try {
+        var job_post_details = await EmployeeSkillMappingService.get_internal_job_detail(req.params.job_id);
+        var job_post_detail = job_post_details["job_post_detail"][0];
+        var employee_ids = [];
+        employee_ids.push(job_post_detail.created_by);
+        for (var object of job_post_detail.applied_employees) {
+            employee_ids.push(object.employee_id);
+        }
+        getSelectedEmployeeList(employee_ids, function (error, employee_detail) {
+            if (error)
+                return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
+            else
+                return res.status(201).json({ status: 201, data: { job_post_details, employee_detail }, message: "Job detail Get Succesfully" })
+        })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+
+
+exports.update_internal_job_detail = async function (req, res, next) {
+    try {
+        await EmployeeSkillMappingService.update_internal_job_detail(req.params.job_post_id, req.params.status)
+        return res.status(201).json({ status: 201, message: "Job Post Detail Updated Succesfully" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" });
+    }
+}
+
+
+exports.get_open_internal_jobs = async function (req, res, next) {
+    try {
+        var job_list = await EmployeeSkillMappingService.get_open_internal_jobs();
+        return res.status(201).json({ status: 201, data: job_list, message: "Get Job List Successfully" })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+
+
+exports.apply_job = async function (req, res, next) {
+    try {
+        await EmployeeSkillMappingService.apply_job(req.params.job_post_id, req.params.employee_id)
+        return res.status(201).json({ status: 201, message: "Job Post Detail Updated Succesfully" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" });
+    }
+}
+
+
+exports.check_apply_job = async function (req, res, next) {
+    try {
+        var applied_job_data = await EmployeeSkillMappingService.check_apply_job(req.params.job_post_id, req.params.employee_id, req.params.fitment_score);
+        return res.status(201).json({ status: 201, data: applied_job_data, message: "Job Already Applied Check Call Working Successfully" })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" })
+    }
+}
+
+
+exports.get_applied_job_post = async function (req, res, next) {
+    try {
+        var applied_job_list = await EmployeeSkillMappingService.get_applied_job_post(req.params.employee_id)
+        return res.status(201).json({ status: 201, data: applied_job_list, message: "Applied Job Details List Succesfully" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" });
+    }
+}
+
 
 function getEmployeeDetail(employee_id, callback) {
     var return_data;
@@ -394,9 +498,45 @@ function getEmployeeList(callback) {
     });
 
 }
+function getSelectedEmployeeList(employee_ids, callback) {
+    var return_data;
+    var data = JSON.stringify(employee_ids);
+    if (employee_ids.length > 0) {
+        var reqGet = http.request(config.webservice_url + "getSelectedEmployeeList/", {
+            method: "POST", headers: {
+                'Content-Type': 'application/json',
+            }
+        }, function (res) {
+            var buffers = [];
+            res
+                .on('data', function (chunk) {
+                    buffers.push(chunk)
+
+                })
+                .on('end', function () {
+                    try {
+                        return_data = JSON.parse(Buffer.concat(buffers).toString());
+                        return callback(null, return_data);
+                    } catch (err) {
+                        console.error(err)
+                    }
+                })
+
+        });
+        reqGet.write(data)
+        reqGet.end();
+        reqGet.on('error', function (e) {
+            console.log("inside error");
+            console.error(e);
+        });
+    } else {
+        callback(null, []);
+    }
+
+}
 function getFliteredEmployeeList(filtered_value, callback) {
     var return_data;
-    var reqGet = http.request(config.webservice_url + "getFliteredEmployeeList/"+filtered_value, function (res) {
+    var reqGet = http.request(config.webservice_url + "getFliteredEmployeeList/" + filtered_value, function (res) {
         var buffers = [];
         res
             .on('data', function (chunk) {

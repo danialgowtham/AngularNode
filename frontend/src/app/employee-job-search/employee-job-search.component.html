@@ -77,7 +77,8 @@
           </div>
         </div>
       </form>
-      <app-employee-job-view *ngIf="mapping_detail['mapping_data']" [mapping_detail]="mapping_detail">
+      <app-employee-job-view *ngIf="mapping_detail['mapping_data']" [view_type]="view_type"
+        [mapping_detail]="mapping_detail">
       </app-employee-job-view>
     </div>
   </div>

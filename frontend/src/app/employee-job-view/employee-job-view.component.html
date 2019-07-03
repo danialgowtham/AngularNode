@@ -1,13 +1,13 @@
 <div class="pd-t-10">
   <div class="row">
-    <h6 class="mg-10 pd-t-10 col-4 ">
-      <label class="section-title">Role Detail </label>
+    <h6 class="mg-10 pd-t-10 col-4">
+      <label class="section-title mg-t-0-force">Role Detail </label>
     </h6>
     <div class="mg-10  col-6 d-flex">
       <h6>
         <label class="text-dark pd-t-10">Job Fitment Score :</label>
       </h6>
-      <ngb-progressbar type="success" height="25px" class="col-8 pd-t-5" [striped]="true" [showValue]="true"
+      <ngb-progressbar type="info" height="25px" class="col-8 pd-t-5" [striped]="true" [showValue]="true"
         [value]="job_fitment_score" [max]="100"></ngb-progressbar>
     </div>
   </div>
@@ -64,7 +64,7 @@
           <th mat-header-cell *matHeaderCellDef> Competency </th>
           <td mat-cell *matCellDef="let element">
             <span
-              *ngIf="(element.competency_definition && element.competency_proficiency_description );else show_compentency"
+              *ngIf="((element.competency_definition && element.competency_proficiency_description )&&!disable_popup);else show_compentency"
               class="cursor-pointer tx-primary" title="Click to view Competency Description"
               (click)="open_competency_popup(element?.competency_definition,element?.competency_proficiency_description,element?.competency_proficiency_name)">
               {{element.competency_name}} <i class="fa fa-eye mg-l-5"></i>

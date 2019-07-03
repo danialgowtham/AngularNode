@@ -1,0 +1,11 @@
+table{
+    width: 100%;
+}
+.filter_class{
+    display: flex;
+    justify-content: flex-end;
+}
+.custom_button{
+    margin-bottom: 23px;
+    margin-top: 7px;
+}

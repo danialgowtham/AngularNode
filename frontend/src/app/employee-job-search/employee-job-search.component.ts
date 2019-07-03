@@ -21,8 +21,10 @@ export class EmployeeJobSearchComponent implements OnInit {
   filtered_employee_list: any = [];
   employee_search: Boolean = true;
   Object = Object;
+
   help_text: any = "Employees can check their fitment for any role in the organization and get the fitment score";
   @Output() mapping_detail: any = [];
+  @Output() view_type: String = "employee";
   formdata: any;
   constructor(private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { }
 
@@ -46,6 +48,7 @@ export class EmployeeJobSearchComponent implements OnInit {
     if (this.router.url == "/rmg_job_mapping") {
       this.topmenu_service.setActiveTab("rmg");
       this.employee_search = false;
+      this.view_type = "rmg";
       this.skill_service.getEmployeeList()
         .subscribe(
           response => {
@@ -57,7 +60,7 @@ export class EmployeeJobSearchComponent implements OnInit {
     } else if (this.router.url == "/manager_job_mapping") {
       this.topmenu_service.setActiveTab("manager");
       this.employee_search = false;
-
+      this.view_type = "manager";
       this.skill_service.getReporteeList(jsonObj.id)
         .subscribe(
           response => {
@@ -137,7 +140,7 @@ export class EmployeeJobSearchComponent implements OnInit {
         var jsonObj = JSON.parse(localStorage.currentUser);
         employee_id = jsonObj.id
       }
-      this.skill_service.getJobDetail(this.formdata.controls["job_code"].value, employee_id)
+      this.skill_service.getJobDetail(this.formdata.controls["job_code"].value, employee_id, '')
         .subscribe(
           response => {
             this.mapping_detail["mapping_data"] = response["data"];
@@ -181,7 +184,7 @@ export class EmployeeJobSearchComponent implements OnInit {
     }
   }
   open_job_code_description_popup() {
-    this.dialog.open(Popup, { width: "30%", closeOnNavigation: true, data: { type: "job_code" }, hasBackdrop: false });
+    this.dialog.open(Popup, { width: "30%", closeOnNavigation: true, data: { type: "job_code" }, hasBackdrop: true,disableClose: true });
   }
   ngOnDestroy() {
     this.dialog.closeAll();

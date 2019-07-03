@@ -39,35 +39,35 @@
     <!-- row -->
   </div>
   <div class="row no-gutters">
-    <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white ">
+    <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white bd-b">
       <!--<i class="icon ion-ios-analytics-outline"></i>-->
       <div class="dash-content">
         <label class="tx-primary">Designation</label>
         <h6 class="text-dark card_heading">{{employee_detail?.designation}}</h6>
       </div><!-- dash-content -->
     </div><!-- col-3 -->
-    <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
+    <div class="col-lg-3 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white bd-b">
       <!--<i class="icon ion-ios-pie-outline"></i>-->
       <div class="dash-content">
         <label class="tx-primary">{{employee_detail?.practice_lable}}</label>
         <h6 class="text-dark card_heading">{{employee_detail?.unit}}</h6>
       </div><!-- dash-content -->
     </div><!-- col-3 -->
-    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
+    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white bd-b">
       <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
       <div class="dash-content">
         <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
         <h6 class="text-dark card_heading">{{employee_detail?.practice}}</h6>
       </div><!-- dash-content -->
     </div><!-- col-3 -->
-    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
+    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white bd-b">
       <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
       <div class="dash-content">
-        <label class="tx-primary">{{employee_detail?.sub_practice_lable}}</label>
+        <label class="tx-primary">{{employee_detail?.sub_practice_lable}}1</label>
         <h6 class="text-dark card_heading">{{employee_detail?.sub_practice}}</h6>
       </div><!-- dash-content -->
     </div><!-- col-3 -->
-    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white">
+    <div class="col-lg-2 col-md-6 pt-2 pb-0 pl-0 pr-0 bg-white bd-b">
       <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
       <div class="dash-content">
         <label class="tx-primary">Overall Experience</label>
@@ -75,4 +75,36 @@
       </div><!-- dash-content -->
     </div><!-- col-3 -->
   </div>
+  <mat-accordion class=" ">
+    <mat-expansion-panel [disabled]="employee_detail && employee_detail.project_detail.length==0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Project Detail
+        </mat-panel-title>
+        <mat-panel-description *ngIf="employee_detail && employee_detail.project_detail.length==0">
+          Project Detail Not Available
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="table-responsive">
+        <table class="table table-bordered mg-b-0">
+          <thead>
+            <tr>
+              <th>Project Name</th>
+              <th>Project Manager</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project_detail of employee_detail?.project_detail">
+              <td>{{project_detail?.project_name}}</td>
+              <td>{{project_detail?.project_manager}}</td>
+              <td>{{project_detail?.start_date | date : "dd-MM-yyyy"}}</td>
+              <td>{{project_detail?.end_date | date : "dd-MM-yyyy"}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

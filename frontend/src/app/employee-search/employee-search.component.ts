@@ -60,7 +60,7 @@ export class EmployeeSearchComponent implements OnInit {
   }
   openEmployeeSkill(employee_id) {
     this.dialog.closeAll();
-    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation: true, width: '90vw', height: '80vh', maxWidth: '90vw', maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: false });
+    this.dialog.open(EmployeeViewPopupComponent, { closeOnNavigation: true, width: '90vw', height: '80vh', maxWidth: '90vw', maxHeight: '80vh', autoFocus: false, data: employee_id, hasBackdrop: true, disableClose: true });
   }
   update_employee_list(event) {
     var value = event.target.value;
@@ -73,7 +73,7 @@ export class EmployeeSearchComponent implements OnInit {
           }
         );
     } else {
-      this.filtered_employee_list = [];
+      this.filtered_employee_list = {};
     }
     // this.filtered_employee_list = Object.keys(this.employee_data).filter(employee_id => {
     //   return this.employee_data[employee_id].employee_name.toLowerCase().includes(filterValue)
@@ -91,6 +91,7 @@ export class EmployeeSearchComponent implements OnInit {
     })
   }
   filter_employees() {
+    console.log(this.formdata.value.skill)
     if (this.formdata.value.employee || this.formdata.value.skill || this.formdata.value.role) {
       this.skill_service.getEmployeeSkillMappingList(this.formdata.value)
         .subscribe(

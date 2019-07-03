@@ -30,6 +30,7 @@ export class EmployeeSkillViewComponent implements OnInit {
       var jsonObj = JSON.parse(localStorage.currentUser);
       employee_id = jsonObj.id
     }
+   
     if (this.router.url == "/employee_skill_view") {
       this.disable_popup = true
     }
@@ -40,7 +41,7 @@ export class EmployeeSkillViewComponent implements OnInit {
           this.employee_detail = response["data"]["employee_detail"];
           this.mapping_data.paginator = this.paginator;
           this.mapping_data.sort = this.sort;
-          this.current_role=response["data"]["skill"][0]["current_role"]
+          this.current_role = response["data"]["skill"][0]["current_role"]
         }
       );
   }
@@ -51,7 +52,7 @@ export class EmployeeSkillViewComponent implements OnInit {
         response => {
           var proficiency_list = response["data"];
           this.dialog.closeAll();
-          this.dialog.open(Popup, { data: { closeOnNavigation: true, proficiency_list, type: "skill" }, hasBackdrop: false });
+          this.dialog.open(Popup, { data: { closeOnNavigation: true, proficiency_list, type: "skill" }, hasBackdrop: true, disableClose: true });
         }
       );
   }

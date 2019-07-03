@@ -69,7 +69,7 @@ export class RoleInformationComponent implements OnInit {
       this.show_table = false;
       var jsonObj = JSON.parse(localStorage.currentUser);
       employee_id = jsonObj.id
-      this.skill_service.getJobDetail(this.formdata.controls["role"].value, employee_id)
+      this.skill_service.getJobDetail(this.formdata.controls["role"].value, employee_id,'')
         .subscribe(
           response => {
             this.mapping_detail = new MatTableDataSource(response["data"]["job_detail"]);

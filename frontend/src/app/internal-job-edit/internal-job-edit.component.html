@@ -1,0 +1,181 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" [matTooltip]="help_text"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>IJP Detail</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z3 pd-20">
+      <div class="d-flex justify-content-end mg-b-5">
+        <span class="cursor-pointer mg-l-10 tx-primary" (click)="go_back()"><i class="fa fa-arrow-left"></i>Back</span>
+      </div>
+      <div class="card card-dash-one mg-b-20">
+        <div class="row no-gutters" *ngIf="job_detail">
+          <div class="col-lg-4 pt-2 pb-0 pl-0 pr-0 bg-white">
+            <!--<i class="icon ion-ios-analytics-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Job Code</label>
+              <h6 class="text-dark card_heading">{{job_detail?.job_code}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+
+          <div class="col-lg-4 pt-2 pb-0 pl-0 pr-0 bg-white">
+            <!--<i class="icon ion-ios-stopwatch-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Role</label>
+              <h6 class="text-dark card_heading">{{job_detail?.role}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-4 pt-2 pb-0 pl-0 pr-0 bg-white">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Created By</label>
+              <h6 class="text-dark card_heading">{{employee_detail[job_detail?.created_by]["employee_name"]}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-4 pt-2 pb-0 pl-0 pr-0 bg-white border-top">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Created On </label>
+              <h6 class="text-dark card_heading">{{job_detail?.created_on |  date : "dd-MM-yyyy"}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-2 pt-2 pb-0 pl-0 pr-0 bg-white border-top">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Status</label>
+              <h6 class="text-dark card_heading">{{job_detail?.status}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-2 pt-2 pb-0 pl-0 pr-0 bg-white border-top">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Minimum Fitment Score </label>
+              <h6 class="text-dark card_heading" *ngIf="job_detail.min_fitment_score; else any_block">
+                {{job_detail?.min_fitment_score}}</h6>
+              <ng-template #any_block>
+                <h6 class="text-dark card_heading">Any</h6>
+
+              </ng-template>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-2 pt-2 pb-0 pl-0 pr-0 bg-white border-top">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Unit</label>
+              <h6 class="text-dark card_heading">{{job_detail?.unit_name}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+          <div class="col-lg-2 pt-2 pb-0 pl-0 pr-0 bg-white border-top">
+            <!--<i class="icon ion-ios-world-outline"></i>-->
+            <div class="dash-content">
+              <label class="tx-primary">Band </label>
+              <h6 class="text-dark card_heading">{{job_detail?.band_name}}</h6>
+            </div><!-- dash-content -->
+          </div><!-- col-3 -->
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="mg-b-10-force">
+            <span class="slim-card-title ">Job Detail</span>
+          </div>
+          <table mat-table [dataSource]="mapping_detail" class="section-wrapper">
+            <ng-container matColumnDef="competency_name">
+              <th mat-header-cell *matHeaderCellDef class="wd-50p"> Competency </th>
+              <td mat-cell *matCellDef="let element">
+                <span> {{element.competency_name}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="skill_name">
+              <th mat-header-cell *matHeaderCellDef class="wd-40p"> Skill </th>
+              <td mat-cell *matCellDef="let element"> {{element.skill_name}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsJob"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsJob;"></tr>
+          </table>
+          <mat-paginator #job_detail_paginator class="wd-100p border border-top-0" [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons></mat-paginator>
+        </div>
+        <div class="col-6">
+          <div class="mg-b-10-force d-flex justify-content-between">
+            <span class="slim-card-title ">Applied Employees</span>
+            <span class="tx-primary cursor-pointer" (click)="ExportTOExcel()"> <i
+                class="fa fa-file-excel-o mg-r-5"></i>Export</span>
+          </div>
+          <div #TABLE>
+            <table mat-table [dataSource]="applied_employee_details" class="section-wrapper">
+              <ng-container matColumnDef="employee_name">
+                <th mat-header-cell *matHeaderCellDef class="wd-50p"> Employee </th>
+                <td mat-cell *matCellDef="let element">
+                  <span> {{employee_detail[element?.employee_id]["employee_name"]}}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="applied_on">
+                <th mat-header-cell *matHeaderCellDef class="wd-20p">Applied On </th>
+                <td mat-cell *matCellDef="let element"> {{element?.applied_on |  date : "dd-MM-yyyy"}} </td>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
+                <td class="text-center" mat-cell *matCellDef="let element">
+                  <div class="table_row cursor-pointer">
+                      <!-- <i class="fa fa-file-pdf-o mg-r-5" title="Generate Resume"></i>
+                      <i class="fa fa-eye" title="View"></i> -->
+                    <mat-icon (click)="openDialog(job_detail?.job_master_id,element?.employee_id,job_detail?._id)">remove_red_eye</mat-icon>
+                  </div>
+                </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="wd-20p"> Status </th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="edit_page;else show_name">
+                    <mat-form-field>
+                      <mat-label>Select Status</mat-label>
+                      <mat-select [(value)]="element.status">
+                        <mat-option value="Applied">Applied</mat-option>
+                        <mat-option value="Accepted">Accepted</mat-option>
+                        <mat-option value="Rejected">Rejected</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </span>
+                  <ng-template #show_name>
+                    <span> {{element.status}}</span>
+                  </ng-template>
+                </td>
+              </ng-container> -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator #applied_employee_detail class="wd-100p border border-top-0" [pageSizeOptions]="[10, 20, 30]"
+              showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row mg-t-20 d-flex justify-content-center" *ngIf="edit_page && job_detail">
+          <div class="col-2">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Select Job Status</mat-label>
+              <mat-select placeholder="Select Job Status" #status [(value)]="job_detail.status">
+                <mat-option value="Open">Open</mat-option>
+                <mat-option value="Closed">Closed</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-1 mg-t-7 pd-l-0-force">
+            <button class="pd-l-10" mat-raised-button color="primary"
+              (click)="change_status(job_detail?._id,status.value)">Submit</button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>

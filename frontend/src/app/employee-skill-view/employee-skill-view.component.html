@@ -15,8 +15,8 @@
         <div class="d-flex mg-20 mg-b-0-force" *ngIf="current_role">
           <label class="tx-14 tx-bold tx-dark">Current Role : </label>
           <span class="tx-14 mg-l-5">{{current_role}} </span>
+          <hr class="mg-b-0">
         </div>
-        <hr class="mg-b-0">
         <table mat-table [dataSource]="mapping_data" matSort>
 
           <ng-container matColumnDef="strucure">

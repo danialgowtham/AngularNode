@@ -1,0 +1,102 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <!-- <span style="color:#1b84e7" class="cursor-pointer" (click)="open_job_code_description_popup()">Job
+            Code Description <i class="fa fa-eye mg-l-1"></i></span> -->
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force"
+          matTooltip="Based on their requirement, RMG can create job"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>Add IJP</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z3 pd-20">
+      <form [formGroup]="formdata">
+        <div class="">
+          <div class="row mg-1">
+            <div class="col-lg-2 pd-0 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="unit" #unit placeholder="Select Unit" id="unit"
+                  (selectionChange)="clearAllSelected()">
+                  <mat-option>Select Unit</mat-option>
+                  <mat-option *ngFor="let unit of units" [value]="unit?.id">
+                    {{unit?.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="band" #band placeholder="Select Band" id="band"
+                  (selectionChange)="get_roles()">
+                  <mat-option>Select Band</mat-option>
+                  <mat-option *ngFor="let band of bands" [value]="band">
+                    {{band}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="role" #role placeholder="Select Role" id="role"
+                  (selectionChange)="get_job_codes()">
+                  <mat-option>Select Role</mat-option>
+                  <mat-option *ngFor="let role of roles" [value]="role.role">
+                    {{role.role}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-r-10-force">
+              <mat-form-field>
+                <mat-select formControlName="job_code" #job_code placeholder="Job Code" id="job_code"
+                  (selectionChange)="get_job_detail()">
+                  <mat-option>Select Job Code</mat-option>
+                  <mat-option *ngFor="let job_code of job_codes" [value]="job_code?.id">
+                    {{job_code.job_code}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-2 pd-l-20-force">
+              <mat-form-field class="example-full-width">
+                <input matInput formControlName="min_fitment_score" #min_fitment_score placeholder="Minimum Fitment Score">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-1 pd-l-20-force">
+              <button mat-raised-button color="primary" (click)="post_job()"
+                [disabled]="formdata.status != 'VALID'">Post</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="show_table" class="pd-t-15">
+        <table mat-table [dataSource]="mapping_detail" class="section-wrapper">
+          <ng-container matColumnDef="checked">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Check </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <mat-checkbox color="primary" [(ngModel)]="element.checked" (change)="updateJobDetail()"></mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="competency_name">
+            <th mat-header-cell *matHeaderCellDef> Competency </th>
+            <td mat-cell *matCellDef="let element">
+              <span> {{element.competency_name}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="skill_name">
+            <th mat-header-cell *matHeaderCellDef> Skill </th>
+            <td mat-cell *matCellDef="let element"> {{element.skill_name}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--  (optionSelected)="selectedEmployee($event.option.value)" -->

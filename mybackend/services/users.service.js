@@ -10,7 +10,6 @@ exports.authenticateUser = async function ({ username, password }, callback) {
             if (user_detail.status == 201) {
                 const userWithoutHash = user_detail["data"];
                 const token = jwt.sign({ sub: userWithoutHash.id }, config.secret);//{expiresIn: config.token_life // expires in 24 hours}
-                console.log({ userWithoutHash, token });
                 return callback(null, { ...userWithoutHash, token, is_rmg: true });
             } else {
                 return callback(null, null);

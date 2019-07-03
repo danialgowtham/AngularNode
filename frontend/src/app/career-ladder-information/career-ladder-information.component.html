@@ -11,7 +11,7 @@
     </div><!-- slim-pageheader -->
     <div class="section-wrapper mat-elevation-z3">
       <div class="row">
-        <div class="col-12">
+        <div class="col-8">
           <label class="tx-bold tx-primary tx-15">Career Path Descriptors</label>
           <div class="mg-l-20 ">
             <span class="tx-bold tx-dark tx-13">
@@ -35,43 +35,36 @@
             </ul>
           </div>
         </div>
-        <!-- <div class="col-3 pd-0 ">
+        <div class="col-4 pd-0 ">
           <label class="tx-bold tx-white tx-15 wd-100p gradient-background text-center mg-0">Internal Job Post</label>
-          <marquee class="cursor-pointer border pd-15" onmouseover="this.stop()" onmouseout="this.start()"
-            direction="up" width="" height="80%" scrollamount="2">
+          <marquee class="border pd-15" onmouseover="this.stop()" onmouseout="this.start()" direction="up" width=""
+            height="80%" scrollamount="2">
             <div>
               <ul class="list-group">
-                <li class="list-group-item border-0 pd-0-force pd-t-10">
-                  <p class="mg-b-0"><strong class="tx-inverse tx-medium">Senior MEAN Stack Developer</strong><span
-                      class="badge badge-success">New</span>
+                <li class="list-group-item border-0 pd-0-force pd-t-10-force" *ngFor="let item of job_list">
+                  <p class="mg-b-0 cursor-pointer"><strong class="tx-inverse tx-medium"
+                      (click)="openDialog(item?.id,item?._id)">
+                      {{item?.role}}</strong>
+                    <span *ngIf="(item.created_on | date:'yyyy/MM/dd') > (CurrentDate  | date:'yyyy/MM/dd')"
+                      class="badge badge-success mg-l-10">New</span>
                   </p>
-                </li>
-                <li class="list-group-item border-0 pd-0-force pd-t-10-force">
-                  <p class="mg-b-0"><strong class="tx-inverse tx-medium">Core Java Developer</strong></p>
-                </li>
-                <li class="list-group-item border-0 pd-0-force pd-t-10-force">
-                  <p class="mg-b-0"><strong class="tx-inverse tx-medium">Junior PHP Developer</strong><span
-                      class="badge badge-success">New</span></p>
-                </li>
-                <li class="list-group-item border-0 pd-0-force pd-t-10-force">
-                  <p class="mg-b-0"><strong class="tx-inverse tx-medium">Data Architect</strong></p>
                 </li>
               </ul>
             </div>
           </marquee>
-        </div> -->
+        </div>
         <div class="col-10">
           <div class="mg-l-20" *ngIf="jsonObj.structure_name==2">
-            <span class="tx-bold tx-dark tx-13">
+            <div class="tx-bold tx-dark tx-13">
               Career Path - PES
-            </span>
-            <img class="mg-t-10 border-5" src="assets/img/pes_career.png" alt="">
+            </div>
+            <img class="mg-t-10 border-5 mg-l-25 wd-75p" src="assets/img/pes_career.png" alt="">
           </div>
           <div class="mg-l-20" *ngIf="jsonObj.structure_name==5">
-            <span class="tx-bold tx-dark tx-13">
+            <div class="tx-bold tx-dark tx-13">
               Career Path - DTS
-            </span>
-            <img class="mg-t-10 border-5" src="assets/img/dts_as.png" alt="">
+            </div>
+            <img class="mg-t-10 border-5 mg-l-25 wd-75p" src="assets/img/dts_as.png" alt="">
           </div>
           <!-- <div class="mg-l-20" *ngIf="jsonObj.structure_name==5">
             <span class="tx-bold tx-dark tx-13">
@@ -80,10 +73,10 @@
             <img class="mg-t-10 border-5" src="assets/img/dts_erp.png" alt="">
           </div> -->
           <div class="mg-l-20" *ngIf="jsonObj.structure_name!=2 && jsonObj.structure_name!=5">
-            <span class="tx-bold tx-dark tx-13">
+            <div class="tx-bold tx-dark tx-13">
               Career Path - Enabling Functions
-            </span>
-            <img class="mg-t-10 border-5" src="assets/img/enabling_function.png" alt="">
+            </div>
+            <img class="mg-t-10 border-5 mg-l-25 wd-75p" src="assets/img/enabling_function.png" alt="">
           </div>
         </div>
       </div>

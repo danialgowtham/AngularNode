@@ -1,5 +1,6 @@
 var createConnection = require('../db');
 var md5 = require('md5');
+var mysql = require('mysql');
 
 exports.getEmployeeDetail = async function (employee_id, result) {
     var response;
@@ -7,6 +8,7 @@ exports.getEmployeeDetail = async function (employee_id, result) {
     var employee_details = "SELECT emp.joined_date as joined_date, CONCAT(emp.employee_number,' ',emp.first_name, ' ',emp.last_name) AS employee_name,CONCAT(rm.employee_number,' ',rm.first_name, ' ',rm.last_name) AS manager_name,band.name as band, des.designation as designation,cs.name as unit,css.name as practice,cs.parent_id as sbu_id,csss.name as sub_practice,cv.configuration_value as category FROM employees AS emp  inner join employees as rm  on emp.manager=rm.id inner join bands as band on band.id=emp.band_id    inner join designations as des on des.id=emp.designation_id    inner join company_structures as cs on cs.id=emp.structure_name     inner join company_structures as css on css.id=emp.structure_name_subgroup    left join company_structures as csss on csss.id=emp.structure_name_subpractice    inner join configuration_values as cv on cv.configuration_key=emp.billable and cv.parent_id='52' where emp.id=?    LIMIT 1"
     var employee_experience = "select MIN(start_date) as start_date from dtl_employee_workexperience where employee_id=?"
     var employee_experience_all = " SELECT dew.end_date as end_date FROM employees AS emp LEFT JOIN dtl_employee_workexperience dew ON emp.id=dew.employee_id WHERE dew.employee_id=? AND dew.start_date=(SELECT MAX(start_date) FROM  dtl_employee_workexperience WHERE employee_id=?)"
+    var project_detail = "SELECT PTA.project_id,CONCAT(Project.project_code,'-',Project.project_name) AS project_name, CONCAT(emp.employee_number,'-',emp.first_name,' ',emp.last_name) AS project_manager, PTA.start_date , PTA.end_date FROM project_team_allocations AS PTA INNER JOIN projects AS Project ON (Project.id = PTA.project_id) LEFT JOIN employees AS emp ON(project.project_manager = emp.id) WHERE PTA.employee_id = ? AND CURDATE() BETWEEN PTA.start_date AND PTA.end_date AND PTA.deleted = 0 AND Project.project_status IN ('e') GROUP BY PTA.project_id"
     try {
         createConnection(function (error, connection) {
             if (error) {
@@ -49,8 +51,6 @@ exports.getEmployeeDetail = async function (employee_id, result) {
                     else {
                         try {
                             start_date = res1[0]['start_date']
-                            console.log("start_date");
-                            console.log(res1);
                         } catch (e) {
                             console.log(e)
                         }
@@ -68,11 +68,24 @@ exports.getEmployeeDetail = async function (employee_id, result) {
                         try {
                             if (res2.length == 0)
                                 start_date = response["joined_date"];
-
-                            console.log(response["joined_date"]);
                             response["htl_experience"] = getYearMonth(response["joined_date"]);
                             response["overall_experience"] = getYearMonth(start_date);
                             response["overall_experience_month"] = getOverallMonth(start_date);
+                        } catch (e) {
+                            console.log(e)
+                        }
+                    }
+
+                }),
+                connection.query(project_detail, [employee_id], function (err, res3) {
+
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    }
+                    else {
+                        try {
+                            response["project_detail"] = res3;
                             result(null, response);
                         } catch (e) {
                             console.log(e)
@@ -278,6 +291,49 @@ exports.getEmployeeList = async function (result) {
                             for (var emp_data of res) {
                                 employee_detail[emp_data.id] = emp_data;
                             }
+                            result(null, employee_detail);
+                        } else {
+                            result(null, {});
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+
+exports.getSelectedEmployeeList = async function (selected_employee_ids, result) {
+    var employee_list_query = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as employee_name, bands.name as band_name,company_structures.name as unit FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name where employees.id in (?)';
+    var employee_ids = [];
+    employee_ids.push(selected_employee_ids);
+    employee_list_query = mysql.format(employee_list_query, employee_ids)
+    try {
+        createConnection(function (error, connection) {
+            console.log("inside Employee List");
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(employee_list_query, function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    try {
+                        if (res.length != 0) {
+                            var employee_detail = {};
+                            for (var emp_data of res) {
+                                employee_detail[emp_data.id] = emp_data;
+                            }
+                            console.log(res);
                             result(null, employee_detail);
                         } else {
                             result(null, {});

@@ -1,0 +1,18 @@
+<div class="back_button">
+  <span class="font-weight-bold"><i class="fa fa-close tx-20-force text-danger remove_row cursor-pointer"
+      (click)="closeDialog()"></i></span>
+</div>
+<app-employee-job-view [no_popup]="no_popup" [mapping_detail]="mapping_detail" [view_type]="view_type">
+</app-employee-job-view>
+<div *ngIf="already_applied.length==0 && min_fitment_score_flag.length==0;else already_job_applied"
+  class="col-lg-12 mg-t-10 text-center">
+  <button mat-raised-button style="margin-right:10px" (click)="apply_job()" color="primary">Apply
+    Job</button>
+  <button mat-raised-button (click)="closeDialog()" color="warn">Close</button>
+</div>
+<ng-template #already_job_applied>
+  <h3 class="text-center text-danger" *ngIf="already_applied.length !=0;else min_fitment_score">Already Applied</h3>
+</ng-template>
+<ng-template #min_fitment_score>
+  <h3 class="text-center text-danger">Minimum {{fitment_score}} Fitment Score Required To Apply For This job</h3>
+</ng-template>

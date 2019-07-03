@@ -63,6 +63,13 @@ exports.getEmployeeList = async function (req, res, next) {
         res.send(result);
     });
 }
+exports.getSelectedEmployeeList = async function (req, res, next) {
+    WebserviceService.getSelectedEmployeeList(req.body, function (err, result) {
+        if (err)
+            res.send(err);
+        res.send(result);
+    });
+}
 exports.getEmployeeBandAndUnitDetail = async function (req, res, next) {
     console.log(req.params.employee_id);
     try {

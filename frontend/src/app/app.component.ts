@@ -26,7 +26,7 @@ export class AppComponent {
     // Start watch when time is up.
     this.userIdle.onTimeout().subscribe(() => {
       this.authenticationService.logout();
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
     });
     this.loader_subject.getLoader().subscribe(loader => { this.loader = loader });
   }

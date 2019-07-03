@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconModule, MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
+import { MatSnackBarModule, MatIconModule, MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -54,11 +54,22 @@ import { LoaderService } from "./shared/loader.subject";
 import { TopmenuService } from "./shared/top-menu.subject";
 import { PushNotificationService } from "./services/push_notification.service";
 // import { NgCircleProgressModule } from 'ng-circle-progress';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { NgSelectModule } from '@ng-select/ng-select';
+
+// import { ChatsModule } from "./chats/chat.module";
 
 
 
 //for push notification
 import { ToasterModule } from 'angular5-toaster';
+import { InternalJobCreationComponent } from './internal-job-creation/internal-job-creation.component';
+import { InternalJobPostComponent } from './internal-job-post/internal-job-post.component';
+import { InternalJobEditComponent } from './internal-job-edit/internal-job-edit.component';
+import { ApplyJobComponent } from './apply-job/apply-job.component';
+import { AppliedJobListComponent } from './applied-job-list/applied-job-list.component';
+import { InternalJobViewComponent } from './internal-job-view/internal-job-view.component';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 
 const appRoutes: Routes = [
   {
@@ -110,6 +121,31 @@ const appRoutes: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'internal_job_creation',
+    component: InternalJobCreationComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'internal_job_list',
+    component: InternalJobPostComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'internal_job_edit',
+    component: InternalJobEditComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'internal_job_view',
+    component: InternalJobEditComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'applied_jobs',
+    component: AppliedJobListComponent,
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: '/login' },
 ];
 
@@ -139,7 +175,13 @@ const appRoutes: Routes = [
     RowComponent,
     SkillList,
     PopupModalComponent,
-    EmployeeSkillMappingComponent
+    EmployeeSkillMappingComponent,
+    InternalJobCreationComponent,
+    InternalJobPostComponent,
+    InternalJobEditComponent,
+    ApplyJobComponent,
+    AppliedJobListComponent,
+    InternalJobViewComponent
   ],
   imports: [
     BrowserModule,
@@ -172,20 +214,14 @@ const appRoutes: Routes = [
     MatIconModule,
     MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
+    MatSnackBarModule,
     ToasterModule,
-    // NgCircleProgressModule.forRoot({
-    //   // set defaults here
-    //   radius: 50,
-    //   outerStrokeWidth: 8,
-    //   innerStrokeWidth: 8,
-    //   outerStrokeColor: "#78C000",
-    //   innerStrokeColor: "#C7E596",
-    //   animationDuration: 1000,
-    //   animation: true
-    // }),
+    ScrollDispatchModule,
+    NgSelectModule,
+    MatSelectInfiniteScrollModule,
     UserIdleModule.forRoot({ idle: 900, timeout: 1, ping: 1 })
   ],
-  entryComponents: [Popup, EmployeeDetailComponent, EmployeeViewPopupComponent, SkillList, PopupModalComponent],
+  entryComponents: [Popup, InternalJobViewComponent, ApplyJobComponent, EmployeeDetailComponent, EmployeeViewPopupComponent, SkillList, PopupModalComponent],
   providers: [
     AuthGuard,
     AlertService,

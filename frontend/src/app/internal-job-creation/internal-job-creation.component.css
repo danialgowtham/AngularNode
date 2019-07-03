@@ -1,0 +1,10 @@
+.mat-form-field{
+    display:block;
+}
+.mat-option{
+    font-size: 13px !important;
+    height: 35px !important;
+}
+table{
+    width: 100%;
+}
