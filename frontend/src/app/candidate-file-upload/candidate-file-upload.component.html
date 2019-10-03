@@ -1,0 +1,141 @@
+<div class="slim-mainpanel" *ngIf="candidate_id && !check_already_upload; else not_found_div">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <!-- <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" matTooltip="Create RRF"></i> -->
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>Candidate File Upload</span>
+
+      </h6>
+    </div><!-- slim-pageheader Last Three Month Payslip -->
+    <div class="section-wrapper pd-20 mat-elevation-z3">
+      <form [formGroup]="form_data" (ngSubmit)="onSubmit()">
+        <div class="form-layout form-layout-2 pd-t-10 pd-b-10 border">
+          <div class="">
+            <div class="mg-b-10 pd-l-10">
+              <span class="text-dark tx-bold ">Note</span>
+              <li class="text-secondary pd-r-0 pd-l-10">You can upload only pdf, doc, jpeg, png formats</li>
+              <li class="text-secondary pd-r-0 pd-l-10">You can select multiple files in single input</li>
+              <li class="text-secondary pd-r-0 pd-l-10">File size should be less than 5MB</li>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Last Three Month Payslip</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Choose Last Three Month Payslip</mat-label>
+                    <ngx-mat-file-input multiple="true" class="cursor-pointer"
+                      placeholder="Choose Last Three Month Payslip" formControlName="payslips">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('payslips').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('payslips')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                    <mat-error *ngIf="form_data.get('payslips').hasError('required')">
+                      Last Three Month Payslip is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Last Three Month Bank Statement</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Last Three Month Bank Statement</mat-label>
+                    <ngx-mat-file-input multiple="true" class="cursor-pointer"
+                      placeholder="Last Three Month Bank Statement" formControlName="bank_statement">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('bank_statement').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('bank_statement')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                    <mat-error *ngIf="form_data.get('bank_statement').hasError('required')">
+                      Last Three Month Bank Statement is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Degree Certificates</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Choose Degree Certificates</mat-label>
+                    <ngx-mat-file-input multiple="true" class="cursor-pointer" placeholder="Choose Degree Certificates"
+                      formControlName="degree_certificates">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('degree_certificates').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('degree_certificates')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                    <mat-error *ngIf="form_data.get('degree_certificates').hasError('required')">
+                      Degree Certificates is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Others</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Others</mat-label>
+                    <ngx-mat-file-input multiple="true" class="cursor-pointer" placeholder="Others"
+                      formControlName="others">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('others').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('others')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Experience Letter</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Choose Experience Letter</mat-label>
+                    <ngx-mat-file-input multiple="true" class="cursor-pointer" placeholder="Choose Experience Letter"
+                      formControlName="experience_letter">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('experience_letter').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('experience_letter')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                    <mat-error *ngIf="form_data.get('experience_letter').hasError('required')">
+                      Experience Letter is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div  class="d-flex justify-content-center mg-t-15">
+              <button [disabled]="this.form_data.status != 'VALID'" mat-raised-button color="primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<ng-template #not_found_div>
+  <div class="page-error-wrapper" *ngIf="!candidate_id; else already_upload_div">
+    <div>
+      <h1 class="error-title">404</h1>
+      <h5 class="tx-sm-24 tx-normal">Oopps. The page you were looking for doesn't exist.</h5>
+      <p class="mg-b-50">You may have mistyped the address or the page may have moved.</p>
+    </div>
+  </div>
+</ng-template>
+<ng-template #already_upload_div>
+  <div class="page-error-wrapper">
+    <div>
+      <h1 class="error-title">Thank You</h1>
+      <!-- <h5 class="tx-sm-24 tx-normal">You already uploaded required file.</h5> -->
+    </div>
+  </div>
+</ng-template>

@@ -1,6 +1,7 @@
 var createConnection = require('../db');
 var md5 = require('md5');
 var mysql = require('mysql');
+var _this = this;
 
 exports.getEmployeeDetail = async function (employee_id, result) {
     var response;
@@ -196,7 +197,6 @@ exports.getEmployeeById = async function (employee_id, result) {
 
 
 exports.getReporteeList = async function (manager_id, result) {
-    console.log(manager_id);
     var employee_list = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as employee_name, bands.name as band_name,company_structures.name as unit FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name   WHERE employment_status NOT IN ("r","t","b","q","o") AND manager=?';
     try {
         createConnection(function (error, connection) {
@@ -307,7 +307,6 @@ exports.getEmployeeList = async function (result) {
         console.log(e);
     }
 }
-
 
 exports.getSelectedEmployeeList = async function (selected_employee_ids, result) {
     var employee_list_query = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as employee_name, bands.name as band_name,company_structures.name as unit FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name where employees.id in (?)';
@@ -425,6 +424,197 @@ exports.getFliteredEmployeeList = async function (filtered_value, result) {
                     }
                 }
             });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+exports.geRRFCreationDetail = async function (result) {
+    var response = {};
+    var employee_list_query = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as itemName FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name     WHERE employment_status NOT IN ("r","t","b","q","o")';
+    var customers_query = 'SELECT id,concat(customer_code," - ",customer_name) as customer_name FROM customers WHERE deleted=0 and status="a"';
+    var work_location_query = 'SELECT name FROM work_locations WHERE parent_id=0';
+    var base_location_query = 'SELECT cl.id as id,CONCAT(cl.address_line1,", ",r.region,", ",c.country,", ",ci.city) as name FROM company_locations AS cl INNER JOIN countries AS c ON c.id=cl.country_id INNER JOIN regions AS r ON r.id=cl.region_id INNER JOIN cities AS ci ON ci.id=cl.city_id WHERE deleted=0';
+    var band_query = 'SELECT child.id,child.name FROM bands AS parent INNER JOIN bands AS child ON child.parent_id=parent.id WHERE parent.parent_id IS NULL ORDER BY child.sort_order DESC';
+    var manager_list_query = 'SELECT employees.id,concat(employee_number," - ",first_name," ",last_name)as employee_name, bands.name as band_name,company_structures.name as unit FROM employees INNER JOIN bands ON bands.id=band_id inner join company_structures on company_structures.id=employees.structure_name     WHERE employment_status NOT IN ("r","t","b","q","o")';
+    try {
+        createConnection(function (error, connection) {
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(manager_list_query, function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                } else {
+                    if (res.length != 0) {
+                        var employee_detail = {};
+                        for (var emp_data of res) {
+                            employee_detail[emp_data.id] = emp_data;
+                        }
+                        response['managers'] = employee_detail;
+                    } else {
+                        response['managers'] = {};
+
+                    }
+                }
+            }),
+                connection.query(employee_list_query, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    } else {
+                        response['employees'] = res;
+                    }
+                }),
+                connection.query(customers_query, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    } else {
+                        response['customer'] = res;
+                    }
+                }),
+                connection.query(work_location_query, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    } else {
+                        response['work_location'] = res;
+                    }
+                }),
+                connection.query(band_query, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    } else {
+                        response['band'] = res;
+                    }
+                }),
+                connection.query(base_location_query, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    } else {
+                        response['base_location'] = res;
+                        result(null, response);
+                    }
+                })
+            connection.release();
+
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+
+exports.getProject = async function (customer_id, result) {
+    var project_query = 'SELECT id,CONCAT(project_code," - ",project_name) as project_name FROM projects WHERE project_status="e" AND customer_id=? ';
+    try {
+        createConnection(function (error, connection) {
+            console.log("inside Project");
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(project_query, customer_id, function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    try {
+                        if (res.length != 0) {
+                            result(null, res);
+                        } else {
+                            result(null, []);
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+exports.getSubWorkLocations = async function (location_name, result) {
+    var sub_location_query = 'SELECT wls.name FROM work_locations AS wl INNER JOIN work_locations AS wls ON (wls.parent_id=wl.id) WHERE wl.name=?';
+    try {
+        createConnection(function (error, connection) {
+            console.log("inside SubLocation");
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(sub_location_query, location_name, function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    try {
+                        if (res.length != 0) {
+                            result(null, res);
+                        } else {
+                            result(null, []);
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            });
+            connection.release();
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+
+exports.getRrfDetail = async function (rrf_detail, result) {
+    var response = {};
+    var base_location_query = 'SELECT cl.id as id,CONCAT(cl.address_line1,", ",r.region,", ",c.country,", ",ci.city) as name FROM company_locations AS cl INNER JOIN countries AS c ON c.id=cl.country_id INNER JOIN regions AS r ON r.id=cl.region_id INNER JOIN cities AS ci ON ci.id=cl.city_id WHERE cl.id=?';
+    var project_customer_query = 'SELECT CONCAT(project_code," - ",project_name)AS project_name,CONCAT(customer_code," - ",customer_name) AS customer_name FROM customers INNER JOIN projects ON projects.customer_id=customers.id WHERE projects.id=? AND customers.id=?';
+    try {
+        createConnection(function (error, connection) {
+            console.log("inside getRrfDetail");
+            if (error) {
+                console.log("error: ", error);
+                result(error, null);
+            }
+            connection.query(base_location_query, [rrf_detail['base_location']], function (err, res) {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                } else {
+                    response['base_location'] = res[0];
+                }
+            }),
+                connection.query(project_customer_query, [rrf_detail['project'], rrf_detail['customer_name']], function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    }
+                    else {
+                        try {
+                            response['customer_project'] = res[0];
+                            result(null, response);
+                        } catch (e) {
+                            console.log(e)
+                        }
+                    }
+                });
             connection.release();
         });
     }

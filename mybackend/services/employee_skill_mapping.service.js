@@ -9,9 +9,11 @@ var JobMaster = require('../models/job_masters.model');
 var SkillMaster = require('../models/skill_masters.model');
 var FixedCompetency = require('../models/fixed_competencies.model');
 var JobPost = require('../models/job_posts.model');
+var RrfMaster = require('../models/rrf_master.model');
+var CandidateDetail = require('../models/candidate_detail.model');
 ObjectId = require('mongoose').Types.ObjectId;
 exports.get_units = async function (parent_id) {
-    console.log(parent_id)
+
     return await CompanyStructure.aggregate([
 
         {
@@ -30,7 +32,6 @@ exports.get_units = async function (parent_id) {
     ]);
 }
 exports.get_competency = async function (sub_sbu_id, selected_competency) {
-    console.log(sub_sbu_id)
     return await CompetencyStructureMapping.aggregate([
 
         {
@@ -878,7 +879,7 @@ exports.get_role_list = async function (condition) {
 exports.create_new_internal_job = async function (save_data, created_by) {
     if (!save_data.min_fitment_score)
         save_data.min_fitment_score = "0";
-    var save_object = { "created_by": created_by, "status": "Open", "created_on": new Date(), "job_code_id": save_data.job_code, "disselected_job_competency": save_data.disseleceted_job_detail_object, "min_fitment_score": save_data.min_fitment_score };
+    var save_object = { "active": true, "created_by": created_by, "status": "Open", "created_on": new Date(), "job_code_id": save_data.job_code, "disselected_job_competency": save_data.disseleceted_job_detail_object, "min_fitment_score": save_data.min_fitment_score, "job_location": save_data.job_location, "job_post_end_date": save_data.job_post_end_date };
     job_post_save_object = new JobPost(save_object);
     return job_post_save_object.save();
 
@@ -889,6 +890,7 @@ exports.get_internal_job = async function () {
         {
             $match: {
                 "deleted": false,
+                // "active": true
             }
         },
         {
@@ -977,6 +979,8 @@ exports.get_internal_job_detail = async function (job_id) {
                 "created_by": "$created_by",
                 "status": "$status",
                 "min_fitment_score": "$min_fitment_score",
+                "job_location": "$job_location",
+                "job_post_end_date": "$job_post_end_date",
                 "created_on": "$created_on",
                 "applied_employees": "$applied_employees"
             }
@@ -987,12 +991,25 @@ exports.get_internal_job_detail = async function (job_id) {
     return { job_detail, job_post_detail }
 }
 
-exports.update_internal_job_detail = async function (job_post_id, status) {
-    return await JobPost.findByIdAndUpdate(job_post_id, { $set: { "status": status } }, { upsert: true }, function (err) {
+exports.update_internal_job_detail = async function (job_post_id, status, employee_status_detail) {
+    await JobPost.findByIdAndUpdate(job_post_id, { $set: { "status": status } }, { upsert: true }, function (err) {
         if (err) {
             console.log(err);
         }
     });
+    for (var i = 0; i < employee_status_detail.length; i++) {
+        var employee_id_status = employee_status_detail[i];
+        var update_detail = employee_id_status.split('_');
+        await JobPost.update({ "_id": ObjectId(job_post_id), "applied_employees.employee_id": update_detail[0] }, {
+            $set: {
+                "applied_employees.$.status": update_detail[1]
+            }
+        }, { upsert: true }, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
 
 }
 
@@ -1002,6 +1019,10 @@ exports.get_open_internal_jobs = async function () {
         {
             $match: {
                 "deleted": false,
+                // "active": true,
+                "job_post_end_date": {
+                    '$gte': new Date()
+                },
                 "status": "Open"
             }
         },
@@ -1032,12 +1053,13 @@ exports.get_open_internal_jobs = async function () {
 }
 
 
-exports.apply_job = async function (job_post_id, employee_id) {
+exports.apply_job = async function (job_post_id, employee_id, manager_agreed) {
 
     return await JobPost.findByIdAndUpdate(job_post_id, {
         $push: {
             applied_employees: {
                 "employee_id": employee_id,
+                "manager_agreed": manager_agreed,
                 "applied_on": new Date(),
                 "status": "Applied"
             }
@@ -1050,8 +1072,7 @@ exports.apply_job = async function (job_post_id, employee_id) {
 
 }
 
-
-exports.check_apply_job = async function (job_post_id, employee_id,fitment_score) {
+exports.check_apply_job = async function (job_post_id, employee_id, fitment_score) {
     var already_applied_flag = await JobPost.find({ deleted: false, "_id": ObjectId(job_post_id), 'applied_employees.employee_id': employee_id });
     var min_fitment_score_flag = await JobPost.find({ deleted: false, "_id": ObjectId(job_post_id), 'min_fitment_score': { $gte: fitment_score } });;
 
@@ -1095,5 +1116,649 @@ exports.get_applied_job_post = async function (employee_id) {
             }
         },
 
+    ]);
+}
+
+exports.create_new_rrf = async function (save_data, created_by) {
+    if (!save_data.minimum_fitment_score)
+        save_data.minimum_fitment_score = "0";
+    save_data["created_by"] = created_by;
+    save_data["status"] = "Submitted";
+    console.log(save_data);
+    var rrf_save_object = new RrfMaster(save_data);
+    var save_object = { "created_by": created_by, "rrf_master_id": rrf_save_object._id, "status": "Open", "active": false, "created_on": new Date(), "job_code_id": save_data.job_code, "disselected_job_competency": save_data.disselected_job_competency, "min_fitment_score": save_data.minimum_fitment_score, "job_location": save_data.work_location };
+    job_post_save_object = new JobPost(save_object);
+    job_post_save_object.save();
+    return rrf_save_object.save();
+}
+exports.update_rrf = async function (save_data, created_by) {
+    save_data["status"] = "Submitted";
+    await RrfMaster.findByIdAndUpdate(save_data.rrf_id, { $set: save_data }, { upsert: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return true;
+}
+
+exports.get_rrf_list = async function (condition) {
+
+    return await RrfMaster.aggregate([
+        condition,
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "unit",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "rrf_code": 1,
+                "created_on": 1,
+                "created_by": 1,
+                "role": 1,
+                "status": 1,
+                "band": 1,
+                "unit": "$company_structure.name",
+                "rrf_code": 1,
+            }
+        }
+    ]);
+}
+
+exports.get_rrf_detail = async function (rrf_id) {
+    var rrf_detail = await RrfMaster.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "_id": ObjectId(rrf_id)
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "unit",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "practice",
+                foreignField: "id",
+                as: "company_structure1"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure1"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "sub_practice",
+                foreignField: "id",
+                as: "company_structure2"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure2"
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'job_masters',
+                'localField': 'job_code',
+                'foreignField': 'id',
+                'as': 'job_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_master"
+            }
+        },
+        {
+            $lookup: {
+                from: "job_posts",
+                localField: "_id",
+                foreignField: "rrf_master_id",
+                as: "job_post"
+            }
+        },
+        {
+            $unwind: {
+                path: "$job_post"
+            }
+        },
+        {
+            $lookup: {
+                from: "candidate_details",
+                localField: "_id",
+                foreignField: "rrf_master_id",
+                as: "candidate_detail"
+            }
+        },
+        // {
+        //     $unwind: {
+        //         path: "$candidate_detail",
+        //         preserveNullAndEmptyArrays: true
+        //     }
+        // },
+        {
+            $project: {
+                "_id": 1,
+                "rrf_code": 1,
+                "created_on": 1,
+                "created_by": 1,
+                "role": 1,
+                "status": 1,
+                "band": 1,
+                "unit_name": "$company_structure.name",
+                "practice_name": "$company_structure1.name",
+                "sub_practice_name": "$company_structure2.name",
+                "unit": "$company_structure.id",
+                "practice": "$company_structure1.id",
+                "sub_practice": "$company_structure2.id",
+                "customer_type": 1,
+                "customer_name": 1,
+                "interview_round": 1,
+                "project": 1,
+                "duration": 1,
+                "work_location": 1,
+                "salary": 1,
+                "start_date": 1,
+                "billing_start_date": 1,
+                "note": 1,
+                "source": 1,
+                "role": 1,
+                "status": 1,
+                "candidate_detail": "$candidate_detail",
+                "minimum_fitment_score": 1,
+                "disselected_job_competency": 1,
+                "interview_panel": 1,
+                "job_code": 1,
+                "job_code_name": "$job_master.job_code",
+                "job_master_id": "$job_master.id",
+                "job_post_id": "$job_post._id",
+                "rrf_code": 1,
+                "billable": 1,
+                "role_band": 1,
+                "billing_start_date": 1,
+                "sub_work_location": 1,
+                "manager_id": 1,
+                "base_location": 1,
+                "billing_end_date": 1,
+                "no_of_position": 1,
+            }
+        }
+    ]);
+    var job_detail = await this.get_job_detail(rrf_detail[0].job_master_id, rrf_detail[0].job_post_id);
+    rrf_detail = rrf_detail[0];
+    return { rrf_detail, job_detail };
+}
+
+
+exports.update_rrf_status = async function (rrf_id, update_data) {
+    await RrfMaster.findByIdAndUpdate(rrf_id, { $set: update_data }, { upsert: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    if (update_data.status == 'RMG Approved' && update_data.with_internal_job == "Yes")
+        await JobPost.findOneAndUpdate({ deleted: false, "rrf_master_id": ObjectId(rrf_id) }, { 'active': true });
+}
+
+exports.upload_candidate = async function (rrf_id, update_data) {
+    update_data['rrf_master_id'] = rrf_id;
+    var candidate_detail = new CandidateDetail(update_data);
+    candidate_detail.save();
+    return await CandidateDetail.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "rrf_master_id": ObjectId(rrf_id)
+            }
+        },
+    ]);
+    // var result = await CandidateDetail.findByIdAndUpdate(rrf_id, {
+    //     $push: {
+    //         candidate_detail: update_data
+    //     }
+    // }, { new: true });
+    // return result;
+}
+
+
+exports.schedule_interview = async function (rrf_id, candidate_id, update_data) {
+    await CandidateDetail.findOneAndUpdate({ rrf_master_id: ObjectId(rrf_id), "_id": ObjectId(candidate_id) }, {
+        $set: {
+            "interview_schedule": update_data.interview_schedule,
+            "scheduled_by": update_data.scheduled_by,
+            "status": 'Interview Scheduled',
+        },
+    });
+    return await CandidateDetail.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "rrf_master_id": ObjectId(rrf_id)
+            }
+        },
+    ]);
+}
+
+exports.get_iof_pending_list = async function (employee_id) {
+    return await RrfMaster.aggregate([
+        {
+            '$unwind': {
+                'path': '$interview_panel',
+                'includeArrayIndex': 'level',
+                'preserveNullAndEmptyArrays': true
+            }
+        },
+        {
+            $match: {
+                'deleted': false,
+                'interview_panel.id': Number(employee_id),
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'candidate_details',
+                'localField': '_id',
+                'foreignField': 'rrf_master_id',
+                'as': 'candidate_detail'
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$candidate_detail',
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$candidate_detail.interview_schedule',
+            }
+        },
+        {
+            '$match': {
+                'candidate_detail.interview_schedule.interview_date': {
+                    '$lte': new Date()
+                },
+                'candidate_detail.interview_schedule.time_range.1': {
+                    '$lte': new Date()
+                },
+
+                'candidate_detail.interview_schedule.iof_detail': { $exists: false },
+                'candidate_detail.status': { $ne: 'Rejected' },
+                $expr: { $eq: ['$candidate_detail.interview_schedule.level', "$level"] }
+            }
+        },
+        {
+            $group: {
+                _id: "$candidate_detail._id",
+                allValues: { "$first": "$$ROOT" }
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": "$allValues.role",
+                "interview_round": "$allValues.interview_round",
+                "rrf_code": "$allValues.rrf_code",
+                "candidate_detail": "$allValues.candidate_detail",
+            }
+        }
+
+    ]);
+}
+
+exports.save_iof_detail = async function (rrf_id, candidate_id, schedule_id, status, update_data) {
+    var result = await CandidateDetail.findOneAndUpdate({ rrf_master_id: ObjectId(rrf_id), "_id": ObjectId(candidate_id), "interview_schedule._id": ObjectId(schedule_id) }, {
+        $set: {
+            "interview_schedule.$.iof_detail": update_data,
+            'status': status
+        },
+    }, { new: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return result;
+}
+
+
+exports.get_hr_approve_pending_list = async function () {
+    return await RrfMaster.aggregate([
+        {
+            '$lookup': {
+                'from': 'candidate_details',
+                'localField': '_id',
+                'foreignField': 'rrf_master_id',
+                'as': 'candidate_detail'
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$candidate_detail',
+            }
+        },
+        {
+            '$match': {
+                deleted: false,
+                'candidate_detail.status': 'Technical Round Cleared',
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": 1,
+                "rrf_code": 1,
+                "candidate_detail": "$candidate_detail",
+            }
+        }
+
+    ]);
+}
+
+exports.save_hr_iof_detail = async function (rrf_id, candidate_id, status, update_data) {
+    var result = await CandidateDetail.findOneAndUpdate({ rrf_master_id: ObjectId(rrf_id), "_id": ObjectId(candidate_id) }, {
+        $set: {
+            "hr_iof_detail": update_data,
+            'status': status
+        },
+    }, { new: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return result;
+}
+
+
+exports.get_iof_detail = async function (schedule_id) {
+    return await CandidateDetail.aggregate([
+        {
+            '$match': {
+                deleted: false,
+                'interview_schedule._id': ObjectId(schedule_id)
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "interview_schedule.iof_detail": 1,
+            }
+        }
+
+    ]);
+}
+
+exports.candidate_duplicate_check = async function (rrf_id, email_id) {
+    return await CandidateDetail.aggregate([
+        {
+            $match: {
+                "deleted": false,
+                "rrf_master_id": ObjectId(rrf_id),
+                "candidate_email": email_id
+            }
+        },
+    ]);
+}
+
+
+exports.get_rrf_report_list = async function (condition) {
+
+    return await RrfMaster.aggregate([
+        condition,
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "unit",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'candidate_details',
+                'localField': '_id',
+                'foreignField': 'rrf_master_id',
+                'as': 'candidate_detail'
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "rrf_code": 1,
+                "created_on": 1,
+                "created_by": 1,
+                "role": 1,
+                "status": 1,
+                "band": 1,
+                "unit": "$company_structure.name",
+                "rrf_code": 1,
+                "no_of_position": 1,
+                "candidate_detail": "$candidate_detail",
+                "selected_candidate": {
+                    "$size": {
+                        "$filter": {
+                            "input": "$candidate_detail",
+                            "cond": { "$eq": ["$$this.status", "Selected"] }
+                        }
+                    }
+                },
+                "rejected_candidate": {
+                    "$size": {
+                        "$filter": {
+                            "input": "$candidate_detail",
+                            "cond": { "$eq": ["$$this.status", "Rejected"] }
+                        }
+                    }
+                }
+            }
+        }
+    ]);
+}
+
+exports.upload_candidate_document = async function (candidate_id, update_data) {
+
+    await CandidateDetail.findOneAndUpdate({ "_id": ObjectId(candidate_id) }, {
+        $set: {
+            "candidate_documents": update_data,
+            'status': "Documents Uploaded"
+        },
+    }, { new: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    var result = await CandidateDetail.aggregate([
+        {
+            '$match': {
+                deleted: false,
+                '_id': ObjectId(candidate_id)
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "candidate_documents": 1,
+            }
+        }
+
+    ]);
+    return result;
+}
+
+exports.check_candidate_document = async function (candidate_id) {
+
+    return await CandidateDetail.aggregate([
+        {
+            '$match': {
+                deleted: false,
+                '_id': ObjectId(candidate_id)
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "candidate_documents": 1,
+            }
+        }
+
+    ]);
+}
+
+
+exports.rrf_candidate_approve_list = async function (view_type) {
+    var status = [];
+    if (view_type == "HR") {
+        status.push('Documents Uploaded');
+    } else if (view_type == "BUH") {
+        status.push('HR Approved');
+    } else {
+        status.push('BUH Approved');
+    }
+    return await RrfMaster.aggregate([
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "unit",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'candidate_details',
+                'localField': '_id',
+                'foreignField': 'rrf_master_id',
+                'as': 'candidate_detail'
+            }
+        },
+        {
+            '$unwind': {
+                'path': '$candidate_detail',
+            }
+        },
+        {
+            '$match': {
+                deleted: false,
+                'candidate_detail.status': { $in: status },
+            }
+        },
+        {
+            $project: {
+                "_id": 1,
+                "role": 1,
+                "rrf_code": 1,
+                "band": 1,
+                "created_by": 1,
+                "unit": "$company_structure.name",
+                "candidate_detail": "$candidate_detail",
+            }
+        }
+
+    ]);
+}
+
+exports.save_rrf_candidate_approve = async function (candidate_id, status, approver_id) {
+    var approve_type = {};
+    if (status.split(" ")[0] == "HR") {
+        approve_type = { "final_approval.hr_approved_by": approver_id, "final_approval.hr_approved_on": new Date(), 'status': status }
+    }
+    else if (status.split(" ")[0] == "BUH") {
+        approve_type = { "final_approval.buh_approved_by": approver_id, "final_approval.buh_approved_on": new Date(), 'status': status }
+    } else {
+        approve_type = { "final_approval.rmg_approved_by": approver_id, "final_approval.rmg_approved_on": new Date(), 'status': status }
+    }
+    await CandidateDetail.findOneAndUpdate({ "_id": ObjectId(candidate_id) }, {
+        $set: approve_type,
+    }, { new: true }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+}
+
+
+exports.get_rrf_and_candidate_detail = async function (candidate_id) {
+
+    return await CandidateDetail.aggregate([
+        {
+            '$match': {
+                deleted: false,
+                '_id': ObjectId(candidate_id)
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'rrf_masters',
+                'localField': 'rrf_master_id',
+                'foreignField': '_id',
+                'as': 'rrf_master'
+            }
+        },
+        {
+            $unwind: {
+                path: "$rrf_master"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "rrf_master.unit",
+                foreignField: "id",
+                as: "company_structure"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure"
+            }
+        },
+        {
+            $lookup: {
+                from: "company_structures",
+                localField: "rrf_master.practice",
+                foreignField: "id",
+                as: "company_structure1"
+            }
+        },
+        {
+            $unwind: {
+                path: "$company_structure1"
+            }
+        },
     ]);
 }

@@ -3,9 +3,7 @@ import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { LoaderService } from '../shared/loader.subject';
 import { MatDialog } from '@angular/material';
-import { TopmenuService } from "../shared/top-menu.subject";
 
 
 @Component({
@@ -29,11 +27,15 @@ export class InternalJobCreationComponent implements OnInit {
   formdata: any;
   update_mapping_detail: any;
   disseleceted_job_detail_object: any = [];
+  minDate = new Date();
+  maxDate = new Date();
+
   displayedColumns: string[] = ['checked', 'competency_name', 'skill_name'];
-  constructor(private loader_subject: LoaderService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { }
+  constructor( private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) {
+    this.maxDate.setFullYear(this.maxDate.getFullYear() + 1);
+  }
 
   ngOnInit() {
-    this.loader_subject.setLoader(true);
     this.formdata = new FormGroup({
 
       unit: new FormControl("", Validators.compose([
@@ -48,10 +50,16 @@ export class InternalJobCreationComponent implements OnInit {
       job_code: new FormControl("", Validators.compose([
         Validators.required,
       ])),
-      min_fitment_score: new FormControl("")
+      min_fitment_score: new FormControl("", Validators.compose([
+        Validators.maxLength(3),
+      ])),
+      job_location: new FormControl("", Validators.compose([
+        Validators.required,
+      ])),
+      job_post_end_date: new FormControl("", Validators.compose([
+        Validators.required,
+      ])),
     });
-
-    this.topmenu_service.setActiveTab("rmg");
 
     this.skill_service.getBands()
       .subscribe(
@@ -66,9 +74,7 @@ export class InternalJobCreationComponent implements OnInit {
           this.units = response;
         });
   }
-  ngAfterViewInit() {
-    this.loader_subject.setLoader(false);
-  }
+
   clearAllSelected() {
     this.job_codes = [];
     this.mapping_detail = [];
@@ -76,6 +82,14 @@ export class InternalJobCreationComponent implements OnInit {
 
     this.formdata.controls["job_code"].setValue(null);
     this.formdata.controls["role"].setValue(null);
+    this.get_roles();
+  }
+  keyPress(event: any) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 
   get_roles() {
@@ -111,11 +125,12 @@ export class InternalJobCreationComponent implements OnInit {
   }
   get_job_detail() {
     var employee_id;
-    if (this.formdata.status == "VALID") {
+    console.log(this.formdata);
+    if (this.formdata.controls["job_code"].value) {
       this.mapping_detail = [];
       var jsonObj = JSON.parse(localStorage.currentUser);
       employee_id = jsonObj.id
-      this.skill_service.getJobDetail(this.formdata.controls["job_code"].value, employee_id,'')
+      this.skill_service.getJobDetail(this.formdata.controls["job_code"].value, employee_id, '')
         .subscribe(
           response => {
             this.update_mapping_detail = response["data"]["job_detail"].map(function (value, index) {
@@ -140,14 +155,12 @@ export class InternalJobCreationComponent implements OnInit {
     this.disseleceted_job_detail_object = disseleceted_competency_object;
   }
   post_job() {
-    this.loader_subject.setLoader(true);
     var jsonObj = JSON.parse(localStorage.currentUser);
     var employee_id = jsonObj.id;
     this.formdata.value["disseleceted_job_detail_object"] = this.disseleceted_job_detail_object;
     this.skill_service.creatNewInternalJob(this.formdata.value, employee_id)
       .subscribe(
         response => {
-          this.loader_subject.setLoader(false);
           this.router.navigate(['/internal_job_list']);
         }
       );

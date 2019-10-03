@@ -48,6 +48,35 @@
             </table>
           </div>
         </mat-expansion-panel>
+        <mat-expansion-panel class="mg-t-10-force" *ngIf="apply_job_page">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Job Description
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="table-responsive col-4">
+            <table class="table table-bordered mg-b-0">
+              <tbody>
+                <tr>
+                  <td class="border-top tx-bold">Posted On</td>
+                  <td class="border-top">{{apply_job_page?.created_on |  date : "dd-MM-yyyy"}}</td>
+                </tr>
+                <tr>
+                  <td class="tx-bold">Job Location</td>
+                  <td>{{apply_job_page?.job_location}}</td>
+                </tr>
+                <tr>
+                  <td class="tx-bold">Minimum Fitment Score</td>
+                  <td>{{apply_job_page?.min_fitment_score}}</td>
+                </tr>
+                <tr>
+                  <td class="tx-bold">Expired On</td>
+                  <td>{{apply_job_page?.job_post_end_date |  date : "dd-MM-yyyy"}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-expansion-panel>
       </mat-accordion>
     </div>
     <div class="section-wrapper pd-0">

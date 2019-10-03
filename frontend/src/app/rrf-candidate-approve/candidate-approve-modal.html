@@ -1,0 +1,30 @@
+<div class="back_button">
+    <h5 class="mg-0-force" mat-dialog-title>Candidate Approve</h5>
+    <span class="font-weight-bold"><i class="fa fa-close mg-t-5 tx-20-force text-danger remove_row cursor-pointer"
+            (click)="closeDialog()"></i></span>
+</div>
+<div mat-dialog-content>
+    <div>
+        <div class="form-group border-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 mg-t-10">
+                        <mat-form-field class="col-12 pd-0" appearance="outline">
+                            <mat-label>Enter Reject Reason</mat-label>
+                            <textarea [formControl]="reject_reason" rows="4" matInput
+                                placeholder="Enter Notes"></textarea>
+                            <mat-error *ngIf="reject_reason.hasError('required')">
+                                Reason is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center mg-t-15 mg-b-10">
+                    <button mat-raised-button (click)="candidate_feedback('Approved')" color="primary">Approve</button>
+                    <button mat-raised-button (click)="candidate_feedback('Rejected')" color="warn"
+                        class="mg-l-10-force">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

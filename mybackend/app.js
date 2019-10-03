@@ -17,9 +17,9 @@ var app = express();
 
 var mongoose = require('mongoose')
 mongoose.Promise = bluebird
-mongoose.connect('mongodb://localhost:27017/ideal_new', { useMongoClient: true })
+mongoose.connect('mongodb://localhost:27017/ideal_new', {"auth": { "authSource": "admin" },"user": "root","pass": "root", useMongoClient: true })
   .then(() => { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://localhost:27017/ideal2`) })
-  .catch(() => { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`) })
+  .catch((e) => { console.log(e);console.log(`Error Connecting to the Mongodb Database at URL : mongodb://localhost:27017/ideal2`) })
 
 //cross domain access
 app.use(function (req, res, next) {

@@ -1,0 +1,39 @@
+<div class="login_background">
+  <div class="row row-sm">
+    <div class="col-lg-12">
+      <form [formGroup]="formdata" (ngSubmit)="onClickSubmit()">
+        <div class="mat-elevation-z8">
+          <div class="bg-white pd-30">
+            <div>
+              <alert></alert>
+            </div>
+            <div class="pd-xs-x-30 pd-y-10">
+              <h5 class="tx-xs-28 tx-inverse mg-b-5">Welcome</h5>
+              <p class="mg-b-0">Sign in to your account to continue</p>
+              <br>
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Email ID</mat-label>
+                  <input matInput type="text" name="user_name" formControlName="user_name" class="form-control"
+                    placeholder="Email ID">
+                </mat-form-field>
+              </div>
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" id="password" name="password"
+                    formControlName="password" class="form-control" placeholder="Enter Password">
+                  <mat-icon class="cursor-pointer" matSuffix (click)="hide = !hide">
+                    {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="text-center">
+                <button [disabled]="disable_btn" mat-raised-button color="primary" id="submit_btn">Sign In</button>
+              </div>
+            </div>
+          </div><!-- pd-20 -->
+        </div><!-- pd-20 -->
+      </form>
+    </div><!-- col-6 -->
+  </div>
+</div>

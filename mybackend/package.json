@@ -16,7 +16,10 @@
     "express": "~4.16.0",
     "express-jwt": "^5.3.1",
     "formidable": "^1.2.1",
+    "html-pdf": "^2.2.0",
     "http-errors": "~1.6.2",
+    "hummus-recipe": "^1.8.14",
+    "moment": "^2.24.0",
     "mongodb": "^3.1.6",
     "mongodb-autoincrement": "^1.0.1",
     "mongoose": "^4.13.17",
@@ -30,10 +33,13 @@
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.4",
     "nstall": "^0.2.0",
+    "nunjucks": "^3.2.0",
+    "pdf-lib": "^1.0.1",
     "querystring": "^0.2.0",
     "rand-token": "^0.4.0",
     "request": "^2.81.0",
     "socket.io": "^2.2.0",
+    "sprintf-js": "^1.1.2",
     "update-mongo": "0.0.4"
   }
 }

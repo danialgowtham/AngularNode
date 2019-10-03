@@ -3,7 +3,6 @@ import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.
 import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { EmployeeViewPopupComponent } from '../employee-view-popup/employee-view-popup';
 import { RedirectService } from "../services/redirect";
-import { TopmenuService } from "../shared/top-menu.subject";
 
 @Component({
   selector: 'app-employee-skill-list',
@@ -15,11 +14,10 @@ export class EmployeeSkillListComponent implements OnInit {
   employee_data: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['employee_name', 'band_name', 'submitted_on', 'status', 'action'];
-  constructor(private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, public redirect: RedirectService) {
+  constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, public redirect: RedirectService) {
 
   }
   ngOnInit() {
-    this.topmenu_service.setActiveTab("manager");
     var jsonObj = JSON.parse(localStorage.currentUser);
     this.skill_service.getReporteeSkillMappingList(jsonObj.id)
       .subscribe(

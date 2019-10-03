@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 import { AuthenticationService } from './services/authentication.service';
 import { LoaderService } from "./shared/loader.subject";
+import { Subscription } from "rxjs";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,10 @@ import { LoaderService } from "./shared/loader.subject";
 })
 
 export class AppComponent {
-  loader: Boolean;
+  loading: any = false;
+  loadingSubscription: Subscription;
+  constructor(private loaderService: LoaderService, private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) {
 
-  constructor(private loader_subject: LoaderService, private router: Router, private userIdle: UserIdleService, private authenticationService: AuthenticationService, ) {
   }
   ngOnInit() {
     //Start watching for user inactivity.
@@ -25,16 +27,22 @@ export class AppComponent {
 
     // Start watch when time is up.
     this.userIdle.onTimeout().subscribe(() => {
-      this.authenticationService.logout();
-      this.router.navigate(['/login']);
+      //var url = this.router.url.split(";")[0];
+      if (localStorage.currentUser) {
+        this.authenticationService.logout();
+        this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      }
     });
-    this.loader_subject.getLoader().subscribe(loader => { this.loader = loader });
+    setTimeout(() => {
+      this.loadingSubscription = this.loaderService.loadingStatus.subscribe((value) => {
+        this.loading = value;
+      });
+    }, 0);
+  }
+  ngOnDestroy() {
+    this.loadingSubscription.unsubscribe();
   }
 
-  // close_toaster(toast) {
-  //   console.log(toast);
-  //   this.router.navigate(['/' + toast.data.view]);
-  // }
   stop() {
     this.userIdle.stopTimer();
   }
@@ -51,7 +59,7 @@ export class AppComponent {
     this.userIdle.resetTimer();
   }
   showLoginHeader() {
-    if (this.router.url.startsWith('/login') || this.router.url == '/') {
+    if (this.router.url.startsWith('/login') || this.router.url == '/' || this.router.url.startsWith('/candidate_login') || this.router.url.startsWith('/candidate_file_upload')) {
       return true;
     } else {
       return false;

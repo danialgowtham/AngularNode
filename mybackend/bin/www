@@ -44,6 +44,13 @@ io.sockets.on('connection', function (socket) {
   socket.on('employee_submitted', function (data) {
     io.emit('employee_submitted', data);
   });
+
+  // socket.on('error', function () {
+  //   var error = new Error('socket hang up');
+  //   error.code = 'ECONNRESET';
+  //   error;
+  //   io.emit('employee_submitted', error);
+  // });
 });
 
 

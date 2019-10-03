@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TopmenuService } from "../shared/top-menu.subject";
 
 
 @Component({
@@ -12,10 +11,9 @@ export class HomeComponent implements OnInit {
 
   flags: any = { career_flag: true, role_flag: false };
   employee_details = JSON.parse(localStorage.currentUser);
-  constructor(private topmenu_service: TopmenuService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.topmenu_service.setActiveTab("home");
   }
 
   change_body(flag) {

@@ -9,7 +9,9 @@ function jwt() {
         path: [
             // public routes that don't require authentication
             '/users/authenticateUser',
-            '/socket.io/'
+            '/socket.io/',
+            '/employee_skill_mapping/upload_candidate_document/',
+            '/employee_skill_mapping/check_candidate_document/',
         ]
     });
 }

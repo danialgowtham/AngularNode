@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { LoaderService } from '../shared/loader.subject';
 import { MatDialog } from '@angular/material';
-import { TopmenuService } from "../shared/top-menu.subject";
 import {InternalJobViewComponent} from "../internal-job-view/internal-job-view.component"
 
 @Component({
@@ -16,11 +14,9 @@ export class AppliedJobListComponent implements OnInit {
   job_detail: any;
   employee_detail: any;
   displayedColumns: string[] = ['role', 'applied_on', 'status','action'];
-  constructor(private loader_subject: LoaderService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) { }
+  constructor( private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loader_subject.setLoader(true);
-    this.topmenu_service.setActiveTab("employee");
     var jsonObj = JSON.parse(localStorage.currentUser);
     var employee_id = jsonObj.id
     this.skill_service.getAppliedJobPost(employee_id)
@@ -49,9 +45,7 @@ export class AppliedJobListComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.job_detail.filter = filterValue.trim().toLowerCase();
   }
-  ngAfterViewInit() {
-    this.loader_subject.setLoader(false);
-  }
+  
   ngOnDestroy() {
     this.dialog.closeAll();
   }

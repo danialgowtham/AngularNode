@@ -1,0 +1,360 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <span class="font-weight-bold"><i class="fa fa-close tx-20-force text-danger remove_row cursor-pointer"
+            (click)="closeDialog()"></i></span>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>Interview Observation Form</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div id="contentToConvert" class="container pd-l-0-force mg-t-10">
+      <div class="interview-form">
+        <div class="form-layout form-layout-2 mg-t-10 pd-b-10 border">
+          <div class="mg-t-10 mg-b-5">
+            <span class="slim-card-title pd-l-10">Skill Detail</span>
+          </div>
+          <div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Primary Skills:</label>
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['primary_skill']}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Overall Experience:</label>
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['overall_experience']}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Relevant Experience:</label>
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['relevant_experience']}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['primary_skill']}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['overall_experience']}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.skill_detail[0]['relevant_experience']}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mg-t-10 mg-b-5">
+            <span class="slim-card-title pd-l-10">Qualification Detail</span>
+          </div>
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Highest Qualification:</label>
+                <span class="text-secondary">
+                  {{data?.qualification_detail?.highest_qualification}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Year of Passing:</label>
+                <span class="text-secondary">
+                  {{data?.qualification_detail?.year_of_passing}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mg-t-10 mg-b-5 d-flex">
+            <span class="slim-card-title pd-l-10">Interview Performance </span>
+            <p class="text-dark pd-r-0 pd-l-10 mg-b-0 pd-b-0">(1-Poor,
+              2-Average, 3-Good, 4-Excellent, 5-Outstanding)</p>
+          </div>
+          <div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Primary Skills and
+                  Proficiency:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.primary_skill_and_proficiency?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.primary_skill_and_proficiency?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Secondary Skills and
+                  Proficiency:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.secondary_skill_and_proficiency?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.secondary_skill_and_proficiency?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Clarity of technical
+                  concepts:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.clarity_of_technical_concept?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.clarity_of_technical_concept?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Communication (Written
+                  and
+                  Verbal):</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.communication?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.communication?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Project
+                  Management:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.project_management?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.project_management?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Team Management:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.team_management?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.team_management?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Problem Solving
+                  Skills:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.problem_solving_skill?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.problem_solving_skill?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Creativity /
+                  Innovation:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.creativity_and_innovation?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.creativity_and_innovation?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Tool / Written Test
+                  taken:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.tool_or_written_test_taken?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.tool_or_written_test_taken?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Fitment to Job
+                  Description:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.fitment_to_job_description?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.fitment_to_job_description?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <label class="form-control-label tx-bold pd-l-10 pd-t-30 pd-r-20 text-right">Others:</label>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.others?.comments}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <span class="text-secondary">
+                    {{data?.interview_performance?.others?.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mg-t-10 mg-b-5">
+            <span class="slim-card-title pd-l-10">Evaluation Result and Remarks</span>
+          </div>
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Evaluation Remarks:</label>
+                <span class="text-secondary">
+                  {{data?.evaluation_result_and_remarks?.evaluation_remarks}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Evaluation Result:</label>
+                <span class="text-secondary">
+                  {{data?.evaluation_result_and_remarks?.evaluation_result}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mg-t-10 mg-b-5 d-flex">
+            <span class="slim-card-title pd-l-10">Training Requirements </span>
+          </div>
+          <div class="row no-gutters mg-b-20">
+            <div class="col-md-4">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Training requirements:</label>
+                <span class="text-secondary">
+                  {{data?.training_requirements}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 text-center mg-t-10">
+      <button mat-raised-button (click)="captureScreen()" color="primary">Download</button>
+    </div>
+  </div>

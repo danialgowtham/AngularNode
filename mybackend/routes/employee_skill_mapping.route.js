@@ -61,15 +61,60 @@ router.get('/get_internal_job/', EmployeeSkillMappingController.get_internal_job
 
 router.get('/get_internal_job_detail/:job_id', EmployeeSkillMappingController.get_internal_job_detail);
 
-router.get('/update_internal_job_detail/:job_post_id/:status', EmployeeSkillMappingController.update_internal_job_detail);
+router.post('/update_internal_job_detail/:job_post_id/:status', EmployeeSkillMappingController.update_internal_job_detail);
 
 router.get('/get_open_internal_jobs/', EmployeeSkillMappingController.get_open_internal_jobs);
 
-router.get('/apply_job/:job_post_id/:employee_id', EmployeeSkillMappingController.apply_job);
+router.get('/apply_job/:job_post_id/:employee_id/:manager_agreed/', EmployeeSkillMappingController.apply_job);
 
 router.get('/check_apply_job/:job_post_id/:employee_id/:fitment_score', EmployeeSkillMappingController.check_apply_job);
 
 router.get('/get_applied_job_post/:employee_id', EmployeeSkillMappingController.get_applied_job_post);
 
+router.get('/get_rrf_creation_data/', EmployeeSkillMappingController.get_rrf_creation_data);
+
+router.get('/get_project/:customer_id', EmployeeSkillMappingController.get_project);
+
+router.get('/get_sub_work_locations/:location_name', EmployeeSkillMappingController.get_sub_work_locations);
+
+router.post('/create_new_rrf/:employee_id', EmployeeSkillMappingController.create_new_rrf);
+
+router.get('/get_rrf_list/:type/:employee_id', EmployeeSkillMappingController.get_rrf_list);
+
+router.get('/get_rrf_detail/:rrf_id', EmployeeSkillMappingController.get_rrf_detail);
+
+router.post('/update_rrf_status/:rrf_id', EmployeeSkillMappingController.update_rrf_status);
+
+router.get('/get_rrf_edit_data/:rrf_id', EmployeeSkillMappingController.get_rrf_edit_data);
+
+router.post('/upload_candidate/:rrf_id', EmployeeSkillMappingController.upload_candidate);
+
+router.post('/schedule_interview/:rrf_id/:candidate_id', EmployeeSkillMappingController.schedule_interview);
+
+router.get('/get_iof_pending_list/:employee_id', EmployeeSkillMappingController.get_iof_pending_list);
+
+router.post('/save_iof_detail/:rrf_id/:candidate_id/:schedule_id/:status', EmployeeSkillMappingController.save_iof_detail);
+
+router.get('/get_hr_approve_pending_list/', EmployeeSkillMappingController.get_hr_approve_pending_list);
+
+router.post('/save_hr_iof_detail/:rrf_id/:candidate_id/:status', EmployeeSkillMappingController.save_hr_iof_detail);
+
+router.get('/get_iof_detail/:schedule_id', EmployeeSkillMappingController.get_iof_detail);
+
+router.get('/get_iof_detail/:schedule_id', EmployeeSkillMappingController.get_iof_detail);
+
+router.post('/generate_offer_letter/:candidate_id/:grand_ctc', EmployeeSkillMappingController.generate_offer_letter);
+
+router.get('/candidate_duplicate_check/:rrf_id/:email_id', EmployeeSkillMappingController.candidate_duplicate_check);
+
+router.post('/get_rrf_report_list/', EmployeeSkillMappingController.get_rrf_report_list);
+
+router.post('/upload_candidate_document/', EmployeeSkillMappingController.upload_candidate_document);
+
+router.get('/get_rrf_candidate_approve_list/:view_type', EmployeeSkillMappingController.get_rrf_candidate_approve_list);
+
+router.get('/save_rrf_candidate_approve/:candidate_id/:status/:approver_id', EmployeeSkillMappingController.save_rrf_candidate_approve);
+
+router.post('/generate_indicative_offer_letter/', EmployeeSkillMappingController.generate_indicative_offer_letter);
 // Export the Router
 module.exports = router;

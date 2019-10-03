@@ -1,0 +1,189 @@
+table {
+    width: 100%;
+  }
+  table {
+    width: 100%;
+  }
+
+  .form-layout-2 .form-group, .form-layout-3 .form-group{
+    padding: 10px;
+}
+::ng-deep.mat-form-field-wrapper{
+    padding-bottom: 0px;
+  }
+  mat-input-container {
+    height:2px;
+   }
+   
+   tr.example-element-row.mat-row,tr.mat-header-row{
+    height:40px !important;
+   
+   }
+   ::ng-deep.mat-paginator-container{
+    min-height:40px !important;
+   }
+   
+   .filter_class ::ng-deep .mat-form-field-appearance-outline {
+    height: 45px;
+    line-height: 1.725;
+  }
+  
+  .filter_class ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0px 10px 0px 10px;
+  }
+  
+  .filter_class ::ng-deep .mat-form-field-infix {
+    padding: 3px 0 3px 0;
+  }
+  ::ng-deep.mat-form-field-appearance-outline .mat-form-field-label{
+    top :1em;
+  }
+  ::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    transform: translateY(-1.15em);
+    -webkit-transform: translateY(-1.15em);
+    font-size: 10px
+  }
+  .mat-option{
+    font-size: 13px !important;
+    height: 35px !important;
+}
+::ng-deep .owl-dialog-container{
+  overflow-x: hidden !important;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper{
+  margin-top: 1.66666667em;
+}
+::ng-deep .test-class .mat-form-field div input{
+  border: 0 !important;
+  width: 100% !important;
+  outline: none;
+}
+/* ::ng-deep .test-class .mat-form-field div input{ */
+
+  ::ng-deep.c-btn{
+    border: 1px solid #e0e0e0 !important;
+    padding: 8px !important;
+    border-radius: 5px !important;
+    font-size: 12px !important;
+    color: #868ba1 !important;
+  }
+  ::ng-deep.selected-list .c-list .c-token{
+    background: #ea8e00 !important;
+}
+.form-control[readonly]{
+  background-color: #fff;
+}
+
+.form-layout-2 .form-group, .form-layout-3 .form-group{
+  padding: 10px;
+}
+::ng-deep.mat-form-field-wrapper{
+  padding-bottom: 0px;
+}
+mat-input-container {
+  height:2px;
+ }
+ 
+ tr.example-element-row.mat-row,tr.mat-header-row{
+  height:40px !important;
+ 
+ }
+ ::ng-deep.mat-paginator-container{
+  min-height:40px !important;
+ }
+ 
+ .filter_class ::ng-deep .mat-form-field-appearance-outline {
+  height: 45px;
+  line-height: 1.725;
+}
+
+.filter_class ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0px 10px 0px 10px;
+}
+
+.filter_class ::ng-deep .mat-form-field-infix {
+  padding: 3px 0 3px 0;
+}
+::ng-deep.mat-form-field-appearance-outline .mat-form-field-label{
+  top :1em;
+}
+::ng-deep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+  transform: translateY(-1.15em);
+  -webkit-transform: translateY(-1.15em);
+  font-size: 10px
+}
+.mat-option{
+  font-size: 13px !important;
+  height: 35px !important;
+}
+::ng-deep .owl-dialog-container{
+overflow-x: hidden !important;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper{
+margin-top: 1.66666667em;
+}
+::ng-deep .test-class .mat-form-field div input{
+border: 0 !important;
+width: 100% !important;
+outline: none;
+}
+/* ::ng-deep .test-class .mat-form-field div input{ */
+
+table {
+  width: 100%;
+}
+table tr{
+    cursor: pointer;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+::ng-deep.mat-expansion-panel-body{
+  padding: 0px !important;
+}
+tr.example-element-row.mat-row,tr.mat-header-row{
+height:40px !important;
+
+}
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}

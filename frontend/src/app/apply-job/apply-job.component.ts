@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -15,11 +16,15 @@ export class ApplyJobComponent implements OnInit {
   @Output() no_popup: Boolean = true;
   job_post_id: any;
   already_applied: any = [];
-  min_fitment_score_flag: any = [];
+  @Output() min_fitment_score_flag: any = [];
   fitment_score: any;
+  manager_agreed: any;
   constructor(private _snackBar: MatSnackBar, private skill_service: EmployeeSkillMappingService, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<ApplyJobComponent>, ) { };
 
   ngOnInit() {
+    this.manager_agreed = new FormControl('', [
+      Validators.required
+    ]);
     var jsonObj = JSON.parse(localStorage.currentUser);
     var employee_id = jsonObj.id
     this.mapping_detail['mapping_data'] = this.data["mapping_detail"];
@@ -27,6 +32,7 @@ export class ApplyJobComponent implements OnInit {
     this.skill_service.applyJobCheck(this.job_post_id, employee_id, this.data["mapping_detail"]['fitment_score_percentage'])
       .subscribe(
         response => {
+          console.log(response);
           this.min_fitment_score_flag = response["data"]["min_fitment_score_flag"];
           this.already_applied = response["data"]["already_applied_flag"];
           if (response["data"]["min_fitment_score_flag"].length != 0) {
@@ -42,7 +48,7 @@ export class ApplyJobComponent implements OnInit {
   apply_job() {
     var jsonObj = JSON.parse(localStorage.currentUser);
     var employee_id = jsonObj.id
-    this.skill_service.applyJob(this.job_post_id, employee_id)
+    this.skill_service.applyJob(this.job_post_id, employee_id, this.manager_agreed.value)
       .subscribe(
         response => {
           this.dialogRef.close();

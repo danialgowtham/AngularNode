@@ -1,0 +1,543 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" matTooltip="Create RRF"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span *ngIf="view_type=='add';else rrf_edit_span">RRF Creation</span>
+        <ng-template #rrf_edit_span>
+          <span>RRF Edit</span>
+        </ng-template>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z3">
+      <div *ngIf="view_type=='edit'" class="d-flex justify-content-end mg-b-5">
+        <span class="cursor-pointer mg-l-10 tx-primary" (click)="go_back()"><i class="fa fa-arrow-left"></i>Back</span>
+      </div>
+      <app-employee-detail [employee_detail]="employee_detail"></app-employee-detail>
+      <div class="">
+        <form [formGroup]="form_data" (ngSubmit)="onSubmit()">
+          <div class="form-layout form-layout-2 mg-t-10 pd-b-10 border">
+            <div class="mg-t-10 mg-b-5">
+              <span class="slim-card-title pd-l-10">RRF Detail</span>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-3">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Unit:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Unit</mat-label>
+                    <mat-select formControlName="unit" placeholder="Select Unit">
+                      <mat-option *ngFor="let unit of rrf_field_value?.unit" [value]="unit.id">
+                        {{unit.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.unit.hasError('required')">
+                      Unit is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class border-0">
+                  <label class="form-control-label tx-bold">Practice:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Practice</mat-label>
+                    <mat-select formControlName="practice" placeholder="Select Practice">
+                      <mat-option *ngFor="let practice of practices" [value]="practice?.id">
+                        {{practice.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.practice.hasError('required')">
+                      Practice is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3 mg-t--1 mg-md-t-0">
+                <div class="form-group filter_class mg-md-l--1 border-0">
+                  <label class="form-control-label tx-bold">Sub Practice:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Sub Practice</mat-label>
+                    <mat-select formControlName="sub_practice" placeholder="Select Sub Practice">
+                      <mat-option *ngFor="let sub_practice of sub_practices" [value]="sub_practice?.id">
+                        {{sub_practice.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.sub_practice.hasError('required')">
+                      Sub Practice is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Employee Band:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Band</mat-label>
+                    <mat-select formControlName="band" placeholder="Select Band">
+                      <mat-option *ngFor="let band of rrf_field_value?.band" [value]="band.name">
+                        {{band.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.band.hasError('required')">
+                      Band is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Sub Band:<span class="tx-danger">*</span></label>
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Select Sub Band</mat-label>
+                  <mat-select placeholder="Select Sub Band" [(ngModel)]="status">
+                    <mat-option *ngFor="let value of ticket_status" [value]="value">{{value}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form_data.controls.status.hasError('required')">
+                    Sub Band is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div> -->
+              <!-- <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Role:<span class="tx-danger">*</span></label>
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Select Role</mat-label>
+                  <mat-select placeholder="Select Role" [(ngModel)]="status">
+                  </mat-select>
+                  <mat-error *ngIf="form_data.controls.status.hasError('required')">
+                    Role is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div> -->
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Reporting Manager Name:<span
+                      class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Reporting Manager Name</mat-label>
+                    <input formControlName="manager_id" type="text" (keyup)="update_employee_list($event)" matInput
+                      [matAutocomplete]="manager">
+                    <mat-autocomplete #manager="matAutocomplete" id="manager" [displayWith]="displayFn.bind(this)">
+                      <mat-option *ngFor="let key of Object.keys(filtered_manager_list)"
+                        [value]="filtered_manager_list[key]['id'].toString()">
+                        {{filtered_manager_list[key]["employee_name"]}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="form_data.controls.manager_id.hasError('required')">
+                      Reporting Manager Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3 mg-t--1 mg-md-t-0">
+                <div class="form-group filter_class mg-md-l--1 border-0">
+                  <label class="form-control-label tx-bold">Customer Type:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Customer Type</mat-label>
+                    <mat-select formControlName="customer_type" placeholder="Select Customer Type">
+                      <!-- <mat-option *ngFor="let value of priority" [value]="value">{{value}}</mat-option> -->
+                      <mat-option value="Internal">Internal</mat-option>
+                      <mat-option value="External">External</mat-option>
+                      <mat-option value="Both">Both</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.customer_type.hasError('required')">
+                      Customer Type is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Customer Name:</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Customer Name</mat-label>
+                    <mat-select formControlName="customer_name" placeholder="Select Customer Name">
+                      <mat-option *ngFor="let customer of rrf_field_value?.customer" [value]="customer.id.toString()">
+                        {{customer.customer_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.customer_name.hasError('required')">
+                      Customer Name To is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Project:</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Project</mat-label>
+                    <mat-select formControlName="project" placeholder="Select Project">
+                      <mat-option *ngFor="let project of projects" [value]="project.id.toString()">
+                        {{project.project_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.project.hasError('required')">
+                      Project is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Billable:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Billable</mat-label>
+                    <mat-select formControlName="billable" placeholder="Select Billable">
+                      <mat-option value="Yes">Yes</mat-option>
+                      <mat-option value="No">No</mat-option>
+                      <!-- <mat-option *ngFor="let value of ticket_status" [value]="value">{{value}}</mat-option> -->
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.billable.hasError('required')">
+                      Billable is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Duration:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Duration</mat-label>
+                    <mat-select formControlName="duration" placeholder="Select Duration">
+                      <mat-option value="3 Month">3 Month</mat-option>
+                      <mat-option value="6 Month">6 Month</mat-option>
+                      <mat-option value="12 Month">12 Month</mat-option>
+                      <mat-option value="Long Term">Long Term</mat-option>
+                      <!-- <mat-option *ngFor="let value of ticket_status" [value]="value">{{value}}</mat-option> -->
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.duration.hasError('required')">
+                      Duration is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Base Location:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Base Location</mat-label>
+                    <mat-select formControlName="base_location" placeholder="Select Base Location">
+                      <mat-option *ngFor="let base_location of rrf_field_value?.base_location"
+                        [value]="base_location.id.toString()">
+                        {{base_location.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.base_location.hasError('required')">
+                      Base Location is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Work Location:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Work Location</mat-label>
+                    <mat-select formControlName="work_location" placeholder="Select Work Location">
+                      <mat-option *ngFor="let work_location of rrf_field_value?.work_location"
+                        [value]="work_location.name">
+                        {{work_location.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.work_location.hasError('required')">
+                      Work Location is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="work_location_sub_list.length>0">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Sub Work Location:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Sub Work Location</mat-label>
+                    <mat-select formControlName="sub_work_location" placeholder="Select Sub Work Location">
+                      <mat-option *ngFor="let work_location of work_location_sub_list" [value]="work_location.name">
+                        {{work_location.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.sub_work_location.hasError('required')">
+                      Sub Work Location is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Interview Rounds:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Interview Rounds</mat-label>
+                    <input formControlName="interview_round" maxlength="1" class="form-control wd-100p-force border-0"
+                      (keypress)="keyPress($event)" matInput>
+                    <!-- <mat-select placeholder="Select Interview Rounds" [(ngModel)]="status"> -->
+                    <!-- <mat-option *ngFor="let value of ticket_status" [value]="value">{{value}}</mat-option> -->
+                    <!-- </mat-select> -->
+                    <mat-error *ngIf="form_data.controls.interview_round.hasError('required')">
+                      Interview Rounds is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Salary:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Salary</mat-label>
+                    <input formControlName="salary" class="form-control wd-100p-force border-0" matInput>
+                    <mat-error *ngIf="form_data.controls.salary.hasError('required')">
+                      Salary is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">On Boarding Date:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter On Boarding Date</mat-label>
+                    <input formControlName="start_date" [matDatepicker]="picker" [min]="minDate" readonly
+                      class="form-control wd-100p-force border-0" matInput>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+                    <mat-error *ngIf="form_data.controls.start_date.hasError('required')">
+                      On Boarding Date is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Billing Start Date:</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Billing Start Date</mat-label>
+                    <input formControlName="billing_start_date" [matDatepicker]="picker1"
+                      [min]="form_data.controls.start_date.value?form_data.controls.start_date.value:minDate" readonly
+                      class="form-control wd-100p-force border-0" matInput>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #picker1></mat-datepicker>
+                    <mat-error *ngIf="form_data.controls.billing_start_date.hasError('required')">
+                      Billing Start Date is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Billing End Date:</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Billing End Date</mat-label>
+                    <input formControlName="billing_end_date" [matDatepicker]="picker2"
+                      [min]="form_data.controls.billing_start_date.value?form_data.controls.billing_start_date.value:minDate"
+                      readonly class="form-control wd-100p-force border-0" matInput>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #picker2></mat-datepicker>
+                    <mat-error *ngIf="form_data.controls.billing_end_date.hasError('required')">
+                      Billing End Date is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Source</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Source</mat-label>
+                    <input formControlName="source" class="form-control wd-100p-force border-0" matInput>
+                    <mat-error *ngIf="form_data.controls.source.hasError('required')">
+                      Source is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Number of Opening</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Number of Opening</mat-label>
+                    <input (keypress)="keyPress($event)" formControlName="no_of_position"
+                      class="form-control wd-100p-force border-0" matInput>
+                    <mat-error *ngIf="form_data.controls.no_of_position.hasError('required')">
+                      Number of Opening is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3 mg-t--1 mg-md-t-0">
+                <div class="form-group filter_class mg-md-l--1 border-0">
+                  <label class="form-control-label tx-bold">Customer Interview:<span class="tx-danger">*</span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Select Customer Interview</mat-label>
+                    <mat-select formControlName="customer_interview" placeholder="Select Customer Interview">
+                      <mat-option value="Yes">Yes</mat-option>
+                      <mat-option value="No">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form_data.controls.customer_interview.hasError('required')">
+                      Customer Interview is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3 mg-t--1 mg-md-t-0">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                  <label class="form-control-label tx-bold">Customer JD<span class="mg-l-10 tx-danger">Only PDF/Doc
+                  </span></label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Choose Customer Job Description</mat-label>
+                    <ngx-mat-file-input class="cursor-pointer" placeholder="Choose Customer Job Description"
+                      formControlName="customer_job_description">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="form_data.get('customer_job_description').hasError('maxContentSize')">
+                      File size must be less than
+                      {{form_data.get('customer_job_description')?.getError('maxContentSize').maxSize | byteFormat}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                  <label class="form-control-label tx-bold">Notes/JD:</label>
+                  <mat-form-field class="col-12 pd-0" appearance="outline">
+                    <mat-label>Enter Notes/JD</mat-label>
+                    <textarea formControlName="note" rows="3" matInput placeholder="Enter Notes"></textarea>
+                    <mat-error *ngIf="form_data.controls.note.hasError('required')">
+                      Notes is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="mg-t-10 mg-b-5">
+                <span class="slim-card-title pd-l-10">Interview Panel</span>
+              </div>
+              <div class="row no-gutters" formArrayName="interview_panel">
+                <div class="col-md-3" *ngFor="let item of interview_round_array; let i = index">
+                  <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                    <label class="form-control-label tx-bold">Level {{i+1}}<span class="tx-danger">*</span></label>
+                    <angular2-multiselect [formControlName]="i" [data]="employee_list" [settings]="settings">
+                    </angular2-multiselect>
+                    <mat-error *ngIf="interview_error_message">
+                      Interviewer is <strong>required</strong>
+                    </mat-error>
+                    <!-- <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Employee</mat-label>
+                      <mat-select placeholder="Select Employee" [formControlName]="i" multiple>
+                        <mat-option *ngFor="let employee of rrf_field_value?.employees" [value]="employee.id">
+                          {{employee.employee_name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="mg-t-10 mg-b-5">
+                <span class="slim-card-title pd-l-10">Job Description</span>
+              </div>
+              <div class="row no-gutters">
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <label class="form-control-label tx-bold">Role Band:<span class="tx-danger">*</span></label>
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Band</mat-label>
+                      <mat-select formControlName="role_band" placeholder="Select Band">
+                        <mat-option *ngFor="let band of rrf_field_value?.band" [value]="band.name">
+                          {{band.name}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form_data.controls.band.hasError('required')">
+                        Band is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                    <label class="form-control-label tx-bold">Role<span class="tx-danger">*</span></label>
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Role</mat-label>
+                      <mat-select formControlName="role" placeholder="Select Role">
+                        <mat-option *ngFor="let role of roles" [value]="role.role">
+                          {{role.role}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form_data.controls.role.hasError('required')">
+                        Role is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                    <label class="form-control-label tx-bold">Job Code<span class="tx-danger">*</span></label>
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Job Code</mat-label>
+                      <mat-select formControlName="job_code" placeholder="Select Job Code">
+                        <mat-option *ngFor="let job_code of job_codes" [value]="job_code?.id.toString()">
+                          {{job_code.job_code}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form_data.controls.job_code.hasError('required')">
+                        Job Code is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                    <label class="form-control-label tx-bold"> Minimum Fitment Score</label>
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Minimum Fitment Score</mat-label>
+                      <input formControlName="minimum_fitment_score" class="form-control wd-100p-force border-0"
+                        matInput>
+                      <mat-error *ngIf="form_data.controls.minimum_fitment_score.hasError('required')">
+                        Minimum Fitment Score is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div *ngIf="show_table" class="pd-0-force mg-10 wd-100p section-wrapper">
+                  <table mat-table [dataSource]="mapping_detail" class=" wd-100p">
+                    <ng-container matColumnDef="checked">
+                      <th mat-header-cell *matHeaderCellDef class="text-center"> Check </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <mat-checkbox color="primary" [(ngModel)]="element.checked"
+                          [ngModelOptions]="{standalone: true}" (change)="updateJobDetail()">
+                        </mat-checkbox>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="competency_name">
+                      <th mat-header-cell *matHeaderCellDef> Competency </th>
+                      <td mat-cell *matCellDef="let element">
+                        <span> {{element.competency_name}}</span>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="skill_name">
+                      <th mat-header-cell *matHeaderCellDef> Skill </th>
+                      <td mat-cell *matCellDef="let element"> {{element.skill_name}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mg-t-15">
+            <button mat-raised-button color="primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

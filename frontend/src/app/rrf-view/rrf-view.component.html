@@ -1,0 +1,342 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" matTooltip="View RRF"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span *ngIf="!rrf_approve;else rrf_approve_span">RRF View</span>
+        <ng-template #rrf_approve_span>
+          <span>RRF Approve</span>
+        </ng-template>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z3">
+      <div class="d-flex justify-content-end mg-b-5">
+        <span class="cursor-pointer mg-l-10 tx-primary" (click)="go_back()"><i class="fa fa-arrow-left"></i>Back</span>
+      </div>
+      <app-employee-detail [employee_detail]="employee_detail"></app-employee-detail>
+      <div class="">
+        <!-- <form [formGroup]="form_data" (ngSubmit)="onSubmit()"> -->
+        <div class="form-layout form-layout-2 mg-t-10 pd-b-10 border">
+          <div class="mg-t-10 mg-b-5">
+            <span class="slim-card-title pd-l-10">RRF Detail</span>
+          </div>
+          <div class="row no-gutters">
+            <div class="col-md-3">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">RRF ID:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.rrf_code}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                <label class="form-control-label tx-bold">Unit:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.unit_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class border-0">
+                <label class="form-control-label tx-bold">Practice:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.practice_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3 mg-t--1 mg-md-t-0">
+              <div class="form-group filter_class mg-md-l--1 border-0">
+                <label class="form-control-label tx-bold">Sub Practice:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.sub_practice_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Band:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.band}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Reporting Manager:</label>
+                <span class="text-secondary">
+                  {{manager_detail?.employee_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3 mg-t--1 mg-md-t-0">
+              <div class="form-group filter_class mg-md-l--1 border-0">
+                <label class="form-control-label tx-bold">Customer Type:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.customer_type}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Customer Name:</label>
+                <span class="text-secondary">
+                  {{customer_project?.customer_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Project:</label>
+                <span class="text-secondary">
+                  {{customer_project?.project_name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Billable:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.billable}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Duration:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.duration}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Base Location:</label>
+                <span class="text-secondary">
+                  {{base_location?.name}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Work Location:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.work_location}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Sub Work Location:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.sub_work_location}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Interview Rounds:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.interview_round}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Salary:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.salary}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">On Boarding Date:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.start_date | date : "dd-MM-yyyy"}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Billing Start Date:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.billing_start_date | date : "dd-MM-yyyy"}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Billing End Date:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.billing_end_date | date : "dd-MM-yyyy"}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Source</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.source}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">No of Opening</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.no_of_position}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Notes?JD:</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.note}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <div class="mg-t-10 mg-b-10">
+              <span class="slim-card-title pd-l-10">Interview Panel</span>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-8 pd-l-10-force ">
+                <table mat-table [dataSource]="dataSource" class="wd-100p section-wrapper">
+                  <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef class="wd-20p"> Level </th>
+                    <td mat-cell *matCellDef="let element;let i = index;"> Level {{i+1}} </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="employee_name">
+                    <th mat-header-cell *matHeaderCellDef> Interviewer Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employee_name}} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <div class="mg-t-10 mg-b-5">
+              <span class="slim-card-title pd-l-10">Job Description</span>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-md-3">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Role</label>
+                  <span class="text-secondary">
+                    {{rrf_detail?.role}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold">Job Code</label>
+                  <span class="text-secondary">
+                    {{rrf_detail?.job_code_name}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group bd-t-0-force filter_class pd-b-0-force border-0">
+                  <label class="form-control-label tx-bold"> Minimum Fitment Score</label>
+                  <span class="text-secondary">
+                    {{rrf_detail?.minimum_fitment_score}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-8 pd-l-10-force mg-t-10">
+                <table mat-table [dataSource]="job_detail" class="section-wrapper wd-100p">
+                  <ng-container matColumnDef="competency_name">
+                    <th mat-header-cell *matHeaderCellDef class="wd-50p"> Competency </th>
+                    <td mat-cell *matCellDef="let element">
+                      <span> {{element.competency_name}}</span>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="skill_name">
+                    <th mat-header-cell *matHeaderCellDef class="wd-40p"> Skill </th>
+                    <td mat-cell *matCellDef="let element"> {{element.skill_name}} </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsJob"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsJob;"></tr>
+                </table>
+                <mat-paginator #job_detail_paginator class="wd-100p border border-top-0"
+                  [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="view_type!='view'  && rrf_detail?.status!='RMG Approved'">
+            <hr class="mg-b-5-force">
+            <form [formGroup]="form_data">
+              <div class="form-group border-0">
+                <div class="row no-gutters">
+                  <div *ngIf="view_type=='rmg'" class="col-md-3">
+                    <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                      <label class="form-control-label tx-bold">With Internal Job Post</label>
+                      <mat-form-field class="col-12 pd-0" appearance="outline">
+                        <mat-label>Select With Internal Job Post</mat-label>
+                        <mat-select formControlName="with_internal_job" placeholder="Select With Internal Job Post">
+                          <mat-option value="Yes">Yes</mat-option>
+                          <mat-option value="No">No</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form_data.controls.with_internal_job.hasError('required')">
+                          With Internal Job Post is <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div *ngIf="view_type=='rmg'" class="col-md-3">
+                    <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                      <label class="form-control-label tx-bold">Internal Job Post End Date</label>
+                      <mat-form-field class="col-12 pd-0" appearance="outline">
+                        <mat-label>Select Date</mat-label>
+                        <input formControlName="ijp_end_date" [matDatepicker]="picker" [min]="minDate" readonly
+                          class="form-control wd-100p-force border-0" matInput>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+                        <mat-error *ngIf="form_data.controls.ijp_end_date.hasError('required')">
+                          Internal Job Post End Date is <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                      <label class="form-control-label tx-bold">Reject Reason</label>
+                      <mat-form-field class="col-12 pd-0" appearance="outline">
+                        <mat-label>Enter Reason</mat-label>
+                        <textarea formControlName="reject_reason" rows="4" matInput
+                          placeholder="Enter Notes"></textarea>
+                        <mat-error *ngIf="form_data.controls.reject_reason.hasError('required')">
+                          Reason is <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center mg-t-15 mg-b-10">
+                    <button mat-raised-button (click)="submit_approve('approve')" color="primary">Approve</button>
+                    <button mat-raised-button (click)="submit_approve('reject')" color="warn"
+                      class="mg-l-10-force">Reject</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="rrf_detail?.status=='RMG Approved'">
+            <app-rrf-rmg-activity [view_type]="view_type" [rrf_id]="rrf_id" [rrf_detail]="rrf_detail">
+            </app-rrf-rmg-activity>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

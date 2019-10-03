@@ -3,8 +3,6 @@ import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.
 import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EmployeeViewPopupComponent } from '../employee-view-popup/employee-view-popup';
-import { TopmenuService } from "../shared/top-menu.subject";
-import { LoaderService } from "../shared/loader.subject"
 
 
 @Component({
@@ -23,11 +21,9 @@ export class EmployeeSearchComponent implements OnInit {
   filtered_role_list: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['employee_name', 'unit', 'band', 'action'];
-  constructor(private loader_subject: LoaderService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) {
+  constructor( private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) {
   }
   ngOnInit() {
-    this.loader_subject.setLoader(true);
-    this.topmenu_service.setActiveTab("rmg");
     this.skill_service.getEmployeeSkillMappingList({})
       .subscribe(
         response => {
@@ -54,9 +50,6 @@ export class EmployeeSearchComponent implements OnInit {
       .subscribe(() => {
         this.update_skill();
       });
-  }
-  ngAfterViewInit() {
-    this.loader_subject.setLoader(false);
   }
   openEmployeeSkill(employee_id) {
     this.dialog.closeAll();
@@ -91,7 +84,6 @@ export class EmployeeSearchComponent implements OnInit {
     })
   }
   filter_employees() {
-    console.log(this.formdata.value.skill)
     if (this.formdata.value.employee || this.formdata.value.skill || this.formdata.value.role) {
       this.skill_service.getEmployeeSkillMappingList(this.formdata.value)
         .subscribe(

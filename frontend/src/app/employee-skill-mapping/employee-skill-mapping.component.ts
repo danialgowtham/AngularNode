@@ -2,8 +2,6 @@ import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeSkillMappingService } from '../services/employee_skill_mapping.service';
 import { PopupModalComponent } from '../popup-modal/popup-modal';
-import { LoaderService } from '../shared/loader.subject';
-import { TopmenuService } from "../shared/top-menu.subject";
 import { PushNotificationService } from "../services/push_notification.service";
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 
@@ -36,11 +34,9 @@ export class EmployeeSkillMappingComponent implements OnInit {
   show_edit: Boolean = false;
   temp_skill = {};
   displayedColumns: string[] = ['practice', 'compentency', 'skill', 'experience', 'worked_in_last_two_year'];
-  constructor(private push_notification_service: PushNotificationService, private topmenu_service: TopmenuService, private loader_subject: LoaderService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
+  constructor(private push_notification_service: PushNotificationService, private skill_service: EmployeeSkillMappingService, private router: Router, public dialog: MatDialog) { this.rowList = [] }
 
   ngOnInit() {
-    this.topmenu_service.setActiveTab("employee");
-    this.loader_subject.setLoader(true);
     this.view_skill_show();
     this.onAddNew();
     var jsonObj = JSON.parse(localStorage.currentUser);
@@ -56,9 +52,6 @@ export class EmployeeSkillMappingComponent implements OnInit {
           }
         }
       );
-  }
-  ngAfterViewInit() {
-    this.loader_subject.setLoader(false);
   }
 
   view_skill_show() {
@@ -126,14 +119,12 @@ export class EmployeeSkillMappingComponent implements OnInit {
     }
     var jsonObj = JSON.parse(localStorage.currentUser);
     var data = { "band_name": jsonObj.band_name, "employee_id": jsonObj.id, "data": this.submit_data, "updated_data": this.updated_skill_list };
-    this.loader_subject.setLoader(true);
     this.skill_service.saveCompetencyMapping(data)
       .subscribe(
         response => {
           this.push_notification_service.emitEventOnEmployeeSkillSubmit({ "show_employee_id": jsonObj.manager, "first_name": jsonObj.first_name });
           this.router.navigateByUrl('/employee_skill_view', { skipLocationChange: true }).then(() => {
             this.router.navigate(["employee_skill"]);
-            this.loader_subject.setLoader(false)
           });
         }
       );

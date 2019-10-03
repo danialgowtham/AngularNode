@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule, MatIconModule, MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
+import { MatListModule, MatSnackBarModule, MatIconModule, MatProgressSpinnerModule, MatSortModule, MatBadgeModule, MatTooltipModule, MatBottomSheetModule, MatDialogModule, MatTabsModule, MatAutocompleteModule, MatGridListModule, MatTableModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatCheckboxModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -20,7 +20,7 @@ import { UserloginComponent } from './userlogin/userlogin.component';
 
 import { AuthGuard } from './guards';
 import { AlertService, AuthenticationService, RedirectService } from './services';
-import { JwtInterceptor, ErrorInterceptor } from './helpers';
+import { JwtInterceptor, ErrorInterceptor, LoaderInterceptor } from './helpers';
 import { AlertComponent } from './directives';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -70,6 +70,28 @@ import { ApplyJobComponent } from './apply-job/apply-job.component';
 import { AppliedJobListComponent } from './applied-job-list/applied-job-list.component';
 import { InternalJobViewComponent } from './internal-job-view/internal-job-view.component';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
+import { RrfCreationComponent } from './rrf-creation/rrf-creation.component';
+import { RrfListComponent } from './rrf-list/rrf-list.component';
+import { RrfViewComponent } from './rrf-view/rrf-view.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { RrfRmgActivityComponent } from './rrf-rmg-activity/rrf-rmg-activity.component';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { InterviewScheduleComponent } from './interview-schedule/interview-schedule.component';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { IofListComponent } from './iof-list/iof-list.component';
+import { TechnicalIofComponent } from './technical-iof/technical-iof.component';
+import { HrRrfApproveListComponent } from './hr-rrf-approve-list/hr-rrf-approve-list.component';
+import { HrRrfApproveComponent } from './hr-rrf-approve/hr-rrf-approve.component';
+import { TechnicalIofViewComponent } from './technical-iof-view/technical-iof-view.component';
+import { HrRrfApproveViewComponent } from './hr-rrf-approve-view/hr-rrf-approve-view.component';
+import { RrfReportComponent } from './rrf-report/rrf-report.component';
+import { CandidateLoginComponent } from './candidate-login/candidate-login.component';
+import { CandidateFileUploadComponent } from './candidate-file-upload/candidate-file-upload.component';
+import { RrfCandidateApproveComponent } from './rrf-candidate-approve/rrf-candidate-approve.component';
+import { CandidateApproveModal } from './rrf-candidate-approve/rrf-candidate-approve.component';
+import { OfferLetterPreviewModal } from './rrf-rmg-activity/rrf-rmg-activity.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 const appRoutes: Routes = [
   {
@@ -146,6 +168,79 @@ const appRoutes: Routes = [
     component: AppliedJobListComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'rrf_creation',
+    component: RrfCreationComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_edit',
+    component: RrfCreationComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_request_list',
+    component: RrfListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_approve_list',
+    component: RrfListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_rmg_list',
+    component: RrfListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_view',
+    component: RrfViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_approve',
+    component: RrfViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'iof_list',
+    component: IofListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'hr_rrf_approve_list',
+    component: HrRrfApproveListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_report',
+    component: RrfReportComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_candidate_approve_hr',
+    component: RrfCandidateApproveComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_candidate_approve_buh',
+    component: RrfCandidateApproveComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rrf_candidate_approve_rmg',
+    component: RrfCandidateApproveComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'candidate_login',
+    component: CandidateLoginComponent,
+  },
+  {
+    path: 'candidate_file_upload',
+    component: CandidateFileUploadComponent,
+  },
   { path: '**', redirectTo: '/login' },
 ];
 
@@ -165,6 +260,7 @@ const appRoutes: Routes = [
     EmployeeJobSearchComponent,
     EmployeeJobViewComponent,
     Popup,
+    CandidateApproveModal,
     EmployeeViewPopupComponent,
     EmployeeDetailComponent,
     EmployeeSearchComponent,
@@ -181,7 +277,23 @@ const appRoutes: Routes = [
     InternalJobEditComponent,
     ApplyJobComponent,
     AppliedJobListComponent,
-    InternalJobViewComponent
+    InternalJobViewComponent,
+    RrfCreationComponent,
+    RrfListComponent,
+    RrfViewComponent,
+    RrfRmgActivityComponent,
+    InterviewScheduleComponent,
+    IofListComponent,
+    TechnicalIofComponent,
+    HrRrfApproveListComponent,
+    HrRrfApproveComponent,
+    TechnicalIofViewComponent,
+    HrRrfApproveViewComponent,
+    RrfReportComponent,
+    CandidateLoginComponent,
+    CandidateFileUploadComponent,
+    RrfCandidateApproveComponent,
+    OfferLetterPreviewModal
   ],
   imports: [
     BrowserModule,
@@ -202,6 +314,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     NgbModule,
     MatBottomSheetModule,
+    MatListModule,
     MatDialogModule,
     MatTabsModule,
     MatTooltipModule,
@@ -218,10 +331,16 @@ const appRoutes: Routes = [
     ToasterModule,
     ScrollDispatchModule,
     NgSelectModule,
+    AngularMultiSelectModule,
     MatSelectInfiniteScrollModule,
+    MaterialFileInputModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    PdfViewerModule,
+    FlatpickrModule.forRoot(),
     UserIdleModule.forRoot({ idle: 900, timeout: 1, ping: 1 })
   ],
-  entryComponents: [Popup, InternalJobViewComponent, ApplyJobComponent, EmployeeDetailComponent, EmployeeViewPopupComponent, SkillList, PopupModalComponent],
+  entryComponents: [OfferLetterPreviewModal, CandidateApproveModal, Popup, HrRrfApproveViewComponent, TechnicalIofViewComponent, HrRrfApproveComponent, TechnicalIofComponent, InterviewScheduleComponent, InternalJobViewComponent, ApplyJobComponent, EmployeeDetailComponent, EmployeeViewPopupComponent, SkillList, PopupModalComponent],
   providers: [
     AuthGuard,
     AlertService,
@@ -232,6 +351,7 @@ const appRoutes: Routes = [
     PushNotificationService,
     TopmenuService,
     // {provide: 'rootVar', useValue: 'hello'},
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

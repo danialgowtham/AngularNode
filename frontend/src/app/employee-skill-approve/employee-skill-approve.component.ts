@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { Router, ActivatedRoute } from '@angular/router';
-import { TopmenuService } from "../shared/top-menu.subject";
 import { PushNotificationService } from "../services/push_notification.service";
 
 @Component({
@@ -18,10 +17,9 @@ export class EmployeeSkillApproveComponent implements OnInit {
   roles: any;
   role_error: Boolean = false;
   current_role: any;
-  constructor(private push_notification_service: PushNotificationService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private push_notification_service: PushNotificationService, private skill_service: EmployeeSkillMappingService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.topmenu_service.setActiveTab("manager");
     if (this.route.snapshot.params.employee_id) {
       this.employee_id = this.route.snapshot.params.employee_id;
     }

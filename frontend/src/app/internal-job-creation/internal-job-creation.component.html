@@ -15,7 +15,7 @@
       <form [formGroup]="formdata">
         <div class="">
           <div class="row mg-1">
-            <div class="col-lg-2 pd-0 pd-r-10-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
               <mat-form-field>
                 <mat-select formControlName="unit" #unit placeholder="Select Unit" id="unit"
                   (selectionChange)="clearAllSelected()">
@@ -24,9 +24,12 @@
                     {{unit?.name}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="!this.formdata[unit]?.valid">
+                  Unit is Required
+                </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-lg-2 pd-r-10-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
               <mat-form-field>
                 <mat-select formControlName="band" #band placeholder="Select Band" id="band"
                   (selectionChange)="get_roles()">
@@ -35,9 +38,12 @@
                     {{band}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="!this.formdata[band]?.valid">
+                    Band is Required
+                  </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-lg-3 pd-r-10-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
               <mat-form-field>
                 <mat-select formControlName="role" #role placeholder="Select Role" id="role"
                   (selectionChange)="get_job_codes()">
@@ -46,9 +52,12 @@
                     {{role.role}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="!this.formdata[role]?.valid">
+                    Role is Required
+                  </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-lg-2 pd-r-10-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
               <mat-form-field>
                 <mat-select formControlName="job_code" #job_code placeholder="Job Code" id="job_code"
                   (selectionChange)="get_job_detail()">
@@ -57,14 +66,40 @@
                     {{job_code.job_code}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="!this.formdata[job_code]?.valid">
+                    Job Code is Required
+                  </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-lg-2 pd-l-20-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
               <mat-form-field class="example-full-width">
-                <input matInput formControlName="min_fitment_score" #min_fitment_score placeholder="Minimum Fitment Score">
+                <input (keypress)="keyPress($event)" matInput formControlName="min_fitment_score" #min_fitment_score
+                  placeholder="Minimum Fitment Score">
+                  <mat-error *ngIf="!this.formdata[min_fitment_score]?.valid">
+                      Minimum Fitment Score should be less than 100
+                    </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-lg-1 pd-l-20-force">
+            <div class="col-lg-3 pd-0 pd-r-10-force">
+              <mat-form-field class="example-full-width">
+                <input matInput formControlName="job_location" placeholder="Job Location">
+                <mat-error *ngIf="!this.formdata[job_location]?.valid">
+                    Job Location is Required
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 pd-0 pd-r-10-force">
+              <mat-form-field class="example-full-width">
+                <input [max]="maxDate" [min]="minDate" readonly matInput formControlName="job_post_end_date"
+                  placeholder="Valid Till" [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="!this.formdata[job_post_end_date]?.valid">
+                    Valid Till is Required
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 text-right pd-l-20-force">
               <button mat-raised-button color="primary" (click)="post_job()"
                 [disabled]="formdata.status != 'VALID'">Post</button>
             </div>

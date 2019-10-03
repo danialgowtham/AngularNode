@@ -1,0 +1,129 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force"
+          matTooltip="Manager can view list of RRF raised"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>RRF Candidate Approve List</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z8">
+      <div class="section-wrapper pd-0 mg-t-20">
+        <table multiTemplateDataRows mat-table (mouseleave)="expandedElement = null" [dataSource]="rrf_list_data">
+
+          <ng-container matColumnDef="rrf_id">
+            <th mat-header-cell *matHeaderCellDef> RRF ID </th>
+            <td mat-cell *matCellDef="let element"> {{element?.rrf_code}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="requested_by">
+            <th mat-header-cell *matHeaderCellDef> Requested By </th>
+            <td mat-cell *matCellDef="let element"> {{employee_data[element?.created_by]["employee_name"]}} </td>
+          </ng-container>
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef> Unit </th>
+            <td mat-cell *matCellDef="let element"> {{element?.unit}} </td>
+          </ng-container>
+          <ng-container matColumnDef="band">
+            <th mat-header-cell *matHeaderCellDef> Band </th>
+            <td mat-cell *matCellDef="let element"> {{element?.band}} </td>
+          </ng-container>
+          <ng-container matColumnDef="candidate_name">
+            <th mat-header-cell *matHeaderCellDef> Candidate Name </th>
+            <td mat-cell *matCellDef="let element"> {{element?.candidate_detail?.candidate_name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Role </th>
+            <td mat-cell *matCellDef="let element"> {{element?.role}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element?.candidate_detail?.status }} </td>
+          </ng-container>
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+              <div class="example-element-detail"
+                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="example-element-description row pd-l-0-force wd-100p">
+                  <div class="col-md-3">
+                    <span class="tx-medium tx-13">Experience Letter</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let experience_letter of element?.candidate_detail?.candidate_documents?.experience_letter;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+experience_letter" target="_blank" download>
+                        <span class="">
+                          Experience Leter {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="tx-medium tx-13">Degree Certificates</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.degree_certificates;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+degree_certificates" target="_blank" download>
+                        <span class="">
+                          Degree Certificate {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="tx-medium tx-13">Bank Statement</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.bank_statement;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+bank_statement" target="_blank" download>
+                        <span class="">
+                          Bank Statement {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="tx-medium tx-13">Payslips</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.payslips;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+payslips" target="_blank" download>
+                        <span class="">
+                          Payslip {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3 mg-t-10">
+                    <span class="tx-medium tx-13">Others</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.others;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+others" target="_blank" download>
+                        <span class="">
+                          Other {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td class="text-center wd-10 cursor-pointer tx-15" mat-cell *matCellDef="let element">
+              <i class="fa fa-edit mg-l-5" (click)="open_competency_popup(element?.candidate_detail?._id)"></i>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element" (mouseenter)="expandedElement = element">
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </div>
+
+    </div>
+  </div>
+</div>

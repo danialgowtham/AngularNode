@@ -15,11 +15,13 @@ var mysql = require('mysql');
 // var connection;
 var db_config =
 {
-  host: "192.168.1.103",
-  user: "ideal2",
-  password: "$$103iDeal@BeTa##",
-  database: "ideal_beta",
-  port: "3306"
+  host: "10.18.1.59",
+  user: "root",
+  password: "",
+  database: "ideal_new",
+  port: "3306",
+  connectionLimit : 1000,
+  multipleStatements: true
 };
 
 var pool = mysql.createPool(db_config);

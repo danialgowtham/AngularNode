@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { LoaderService } from '../shared/loader.subject';
-import { MatDialog } from '@angular/material';
-import { TopmenuService } from "../shared/top-menu.subject";
+import { MatDialog } from '@angular/material'; 
 import { RedirectService } from "../services/redirect";
 import * as XLSX from 'xlsx';
  
@@ -20,12 +18,9 @@ export class InternalJobPostComponent implements OnInit {
   job_detail: any;
   employee_detail: any;
   displayedColumns: string[] = ['role', 'created_by', 'created_on', 'status', 'action'];
-  constructor(private redirect: RedirectService, private loader_subject: LoaderService, private topmenu_service: TopmenuService, private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) { }
+  constructor(private redirect: RedirectService,  private skill_service: EmployeeSkillMappingService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loader_subject.setLoader(true);
-    this.topmenu_service.setActiveTab("rmg");
-
     this.skill_service.getJobPost()
       .subscribe(
         response => {
@@ -39,9 +34,7 @@ export class InternalJobPostComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.job_detail.filter = filterValue.trim().toLowerCase();
   }
-  ngAfterViewInit() {
-    this.loader_subject.setLoader(false);
-  }
+ 
   redirectPage(page_link, job_id) {
     this.redirect.change_page_with_data(page_link, { job_id });
   }

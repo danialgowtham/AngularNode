@@ -90,3 +90,62 @@ exports.getFliteredEmployeeList = async function (req, res, next) {
         res.send(result);
     });
 }
+exports.geRRFCreationDetail = async function (req, res, next) {
+    WebserviceService.geRRFCreationDetail(function (err, result) {
+        if (err)
+            res.send(err);
+        res.send(result);
+    });
+}
+exports.getProject = async function (req, res, next) {
+    WebserviceService.getProject(req.params.customer_id, function (err, result) {
+        if (err)
+            res.send(err);
+        res.send(result);
+    });
+}
+exports.getSubWorkLocations = async function (req, res, next) {
+    WebserviceService.getSubWorkLocations(req.params.location_name, function (err, result) {
+        if (err)
+            res.send(err);
+        res.send(result);
+    });
+}
+exports.getRrfDetail = async function (req, res, next) {
+    WebserviceService.getRrfDetail(req.body, function (err, result) {
+        if (err)
+            res.send(err);
+        var return_data = {};
+        return_data = { ...result };
+        WebserviceService.getEmployeeDetail(req.body["created_by"], function (error, response) {
+            if (error)
+                res.send(err);
+            return_data["employee_detail"] = response;
+            WebserviceService.getEmployeeDetail(req.body["manager_id"], function (error, response) {
+                if (error)
+                    res.send(err);
+                return_data["manager_detail"] = response;
+                res.send(return_data);
+            })
+        })
+    });
+}
+exports.getRRFEditData = async function (req, res, next) {
+    WebserviceService.geRRFCreationDetail(function (err, result) {
+        if (err)
+            res.send(err);
+        var return_data = {};
+        return_data = { ...result };
+        WebserviceService.getProject(req.body["customer_name"], function (error, response) {
+            if (error)
+                res.send(err);
+            return_data["project"] = response;
+            WebserviceService.getSubWorkLocations(req.body["work_location"], function (error, response) {
+                if (error)
+                    res.send(err);
+                return_data["sub_work_location"] = response;
+                res.send(return_data);
+            })
+        })
+    });
+}

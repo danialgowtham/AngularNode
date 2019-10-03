@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
-import * as jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// import * as jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-internal-job-view',
@@ -34,27 +34,27 @@ export class InternalJobViewComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  getBase64Image(img) {
-    var canvas = document.createElement("canvas");
+  // getBase64Image(img) {
+  //   var canvas = document.createElement("canvas");
 
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    console.log(dataURL);
-    return dataURL;
-  }
-  public captureScreen() {
-    html2canvas(document.getElementById('contentToConvert')).then(function (canvas) {
-      var img = canvas.toDataURL("image/png");
-      var imgWidth = 208;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var doc = new jsPDF('p', 'mm', 'a4');
-      var position = 0;
-      doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight)
-      doc.save('Resume.pdf');
-    });
-  }
+  //   canvas.width = img.width;
+  //   canvas.height = img.height;
+  //   var ctx = canvas.getContext("2d");
+  //   ctx.drawImage(img, 0, 0);
+  //   var dataURL = canvas.toDataURL("image/png");
+  //   console.log(dataURL);
+  //   return dataURL;
+  // }
+  // public captureScreen() {
+  //   html2canvas(document.getElementById('contentToConvert')).then(function (canvas) {
+  //     var img = canvas.toDataURL("image/png");
+  //     var imgWidth = 208;
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;
+  //     var doc = new jsPDF('p', 'mm', 'a4');
+  //     var position = 0;
+  //     doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight)
+  //     doc.save('Resume.pdf');
+  //   });
+  // }
 
 }

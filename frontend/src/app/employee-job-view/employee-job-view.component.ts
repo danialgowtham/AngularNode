@@ -12,6 +12,7 @@ export class EmployeeJobViewComponent implements OnInit {
   @Input() mapping_detail: any;
   @Input() view_type: any;
   @Input() no_popup: any;
+  @Input() apply_job_page: any;
   mapping_data: any;
   job_fitment_score: Number = 0;
   employee_search: Boolean = false;
@@ -20,6 +21,7 @@ export class EmployeeJobViewComponent implements OnInit {
   constructor(public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
+    console.log(this.apply_job_page);
     var url = this.router.url.split(";");
     if (this.view_type == "employee") {
       this.employee_search = true;
@@ -62,7 +64,7 @@ export class EmployeeJobViewComponent implements OnInit {
 
   open_competency_popup(definition, description, proficiency_name) {
     this.dialog.closeAll();
-    this.dialog.open(Popup, { closeOnNavigation: true, data: { definition, description, proficiency_name, type: "competency" }, hasBackdrop: true,disableClose: true });
+    this.dialog.open(Popup, { closeOnNavigation: true, data: { definition, description, proficiency_name, type: "competency" }, hasBackdrop: true, disableClose: true });
   }
   ngOnDestroy() {
     this.dialog.closeAll();

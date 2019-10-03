@@ -1,0 +1,15 @@
+<div class="back_button mg-b-10">
+    <h5 class="mg-0-force" mat-dialog-title>Preview Offer Letter</h5>
+    <span class="font-weight-bold"><i class="fa fa-close mg-t-5 tx-20-force text-danger remove_row cursor-pointer"
+            (click)="closeDialog()"></i></span>
+</div>
+<div mat-dialog-content>
+    <div class="border mg-t-10">
+        <pdf-viewer [src]="BACK_END_URL+'/offer_letters/'+data" [original-size]="false"></pdf-viewer>
+        <div class="text-center mg-b-10">
+            <a [href]="BACK_END_URL+'offer_letters/'+data" target="_blank" download>
+                <button class="mg-t-2-force" mat-raised-button color="primary">Download Offer Letter</button>
+            </a>
+        </div>
+    </div>
+</div>

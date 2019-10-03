@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="nav cursor-pointer">
       <li class="nav-item {{tabs?.home}}" ngClass="{{tabs?.home}}">
-        <a class="nav-link" (click)="change_page('/My Profile','employee')">
+        <a class="nav-link" (click)="change_page('/my_profile','home')">
           <i class="icon ion-ios-home"></i>
           <span>Home</span>
         </a>
@@ -17,6 +17,7 @@
             <li><a (click)="change_page('/employee_skill','employee')">Add/Edit/View Skill</a></li>
             <li><a (click)="change_page('/employee_job_mapping','employee')">Role Fitment</a></li>
             <li><a (click)="change_page('/applied_jobs','employee')">Applied Job List</a></li>
+            <li><a (click)="change_page('/iof_list','employee')">IOF Pending List</a></li>
           </ul>
         </div>
       </li>
@@ -29,11 +30,16 @@
           <ul>
             <li><a (click)="change_page('/employee_skill_approve_list','manager')">Approve Skill</a></li>
             <li><a (click)="change_page('/manager_job_mapping','manager')">Reportees Role Fitment</a></li>
+            <li><a (click)="change_page('/rrf_creation','manager')">RRF Creation</a></li>
+            <li><a (click)="change_page('/rrf_request_list','manager')">RRF Requests List</a></li>
+            <li><a (click)="change_page('/rrf_approve_list','manager')">RRF Approve List</a></li>
+            <li><a (click)="change_page('/rrf_candidate_approve_buh','manager')">RRF Candidate Approve List</a></li>
           </ul>
         </div><!-- dropdown-menu -->
       </li>
       <li *ngIf="is_rmg" class="nav-item with-sub {{tabs?.rmg}}">
         <a class="nav-link">
+          <!-- <i class="icon fas fa-users-cog"></i> -->
           <i class="icon fa fa-users mg-r-3"></i>
           <span>RMG</span>
         </a>
@@ -43,8 +49,23 @@
             <li><a (click)="change_page('/employee_search','rmg')">Employee Search</a></li>
             <li><a (click)="change_page('/internal_job_creation','rmg')">Internal Job Creation</a></li>
             <li><a (click)="change_page('/internal_job_list','rmg')">Internal Job List</a></li>
+            <li><a (click)="change_page('/rrf_rmg_list','rmg')">RRF Requests List</a></li>
+            <li><a (click)="change_page('/rrf_report','rmg')">RRF Report</a></li>
+            <li><a (click)="change_page('/rrf_candidate_approve_rmg','hr')">RRF Candidate Approve List</a></li>
           </ul>
         </div><!-- dropdown-menu -->
+      </li>
+      <li class="nav-item with-sub {{tabs?.hr}}" ngClass="{{tabs?.hr}}">
+        <a class="nav-link">
+          <i class="icon fa fa-users mg-r-3"></i>
+          <span>HR</span>
+        </a>
+        <div class="sub-item">
+          <ul>
+            <li><a (click)="change_page('/hr_rrf_approve_list','hr')">Approve RRF</a></li>
+            <li><a (click)="change_page('/rrf_candidate_approve_hr','hr')">RRF Candidate Approve List</a></li>
+          </ul>
+        </div>
       </li>
 
 

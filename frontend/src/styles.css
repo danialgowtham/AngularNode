@@ -4,7 +4,7 @@
 @import url('assets/lib/Ionicons//css/ionicons.css');
 @import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
 @import url('../node_modules/angular5-toaster/src/toaster.css');
-@import "~@ng-select/ng-select/themes/material.theme.css";
-
+@import url('../node_modules/angular2-multiselect-dropdown/themes/default.theme.css');
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 
