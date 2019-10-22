@@ -30,7 +30,7 @@ export class AppComponent {
       //var url = this.router.url.split(";")[0];
       if (localStorage.currentUser) {
         this.authenticationService.logout();
-        this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+        this.router.navigate(['/login']);
       }
     });
     setTimeout(() => {

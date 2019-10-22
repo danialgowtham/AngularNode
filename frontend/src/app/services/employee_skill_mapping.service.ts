@@ -1,4 +1,4 @@
-import { HttpClient, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BACK_END_URL } from '../shared/app.globals';
 import { Observable, Subject } from 'rxjs';
@@ -145,7 +145,10 @@ export class EmployeeSkillMappingService {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/candidate_duplicate_check/` + rrf_id + '/' + email_id);
     }
     getRRFReportList(filter_data) {
-        return this.http.post(BACK_END_URL + `employee_skill_mapping/get_rrf_report_list/`, filter_data);
+        if (filter_data.export)
+            return this.http.post(BACK_END_URL + `employee_skill_mapping/get_rrf_report_list/`, filter_data, { responseType: 'blob' })
+        else
+            return this.http.post(BACK_END_URL + `employee_skill_mapping/get_rrf_report_list/`, filter_data)
     }
     uploadCandidateDocuments(save_data) {
         return this.http.post(BACK_END_URL + `employee_skill_mapping/upload_candidate_document/`, save_data);
@@ -159,8 +162,11 @@ export class EmployeeSkillMappingService {
     saveRRFCandidateApprove(candidate_id, status, approver_id) {
         return this.http.get(BACK_END_URL + `employee_skill_mapping/save_rrf_candidate_approve/` + candidate_id + '/' + status + '/' + approver_id);
     }
-    generateOfferLetter(candidate_id, grand_ctc) {
-        return this.http.post(BACK_END_URL + `employee_skill_mapping/generate_offer_letter/` + candidate_id + '/' + grand_ctc, '');
+    generateOfferLetter(candidate_id, form_data) {
+        return this.http.post(BACK_END_URL + `employee_skill_mapping/generate_offer_letter/` + candidate_id, form_data);
+    }
+    getOrganizationSkillList(filter_data) {
+        return this.http.post(BACK_END_URL + `employee_skill_mapping/get_organization_skill_list/` , filter_data);
     }
 
 }

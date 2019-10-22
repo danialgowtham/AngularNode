@@ -1,3 +1,8 @@
 table {
     width: 100%;
   }
+
+  .filter_class{
+    display: flex;
+    justify-content: flex-end;
+}

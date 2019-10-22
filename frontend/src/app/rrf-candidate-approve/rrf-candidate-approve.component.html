@@ -10,7 +10,14 @@
       </h6>
     </div><!-- slim-pageheader -->
     <div class="section-wrapper mat-elevation-z8">
-      <div class="section-wrapper pd-0 mg-t-20">
+      <div class="filter_class">
+        <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="section-wrapper pd-0 mg-t-5">
         <table multiTemplateDataRows mat-table (mouseleave)="expandedElement = null" [dataSource]="rrf_list_data">
 
           <ng-container matColumnDef="rrf_id">
@@ -73,7 +80,7 @@
                   <div class="col-md-3">
                     <span class="tx-medium tx-13">Bank Statement</span>
                     <li class="text-dark pd-r-0 pd-l-10"
-                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.bank_statement;let index=index">
+                      *ngFor="let bank_statement of element?.candidate_detail?.candidate_documents?.bank_statement;let index=index">
                       <a [href]="BACK_END_URL+'candidate_documents/'+bank_statement" target="_blank" download>
                         <span class="">
                           Bank Statement {{index+1}}
@@ -84,7 +91,7 @@
                   <div class="col-md-3">
                     <span class="tx-medium tx-13">Payslips</span>
                     <li class="text-dark pd-r-0 pd-l-10"
-                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.payslips;let index=index">
+                      *ngFor="let payslips of element?.candidate_detail?.candidate_documents?.payslips;let index=index">
                       <a [href]="BACK_END_URL+'candidate_documents/'+payslips" target="_blank" download>
                         <span class="">
                           Payslip {{index+1}}
@@ -95,10 +102,32 @@
                   <div class="col-md-3 mg-t-10">
                     <span class="tx-medium tx-13">Others</span>
                     <li class="text-dark pd-r-0 pd-l-10"
-                      *ngFor="let degree_certificates of element?.candidate_detail?.candidate_documents?.others;let index=index">
+                      *ngFor="let others of element?.candidate_detail?.candidate_documents?.others;let index=index">
                       <a [href]="BACK_END_URL+'candidate_documents/'+others" target="_blank" download>
                         <span class="">
                           Other {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3 mg-t-10">
+                    <span class="tx-medium tx-13">Candidate Photo</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let candidate_photo of element?.candidate_detail?.candidate_documents?.candidate_photo;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+candidate_photo" target="_blank" download>
+                        <span class="">
+                          Candidate Photo {{index+1}}
+                        </span>
+                      </a>
+                    </li>
+                  </div>
+                  <div class="col-md-3 mg-t-10">
+                    <span class="tx-medium tx-13">CPIF</span>
+                    <li class="text-dark pd-r-0 pd-l-10"
+                      *ngFor="let cpif of element?.candidate_detail?.candidate_documents?.cpif;let index=index">
+                      <a [href]="BACK_END_URL+'candidate_documents/'+cpif" target="_blank" download>
+                        <span class="">
+                          CPIF {{index+1}}
                         </span>
                       </a>
                     </li>

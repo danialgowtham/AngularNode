@@ -11,6 +11,7 @@ var FixedCompetency = require('../models/fixed_competencies.model');
 var JobPost = require('../models/job_posts.model');
 var RrfMaster = require('../models/rrf_master.model');
 var CandidateDetail = require('../models/candidate_detail.model');
+var ConfigurationValue = require("../models/configuration_values.models");
 ObjectId = require('mongoose').Types.ObjectId;
 exports.get_units = async function (parent_id) {
 
@@ -498,9 +499,11 @@ exports.get_job_detail = async function (job_master_id, job_post_id) {
             }
         ]);
         var not_in_ids = [];
-        disselected_job_competency_ids[0].disselected_job_competency.forEach(value => {
-            not_in_ids.push(ObjectId(value));
-        });
+        if (disselected_job_competency_ids) {
+            disselected_job_competency_ids[0].disselected_job_competency.forEach(value => {
+                not_in_ids.push(ObjectId(value));
+            });
+        }
         condition.$match.$and.push({ 'job_competency_mapping._id': { $nin: not_in_ids } });
     }
     return await JobMaster.aggregate(
@@ -1120,16 +1123,16 @@ exports.get_applied_job_post = async function (employee_id) {
 }
 
 exports.create_new_rrf = async function (save_data, created_by) {
+    console.log(save_data)
     if (!save_data.minimum_fitment_score)
         save_data.minimum_fitment_score = "0";
     save_data["created_by"] = created_by;
     save_data["status"] = "Submitted";
-    console.log(save_data);
     var rrf_save_object = new RrfMaster(save_data);
     var save_object = { "created_by": created_by, "rrf_master_id": rrf_save_object._id, "status": "Open", "active": false, "created_on": new Date(), "job_code_id": save_data.job_code, "disselected_job_competency": save_data.disselected_job_competency, "min_fitment_score": save_data.minimum_fitment_score, "job_location": save_data.work_location };
     job_post_save_object = new JobPost(save_object);
-    job_post_save_object.save();
-    return rrf_save_object.save();
+    if (job_post_save_object.save() && rrf_save_object.save())
+        return true;
 }
 exports.update_rrf = async function (save_data, created_by) {
     save_data["status"] = "Submitted";
@@ -1306,12 +1309,18 @@ exports.get_rrf_detail = async function (rrf_id) {
                 "base_location": 1,
                 "billing_end_date": 1,
                 "no_of_position": 1,
+                "customer_interview": 1,
+                "customer_job_description": 1,
             }
         }
     ]);
-    var job_detail = await this.get_job_detail(rrf_detail[0].job_master_id, rrf_detail[0].job_post_id);
-    rrf_detail = rrf_detail[0];
-    return { rrf_detail, job_detail };
+    if (rrf_detail) {
+        var job_detail = await this.get_job_detail(rrf_detail[0]["job_master_id"], rrf_detail[0]["job_post_id"]);
+        console.log(job_detail)
+        return { rrf_detail: rrf_detail[0], job_detail };
+    } else {
+        return { rrf_detail: '', job_detail: '' };
+    }
 }
 
 
@@ -1620,7 +1629,8 @@ exports.check_candidate_document = async function (candidate_id) {
         {
             '$match': {
                 deleted: false,
-                '_id': ObjectId(candidate_id)
+                '_id': ObjectId(candidate_id),
+                'status': "Documents Uploaded"
             }
         },
         {
@@ -1761,4 +1771,94 @@ exports.get_rrf_and_candidate_detail = async function (candidate_id) {
             }
         },
     ]);
+}
+
+
+exports.get_ctc_configuration = async function () {
+
+    return await ConfigurationValue.aggregate([
+        {
+            '$match': {
+                deleted: false,
+                'key': "ctc_configuration"
+            }
+        },
+    ]);
+}
+
+
+exports.get_organization_skill_list = async function (condition) {
+
+    return await CompetencyStructureMapping.aggregate(
+
+        [
+           
+            {
+                $lookup: {
+                    from: "competency_masters",
+                    localField: "competency_master_id",
+                    foreignField: "id",
+                    as: "competency_master"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$competency_master"
+                }
+            },
+            {
+                $lookup: {
+                    from: "company_structures",
+                    localField: "sub_sbu_id",
+                    foreignField: "id",
+                    as: "company_structure_sub_practice"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$company_structure_sub_practice",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "company_structures",
+                    localField: "company_structure_sub_practice.parent_id",
+                    foreignField: "id",
+                    as: "company_structure_practice"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$company_structure_practice",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "company_structures",
+                    localField: "company_structure_practice.parent_id",
+                    foreignField: "id",
+                    as: "company_structure_unit"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$company_structure_unit",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            condition,
+            {
+                $project: {
+                    "_id": 1,
+                    "current_role": 1,
+                    "unit": "$company_structure_unit.name",
+                    "practice": "$company_structure_practice.name",
+                    "sub_practice": "$company_structure_sub_practice.name",
+                    "competency_name": "$competency_master.competency_name",
+                }
+            }
+        ]
+    );
 }

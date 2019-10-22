@@ -54,6 +54,9 @@ export class RrfCandidateApproveComponent implements OnInit {
         }
       );
   }
+  applyFilter(filterValue: string) {
+    this.rrf_list_data.filter = filterValue.trim().toLowerCase();
+  }
   ngOnDestroy() {
     this.dialog.closeAll();
   }

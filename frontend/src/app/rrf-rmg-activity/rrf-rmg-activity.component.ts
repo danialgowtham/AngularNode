@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { EmployeeSkillMappingService } from "../services/employee_skill_mapping.service";
 import { FileValidator } from 'ngx-material-file-input';
 import { MatPaginator, MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -38,7 +38,10 @@ export class RrfRmgActivityComponent implements OnInit {
   accepted_file_exetension = ['pdf', 'doc', 'docx'];
   uploaded_candidate_details: any = [];
   duplicate_error_flag: boolean = false;
-  grand_ctc: any;
+  minDate = new Date()
+  bands_list: any;
+  dependent_detail_array: any = [];
+  offer_letter_form_data: any;
   constructor(private skill_service: EmployeeSkillMappingService, public dialog: MatDialog, ) { }
 
   ngOnInit() {
@@ -46,10 +49,30 @@ export class RrfRmgActivityComponent implements OnInit {
       candidate_name: new FormControl("", [Validators.required]),
       candidate_email: new FormControl("", [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]),
       candidate_basic_information: new FormControl(""),
-      resume: new FormControl("", [FileValidator.maxContentSize(this.maxSize), Validators.required]
-      )
+      resume: new FormControl("", [FileValidator.maxContentSize(this.maxSize), Validators.required]),
+      candidate_phone_number: new FormControl("", [Validators.required]),
+      candidate_current_company: new FormControl("", [Validators.required]),
+      candidate_skill_set: new FormControl("", [Validators.required]),
+      candidate_total_years_of_experience: new FormControl("", [Validators.required]),
+      candidate_relevant_years_of_experience: new FormControl("", [Validators.required]),
+      candidate_address: new FormControl("", [Validators.required]),
+      candidate_current_ctc: new FormControl("", [Validators.required]),
+      candidate_expected_ctc: new FormControl("", [Validators.required]),
+      candidate_notice_period: new FormControl("", [Validators.required]),
+      candidate_education: new FormControl("", [Validators.required]),
+      candidate_current_location: new FormControl("", [Validators.required]),
+      candidate_preferred_location: new FormControl("", [Validators.required]),
+      candidate_gender: new FormControl("", [Validators.required]),
     });
-    this.grand_ctc = new FormControl('', [Validators.required]);
+    this.offer_letter_form_data = new FormGroup({
+      grand_ctc: new FormControl("", [Validators.required]),
+      band: new FormControl(this.rrf_detail.band, [Validators.required]),
+      designation: new FormControl("", [Validators.required]),
+      date_of_joining: new FormControl("", [Validators.required]),
+      no_of_dependent: new FormControl("", [Validators.required]),
+      dependent_detail: new FormArray([]),
+    });
+    // this.grand_ctc = new FormControl('', [Validators.required]);
     this.form_data.controls.resume.valueChanges.subscribe(value => {
       if (value) {
         var uploaded_file_type = value.fileNames.split('.').pop();
@@ -59,10 +82,21 @@ export class RrfRmgActivityComponent implements OnInit {
       }
 
     });
+
+    this.offer_letter_form_data.controls.no_of_dependent.valueChanges.subscribe(value => {
+      this.counter();
+    });
+
     this.candidate_detail = new MatTableDataSource(this.rrf_detail['candidate_detail'].reverse())
     setTimeout(() => {
       this.candidate_detail.paginator = this.candidate_paginator;
     });
+    this.skill_service.getBands()
+      .subscribe(
+        response => {
+          this.bands_list = response["data"];
+        }
+      )
   }
   add_candidate() {
     if (this.form_data.status == 'VALID') {
@@ -78,6 +112,22 @@ export class RrfRmgActivityComponent implements OnInit {
           }
         )
     }
+  }
+  counter() {
+    this.offer_letter_form_data.setControl('dependent_detail', new FormArray([]));
+    let control = <FormArray>this.offer_letter_form_data.controls.dependent_detail;
+    var i = this.offer_letter_form_data.controls["no_of_dependent"].value ? this.offer_letter_form_data.controls["no_of_dependent"].value : 1;
+    this.dependent_detail_array = Array.from(Array(Number(i))).map((x, y) => y);
+    this.dependent_detail_array.forEach(x => {
+      control.push(this.patchValues());
+    });
+
+  }
+  patchValues() {
+    return new FormGroup({
+      age: new FormControl(""),
+      relation: new FormControl("")
+    });
   }
   save_candidate_detail() {
     if (this.form_data.status == 'VALID') {
@@ -135,7 +185,7 @@ export class RrfRmgActivityComponent implements OnInit {
     }
   }
   generate_offer_letter(candidate_id) {
-    this.skill_service.generateOfferLetter(candidate_id, this.grand_ctc.value)
+    this.skill_service.generateOfferLetter(candidate_id, this.offer_letter_form_data.value)
       .subscribe(
         response => {
           console.log(response)

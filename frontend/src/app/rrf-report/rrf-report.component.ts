@@ -5,6 +5,7 @@ import { RedirectService } from "../services/redirect";
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-rrf-report',
@@ -90,12 +91,22 @@ export class RrfReportComponent implements OnInit {
     }
   }
   onSubmit() {
+    this.form_data.value["export"]=false;
     this.skill_service.getRRFReportList(this.form_data.value)
       .subscribe(
         response => {
           this.rrf_list_data = new MatTableDataSource(response["data"]["rrf_list"]);
           this.employee_data = response["data"]["employee_detail"];
           this.rrf_list_data.paginator = this.paginator;
+        }
+      );
+  }
+  onExport(){
+    this.form_data.value["export"]=true;
+    this.skill_service.getRRFReportList(this.form_data.value)
+      .subscribe(
+        response => {
+          FileSaver.saveAs(response,'rrf_report.xlsx');
         }
       );
   }

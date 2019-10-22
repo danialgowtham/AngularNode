@@ -28,9 +28,11 @@ export class HrRrfApproveListComponent implements OnInit {
   }
 
   openIOFForm(rrf_object) {
-    const dialogRef = this.dialog.open(HrRrfApproveComponent, { closeOnNavigation: true, width: '80vw', maxWidth: '80vw', maxHeight: '80vh', autoFocus: false, data: rrf_object, hasBackdrop: true, disableClose: true });
+   this.dialog.open(HrRrfApproveComponent, { closeOnNavigation: true, width: '80vw', maxWidth: '80vw', maxHeight: '80vh', autoFocus: false, data: rrf_object, hasBackdrop: true, disableClose: true });
   }
-
+  applyFilter(filterValue: string) {
+    this.rrf_list_data.filter = filterValue.trim().toLowerCase();
+  }
   ngOnDestroy() {
     this.dialog.closeAll();
   }

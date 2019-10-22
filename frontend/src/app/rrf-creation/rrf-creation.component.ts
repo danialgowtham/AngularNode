@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FileValidator } from 'ngx-material-file-input';
+import { BACK_END_URL } from '../shared/app.globals';
 
 @Component({
   selector: 'app-rrf-creation',
@@ -24,6 +25,7 @@ export class RrfCreationComponent implements OnInit {
   practices: any;
   projects: any;
   roles: any;
+  BACK_END_URL = BACK_END_URL;
   job_codes: any;
   work_location_sub_list: any = [];
   mapping_detail: any;
@@ -45,6 +47,7 @@ export class RrfCreationComponent implements OnInit {
   Object = Object;
   maxSize: number = 2097152;
   accepted_file_exetension = ['pdf', 'doc', 'docx'];
+  file_url: any = '';
   constructor(private location: Location, private route: ActivatedRoute, private skill_service: EmployeeSkillMappingService, private router: Router) { }
 
   ngOnInit() {
@@ -262,9 +265,13 @@ export class RrfCreationComponent implements OnInit {
               this.mapping_detail.paginator = this.paginator;
             });
             Object.keys(this.form_data.controls).forEach(key => {
-              this.form_data.controls[key].setValue(this.rrf_detail[key], { emitEvent: false });
-              if (key == "interview_round") {
-                this.counter();
+              if (key == "customer_job_description")
+                this.file_url = this.rrf_detail[key]
+              else {
+                this.form_data.controls[key].setValue(this.rrf_detail[key], { emitEvent: false });
+                if (key == "interview_round") {
+                  this.counter();
+                }
               }
             });
 
@@ -374,16 +381,24 @@ export class RrfCreationComponent implements OnInit {
       const formData = new FormData();
       if (this.form_data.value.customer_job_description) {
         formData.append("file", this.form_data.value.customer_job_description.files[0]);
+
+      }
+      if (this.rrf_id && this.file_url && !this.form_data.value.customer_job_description) {
+        formData.append("customer_job_description", this.file_url);
         delete this.form_data.value.customer_job_description;
       }
       Object.keys(this.form_data.value).forEach((key) => {
-        formData.append(key, this.form_data.value[key]);
+        if (key == "disselected_job_competency" || key == "interview_panel")
+          formData.append(key, JSON.stringify(this.form_data.value[key]));
+        else
+          formData.append(key, this.form_data.value[key]);
       });
+
       // this.form_data.value['manager_id'] = this.form_data.value['manager_id']['id'];
       this.skill_service.creatNewRRF(formData, employee_id)
         .subscribe(
           response => {
-            this.router.navigate(['/rrf_request_list']);
+            //this.router.navigate(['/rrf_request_list']);
           }
         );
     }

@@ -225,9 +225,13 @@
                     <mat-label>Select Base Location</mat-label>
                     <mat-select formControlName="base_location" placeholder="Select Base Location">
                       <mat-option *ngFor="let base_location of rrf_field_value?.base_location"
+                        [value]="base_location.city">
+                        {{base_location.city}}
+                      </mat-option>
+                      <!-- <mat-option *ngFor="let base_location of rrf_field_value?.base_location"
                         [value]="base_location.id.toString()">
                         {{base_location.name}}
-                      </mat-option>
+                      </mat-option> -->
                     </mat-select>
                     <mat-error *ngIf="form_data.controls.base_location.hasError('required')">
                       Base Location is <strong>required</strong>
@@ -386,11 +390,18 @@
               <div class="col-md-3 mg-t--1 mg-md-t-0">
                 <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
                   <label class="form-control-label tx-bold">Customer JD<span class="mg-l-10 tx-danger">Only PDF/Doc
-                  </span></label>
+                    </span>
+                    <span *ngIf="file_url" class="custom_css">
+                      <a [href]="BACK_END_URL+file_url" style="color: #ea8e00;" target="_blank" download>
+                        <i class="material-icons">
+                          cloud_download
+                        </i>
+                      </a>
+                    </span></label>
                   <mat-form-field class="col-12 pd-0" appearance="outline">
                     <mat-label>Choose Customer Job Description</mat-label>
-                    <ngx-mat-file-input class="cursor-pointer" placeholder="Choose Customer Job Description"
-                      formControlName="customer_job_description">
+                    <ngx-mat-file-input autofilled="true" class="cursor-pointer"
+                      placeholder="Choose Customer Job Description" formControlName="customer_job_description">
                     </ngx-mat-file-input>
                     <mat-icon matSuffix>folder</mat-icon>
                     <mat-error *ngIf="form_data.get('customer_job_description').hasError('maxContentSize')">

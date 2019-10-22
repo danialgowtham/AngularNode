@@ -46,7 +46,9 @@ export class RrfListComponent implements OnInit {
     else
       this.redirect.change_page_with_data(page_link, { rrf_id });
   }
- 
+  applyFilter(filterValue: string) {
+    this.rrf_list_data.filter = filterValue.trim().toLowerCase();
+  }
   ngOnDestroy() {
     this.dialog.closeAll();
   }

@@ -114,3 +114,8 @@ height:40px !important;
 .page-error-wrapper{
   min-height: 84.8vh;
 }
+
+.custom_css{
+  margin-top: 5px;
+    float: right;
+}

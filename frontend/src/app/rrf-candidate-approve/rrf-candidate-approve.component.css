@@ -187,3 +187,8 @@ height:40px !important;
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+.filter_class{
+  display: flex;
+  justify-content: flex-end;
+}

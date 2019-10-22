@@ -191,7 +191,27 @@
                 </span>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Customer Interview</label>
+                <span class="text-secondary">
+                  {{rrf_detail?.customer_interview}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <label class="form-control-label tx-bold">Customer JD</label>
+                <span class="text-secondary" *ngIf="rrf_detail?.customer_job_description">
+                  <a [href]="BACK_END_URL+rrf_detail?.customer_job_description" target="_blank" download>
+                    <span class="">
+                      Customer JD
+                    </span>
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
               <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
                 <label class="form-control-label tx-bold">Notes?JD:</label>
                 <span class="text-secondary">

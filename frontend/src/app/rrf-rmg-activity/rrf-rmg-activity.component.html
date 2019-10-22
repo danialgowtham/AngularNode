@@ -57,6 +57,170 @@
             </mat-form-field>
           </div>
         </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Phone Number</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Phone Number</mat-label>
+              <input formControlName="candidate_phone_number" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_phone_number.hasError('required')">
+                Phone Number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Gender</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Select Gender</mat-label>
+              <!-- <input formControlName="candidate_gender" class="form-control wd-100p-force border-0" matInput> -->
+              <mat-select formControlName="candidate_gender" placeholder="Select Gender">
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+                <mat-option value="Unknown">Unknown</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form_data.controls.candidate_gender.hasError('required')">
+                Gender is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Current Company</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Current Company</mat-label>
+              <input formControlName="candidate_current_company" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_current_company.hasError('required')">
+                Current Company is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Skill Set</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Skill Set</mat-label>
+              <input formControlName="candidate_skill_set" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_skill_set.hasError('required')">
+                Skill Set is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Total Years of Experience</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Total Years of Experience</mat-label>
+              <input formControlName="candidate_total_years_of_experience" class="form-control wd-100p-force border-0"
+                matInput>
+              <mat-error *ngIf="form_data.controls.candidate_total_years_of_experience.hasError('required')">
+                Total Years of Experience is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Relevant Years of Experience</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Relevant Years of Experience</mat-label>
+              <input formControlName="candidate_relevant_years_of_experience"
+                class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_relevant_years_of_experience.hasError('required')">
+                Relevant Years of Experience is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Address</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Address</mat-label>
+              <input formControlName="candidate_address" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_address.hasError('required')">
+                Address is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Current CTC</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Current CTC</mat-label>
+              <input formControlName="candidate_current_ctc" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_current_ctc.hasError('required')">
+                Current CTC is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Expected CTC</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Expected CTC</mat-label>
+              <input formControlName="candidate_expected_ctc" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_expected_ctc.hasError('required')">
+                Expected CTC is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Notice Period</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Notice Period</mat-label>
+              <input formControlName="candidate_notice_period" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_notice_period.hasError('required')">
+                Notice Period is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Education</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Education </mat-label>
+              <input formControlName="candidate_education" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_education.hasError('required')">
+                Education is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Current Location</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Current Location</mat-label>
+              <input formControlName="candidate_current_location" class="form-control wd-100p-force border-0" matInput>
+              <mat-error *ngIf="form_data.controls.candidate_current_location.hasError('required')">
+                Current Location is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+            <label class="form-control-label tx-bold">Preferred Location</label>
+            <mat-form-field class="col-12 pd-0" appearance="outline">
+              <mat-label>Enter Preferred Location</mat-label>
+              <input formControlName="candidate_preferred_location" class="form-control wd-100p-force border-0"
+                matInput>
+              <mat-error *ngIf="form_data.controls.candidate_preferred_location.hasError('required')">
+                Preferred Location is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         <div class="col-md-6">
           <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
             <label class="form-control-label tx-bold">Candidate Basic Information</label>
@@ -84,8 +248,7 @@
   </div>
   <div class="row no-gutters">
     <div class="col-md-12 pd-l-10-force pd-r-10-force ">
-      <table mat-table (mouseleave)="expandedElement = null" [dataSource]="candidate_detail" multiTemplateDataRows
-        class="wd-100p section-wrapper">
+      <table mat-table [dataSource]="candidate_detail" multiTemplateDataRows class="wd-100p section-wrapper">
         <ng-container matColumnDef="candidate_name">
           <th mat-header-cell *matHeaderCellDef class="wd-20p"> Candidate Name </th>
           <td mat-cell *matCellDef="let element;">{{element?.candidate_name}} </td>
@@ -97,7 +260,7 @@
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-              <div class="example-element-description pd-l-0-force">
+              <!-- <div class="example-element-description pd-l-0-force">
                 <div>
                   <span>
                     <label class="tx-medium tx-13">Candidate Basic Information : </label>
@@ -106,21 +269,230 @@
                     </span>
                   </span>
                 </div>
+              </div> -->
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Phone Number</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_phone_number}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Gender</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_gender}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Current Company</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_current_company}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Skill Set</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_skill_set}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Total Years of Experience</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_total_years_of_experience}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Relevant Years of Experience</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_relevant_years_of_experience}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Address</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_address}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Current CTC</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_current_ctc}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Expected CTC</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_expected_ctc}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Notice Period</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_notice_period}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Education</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_education}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Current Location</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_current_location}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Preferred Location</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_preferred_location}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-10-force">
+                    <label class="form-control-label tx-bold">Candidate Basic Information</label>
+                    <span class="text-secondary">
+                      {{element?.candidate_basic_information}}
+                    </span>
+                  </div>
+                </div>
               </div>
-
-              <div class="row" *ngIf="element.status=='RMG Approved'">
+              <div class="row" *ngIf="element.status=='RMG Approved'" [formGroup]="offer_letter_form_data">
                 <div class="col-md-3 pd-0-force">
                   <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
                     <mat-form-field class="col-12 pd-0" appearance="outline">
                       <mat-label>Enter Grand CTC</mat-label>
-                      <input (keypress)="keyPress($event)" [formControl]="grand_ctc"
+                      <input (keypress)="keyPress($event)" formControlName="grand_ctc"
                         class="form-control wd-100p-force border-0" matInput>
+                      <mat-error *ngIf="offer_letter_form_data.controls.grand_ctc.hasError('required')">
+                        Grand CTC is <strong>required</strong>
+                      </mat-error>
                     </mat-form-field>
                   </div>
                 </div>
                 <div class="col-md-3 pd-0-force">
                   <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
-                      <button [disabled]="!grand_ctc.valid" class="mg-t-2-force" (click)="generate_offer_letter(element?._id)" mat-raised-button color="primary">Generate Offer Letter</button>
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-select formControlName="band" placeholder="Select Band">
+                        <mat-option *ngFor="let band of bands_list" [value]="band">
+                          {{band}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="offer_letter_form_data.controls.band.hasError('required')">
+                        Band is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <div class="col-md-3 pd-0-force">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Sub Band</mat-label>
+                      <input (keypress)="keyPress($event)" formControlName="sub_band"
+                        class="form-control wd-100p-force border-0" matInput>
+                    </mat-form-field>
+                  </div>
+                </div> -->
+                <div class="col-md-3 pd-0-force">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Select Date Of Joining</mat-label>
+                      <input formControlName="date_of_joining" [matDatepicker]="picker2" [min]="minDate" readonly
+                        class="form-control wd-100p-force border-0" matInput>
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker [dateClass]="dateClass" #picker2></mat-datepicker>
+                      <mat-error *ngIf="offer_letter_form_data.controls.date_of_joining.hasError('required')">
+                        Date Of Joining is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3 pd-0-force">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Enter Designation</mat-label>
+                      <input formControlName="designation" class="form-control wd-100p-force border-0" matInput>
+                      <mat-error *ngIf="offer_letter_form_data.controls.designation.hasError('required')">
+                        Designation is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3 pd-0-force">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <mat-form-field class="col-12 pd-0" appearance="outline">
+                      <mat-label>Enter Number of Dependent</mat-label>
+                      <input maxlength="1" (keypress)="keyPress($event)" formControlName="no_of_dependent"
+                        class="form-control wd-100p-force border-0" matInput>
+                      <mat-error *ngIf="offer_letter_form_data.controls.no_of_dependent.hasError('required')">
+                        Number of Dependent is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-12" *ngIf="!offer_letter_form_data.controls.no_of_dependent.hasError('required')">
+                  <div class="col-md-12  pd-0 mg-t-10 mg-b-5">
+                    <span class="slim-card-title pd-l-10">Dependent Detail</span>
+                  </div>
+                  <div class="col-md-6  pd-0" formArrayName="dependent_detail"
+                    *ngFor="let item of dependent_detail_array; let i = index">
+                    <div [formGroupName]="i"
+                      class="form-group filter_class mg-md-l--1 bd-t-0-force border-0 pd-l-0-force pd-r-0-force">
+                      <mat-form-field class="col-6" appearance="outline">
+                        <mat-label>Enter Dependent Age</mat-label>
+                        <input formControlName="age" (keypress)="keyPress($event)"
+                          class="form-control wd-100p-force border-0" matInput>
+                        <!-- <mat-error *ngIf="offer_letter_form_data.controls.no_of_dependent.hasError('required')">
+                          Number of Dependent is <strong>required</strong>
+                        </mat-error> -->
+                      </mat-form-field>
+                      <mat-form-field class="col-6" appearance="outline">
+                        <mat-label>Enter Dependent Type</mat-label>
+                        <mat-select formControlName="relation" placeholder="Select Dependent Type">
+                          <mat-option value="Self">Self</mat-option>
+                          <mat-option value="Father">Father</mat-option>
+                          <mat-option value="Mother">Mother</mat-option>
+                        </mat-select>
+                        <!-- <input formControlName="relation" class="form-control wd-100p-force border-0" matInput> -->
+                        <!-- <mat-error *ngIf="offer_letter_form_data.controls.no_of_dependent.hasError('required')">
+                          Number of Dependent is <strong>required</strong>
+                        </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 pd-0-force">
+                  <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                    <button [disabled]="!this.offer_letter_form_data.valid" class="mg-t-2-force"
+                      (click)="generate_offer_letter(element?._id)" mat-raised-button color="primary">Generate Offer
+                      Letter</button>
                   </div>
                 </div>
               </div>
@@ -165,23 +537,25 @@
             <span *ngIf="element?.interview_schedule.length>0">
               <i class="fa fa-eye" (click)="openInterviewSchedule('view',element?.interview_schedule,element?._id)"></i>
             </span>
-            <span *ngIf="view_type =='rmg' ">
+            <span *ngIf="view_type =='rmg' && (element?.status=='Uploaded'|| element?.status=='Interview Scheduled')">
               <i class="fa fa-edit mg-l-5"
                 (click)="openInterviewSchedule('edit',element?.interview_schedule,element?._id)"></i>
             </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="file_upload">
-            <th mat-header-cell *matHeaderCellDef class="wd-10p"> File Upload</th>
-            <td class="cursor-pointer tx-15 text-center" mat-cell *matCellDef="let element;">
-              <a *ngIf="element?.status=='Technical Round Cleared'" [href]="FRONT_END_URL+'candidate_file_upload;candidate_id='+element?._id" target="_blank">
-                <i class="fa fa-paper-plane" ></i>
-              </a>
-            </td>
-          </ng-container>
+          <th mat-header-cell *matHeaderCellDef class="wd-10p"> File Upload</th>
+          <td class="cursor-pointer tx-15 text-center" mat-cell *matCellDef="let element;">
+            <a *ngIf="element?.status=='HR Round Cleared'"
+              [href]="FRONT_END_URL+'candidate_file_upload;candidate_id='+element?._id" target="_blank">
+              <i class="fa fa-paper-plane"></i>
+            </a>
+          </td>
+        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-          [class.example-expanded-row]="expandedElement === element" (mouseenter)="expandedElement = element">
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>

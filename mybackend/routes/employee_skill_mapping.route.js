@@ -103,7 +103,7 @@ router.get('/get_iof_detail/:schedule_id', EmployeeSkillMappingController.get_io
 
 router.get('/get_iof_detail/:schedule_id', EmployeeSkillMappingController.get_iof_detail);
 
-router.post('/generate_offer_letter/:candidate_id/:grand_ctc', EmployeeSkillMappingController.generate_offer_letter);
+router.post('/generate_offer_letter/:candidate_id/', EmployeeSkillMappingController.generate_offer_letter);
 
 router.get('/candidate_duplicate_check/:rrf_id/:email_id', EmployeeSkillMappingController.candidate_duplicate_check);
 
@@ -116,5 +116,9 @@ router.get('/get_rrf_candidate_approve_list/:view_type', EmployeeSkillMappingCon
 router.get('/save_rrf_candidate_approve/:candidate_id/:status/:approver_id', EmployeeSkillMappingController.save_rrf_candidate_approve);
 
 router.post('/generate_indicative_offer_letter/', EmployeeSkillMappingController.generate_indicative_offer_letter);
+
+router.post('/check_candidate_document/', EmployeeSkillMappingController.check_candidate_document);
+
+router.post('/get_organization_skill_list/', EmployeeSkillMappingController.get_organization_skill_list);
 // Export the Router
 module.exports = router;

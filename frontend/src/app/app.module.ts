@@ -92,6 +92,7 @@ import { RrfCandidateApproveComponent } from './rrf-candidate-approve/rrf-candid
 import { CandidateApproveModal } from './rrf-candidate-approve/rrf-candidate-approve.component';
 import { OfferLetterPreviewModal } from './rrf-rmg-activity/rrf-rmg-activity.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SkillListComponent } from './skill-list/skill-list.component';
 
 const appRoutes: Routes = [
   {
@@ -241,6 +242,10 @@ const appRoutes: Routes = [
     path: 'candidate_file_upload',
     component: CandidateFileUploadComponent,
   },
+  {
+    path: 'skill_list',
+    component: SkillListComponent,
+  },
   { path: '**', redirectTo: '/login' },
 ];
 
@@ -293,7 +298,8 @@ const appRoutes: Routes = [
     CandidateLoginComponent,
     CandidateFileUploadComponent,
     RrfCandidateApproveComponent,
-    OfferLetterPreviewModal
+    OfferLetterPreviewModal,
+    SkillListComponent
   ],
   imports: [
     BrowserModule,

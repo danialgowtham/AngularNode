@@ -28,6 +28,8 @@ var RrfMasterSchema = new mongoose.Schema({
     billing_end_date: { type: Date },
     note: { type: String },
     source: { type: String },
+    customer_job_description: { type: String },
+    customer_interview: { type: String, required: true },
     role: { type: String, required: true },
     manager_id: { type: String },
     manager_reject_reason: { type: String },

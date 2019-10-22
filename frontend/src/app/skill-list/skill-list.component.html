@@ -1,0 +1,122 @@
+<div class="slim-mainpanel">
+  <div class="container mg-b-20">
+    <div class="slim-pageheader">
+      <ol class="breadcrumb slim-breadcrumb">
+        <i class="tx-primary icon ion-help-circled cursor-pointer tx-20-force" matTooltip="Skill List"></i>
+      </ol>
+      <h6 class="slim-pagetitle">
+        <span>Skill List</span>
+      </h6>
+    </div><!-- slim-pageheader -->
+    <div class="section-wrapper mat-elevation-z8">
+      <div class="section-wrapper  pd-10 pd-b-0-force mg-b-20">
+        <form [formGroup]="form_data">
+          <div class="row pd-l-10">
+            <div class="col-lg-3 pd-l-10 mg-t-10 ">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Unit</mat-label>
+                  <mat-select formControlName="unit" placeholder="Select Unit">
+                    <mat-option *ngFor="let unit of units" [value]="unit.id">
+                      {{unit.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-3 pd-l-10 mg-t-10 ">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Practice</mat-label>
+                  <mat-select formControlName="practice" placeholder="Select Practice">
+                    <mat-option *ngFor="let practice of practices" [value]="practice?.id">
+                      {{practice.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-3 pd-l-10  mg-t-10 ">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Sub Practice</mat-label>
+                  <mat-select formControlName="sub_practice" placeholder="Select Sub Practice">
+                    <mat-option *ngFor="let sub_practice of sub_practices" [value]="sub_practice?.id">
+                      {{sub_practice.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-3 pd-l-10  mg-t-10 ">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Competency</mat-label>
+                  <mat-select formControlName="competency" placeholder="Select Competency">
+                    <mat-option *ngFor="let competency of competency_list" [value]="competency?.id">
+                      {{competency.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div><!-- row -->
+          <div class="row pd-l-10">
+            <div class="col-lg-3 pd-l-10  mg-t-10 ">
+              <div class="form-group filter_class mg-md-l--1 bd-t-0-force border-0">
+                <mat-form-field class="col-12 pd-0" appearance="outline">
+                  <mat-label>Competency</mat-label>
+                  <mat-select formControlName="competency" placeholder="Select Competency">
+                    <mat-option *ngFor="let competency of competency_list" [value]="competency?.id">
+                      {{competency.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-3 mg-t-10 ">
+              <button mat-raised-button (click)="addCompetency()" color="primary">Add Competency</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="section-wrapper pd-0 mg-t-20">
+        <table multiTemplateDataRows mat-table [dataSource]="skill_list_data">
+
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef class="wd-20p"> Unit </th>
+            <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="practice">
+            <th mat-header-cell *matHeaderCellDef class="wd-20p"> Practice </th>
+            <td mat-cell *matCellDef="let element"> {{element.practice}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="sub_practice">
+            <th mat-header-cell *matHeaderCellDef class="wd-20p"> Sub Practice </th>
+            <td mat-cell *matCellDef="let element"> {{element.sub_practice}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="competency">
+            <th mat-header-cell *matHeaderCellDef class="wd-30p"> Competency Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.competency_name }} </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="wd-10p text-center"> Action </th>
+            <td class="text-center wd-10 cursor-pointer tx-15" mat-cell *matCellDef="let element">
+              <i class="fa fa-eye" (click)="redirectPage('/rrf_view',element?._id)"></i>
+              <i class="fa fa-edit mg-l-10" (click)="redirectPage('/rrf_view',element?._id)"></i>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;">
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </div>
+
+    </div>
+  </div>
+</div>

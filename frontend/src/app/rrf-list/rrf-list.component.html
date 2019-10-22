@@ -17,7 +17,14 @@
 
     </div><!-- slim-pageheader -->
     <div class="section-wrapper mat-elevation-z8">
-      <div class="section-wrapper pd-0 mg-t-20">
+      <div class="filter_class">
+        <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="section-wrapper pd-0 mg-t-5">
         <table mat-table [dataSource]="rrf_list_data">
 
           <ng-container matColumnDef="rrf_id">

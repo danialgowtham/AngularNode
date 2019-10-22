@@ -5,6 +5,7 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Location } from '@angular/common';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BACK_END_URL } from '../shared/app.globals';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class RrfViewComponent implements OnInit {
   rrf_detail: any;
   @Output() rrf_id: any;
   job_detail: any;
+  BACK_END_URL = BACK_END_URL;
   dataSource: any = [];
   displayedColumns: string[] = ['level', 'employee_name'];
   displayedColumnsJob: string[] = ['competency_name', 'skill_name'];

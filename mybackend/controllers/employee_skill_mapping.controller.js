@@ -13,7 +13,7 @@ var pdf = require('html-pdf');
 var moment = require('moment');
 // var sprintf = require('sprintf-js').sprintf
 //for export
-// const excel = require('node-excel-export');
+const excel = require('node-excel-export');
 
 exports.get_units = async function (req, res, next) {
     EmployeeSkillMappingService.get_units(req.params.parent_id)
@@ -438,14 +438,43 @@ exports.get_sub_work_locations = async function (req, res, next) {
 
 exports.create_new_rrf = async function (req, res, next) {
     try {
-        console.log(req.body['rrf_id']);
-        if (req.body['rrf_id'] == '') {
-            await EmployeeSkillMappingService.create_new_rrf(req.body, req.params.employee_id)
-            return res.status(201).json({ status: 201, message: "RRF Created Succesfully" });
-        } else {
-            await EmployeeSkillMappingService.update_rrf(req.body)
-            return res.status(201).json({ status: 201, message: "RRF Updated Succesfully" });
-        }
+        var form = new formidable.IncomingForm()
+        form.parse(req);
+        var file_name = '';
+        save_object = {};
+        form.on('fileBegin', function (name, file) {
+            file_name = new Date().getTime() + "." + file.name.split('.').pop();
+            file.path = path.join(__dirname, '..') + "\\public\\customer_job_description\\" + file_name;
+        })
+        form.on('field', function (name, field) {
+            if (name == "disselected_job_competency" || name == "interview_panel")
+                save_object[name] = JSON.parse(field);
+            else
+                save_object[name] = field;
+        })
+        form.on('error', function (err) {
+            res.status(500).json({ status: 200, message: "Error While Uploading File" });
+        })
+        form.on('end', function () {
+            if (file_name)
+                save_object["customer_job_description"] = "customer_job_description/" + file_name;
+            if (save_object['rrf_id'] == '') {
+                EmployeeSkillMappingService.create_new_rrf(save_object, req.params.employee_id).
+                    then(candidate_object => {
+                        candidate_object ? res.status(201).json({ status: 201, data: candidate_object, message: "RRF Created Succesfully" }) : res.status(500).json({ status: 500, message: "Something Went Wrong" });
+                    })
+                    .catch(err => next(err));
+                return res.status(201).json({ status: 201, message: "RRF Created Succesfully" });
+            } else {
+                EmployeeSkillMappingService.update_rrf(save_object).
+                    then(candidate_object => {
+                        candidate_object ? res.status(201).json({ status: 201, data: candidate_object, message: "RRF Created Succesfully" }) : res.status(500).json({ status: 500, message: "Something Went Wrong" });
+                    })
+                    .catch(err => next(err));
+            }
+
+        });
+
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" });
     }
@@ -658,34 +687,48 @@ exports.candidate_duplicate_check = async function (req, res, next) {
 exports.generate_offer_letter = async function (req, res, next) {
     var rrf_detail = await EmployeeSkillMappingService.get_rrf_and_candidate_detail(req.params.candidate_id);
     rrf_detail = rrf_detail[0];
-    const offer_letter_template = path.join(__dirname, '..') + "\\public\\offer_letters\\Offer Letter Template.htm";
+    rrf_detail.address = "";
+    var address = rrf_detail.address.split(",");
+    //rrf_detail.address.split(",");
+    var html_file_band = '';
+    if (req.body.band == "AT2") {
+        html_file_band = req.body.band
+    } else {
+        html_file_band = req.body.band.charAt(0)
+    }
+    const offer_letter_template = path.join(__dirname, '..') + "\\public\\offer_letters\\Offer Letter Template - " + html_file_band + ".htm";
     var html = fs.readFileSync(offer_letter_template, 'utf8');
     var options = { format: 'A4', "quality": "100" };
+    var ctc_data = await ctc_calculation(rrf_detail, req.body);
+    var basic_salary = Math.round(ctc_data["fixed_pay"] * 0.3);
+    var hra = Math.round(basic_salary / 2);
+    var pf = Math.round(basic_salary * 0.12);
+    var flexi_benefit_plan = ctc_data["fixed_pay"] - basic_salary - hra - pf;
     var candidate_detail = {
         rrf_number: 'HTL/' + moment().format('MMMYY') + '/' + rrf_detail.company_structure.name + ' - ' + rrf_detail.company_structure1.name + '/' + rrf_detail.rrf_master.rrf_code,
         generated_date: moment().format('MMMM, DD YYYY'),
         employee_title: "Mr",
-        address_line_1: "3/48 Thiruvalluvar Salai",
-        address_line_2: "Ramapuram",
-        address_line_3: "Chennai-89",
+        address_line_1: address.pop(),
+        address_line_2: address.pop(),
+        address_line_3: address.pop(),
         first_name: rrf_detail["candidate_name"],
-        last_name: "K",
-        designation: "Young Software Professional",
-        base_location: rrf_detail["base_location"],
-        joining_date: moment().format('MMMM, DD YYYY'),
-        band: "A",
-        sub_band: rrf_detail["band"],
-        basic_salary: ["7,598", "91,172", "30% of (A)"],
-        hra: ["3,799", "45,586", "50% of Basic"],
-        flexi_benefit_plan: ["12,129", "1,45,549", ""],
-        pf_employer_contribution: ["1,800", "21,600", "12% of Basic"],
+        last_name: " ",
+        designation: req.body.designation,
+        base_location: rrf_detail["rrf_master"]["base_location"],
+        joining_date: moment(req.body.date_of_joining).format('MMMM, DD YYYY'),
+        band: req.body.band.charAt(0),
+        sub_band: req.body.band,
+        basic_salary: [Math.round(basic_salary / 12), basic_salary, "30% of (A)"],
+        hra: [Math.round(hra / 12), hra, "50% of Basic"],
+        flexi_benefit_plan: [Math.round(flexi_benefit_plan / 12), flexi_benefit_plan, ""],
+        pf_employer_contribution: [Math.round(pf / 12), pf, "12% of Basic"],
         esi: ["", "", ""],
-        total_a: ["25,326", "3,03,906", ""],
-        variable_compensation: ["3,039", "36,469", "12% of Fixed"],
-        gratuity: "4,383",
-        medical_insurance: "5,242",
-        total_c: "9,625",
-        ctc: req.params.grand_ctc,
+        total_a: [Math.round((basic_salary + hra + pf + flexi_benefit_plan) / 12), basic_salary + hra + pf + flexi_benefit_plan, ""],
+        variable_compensation: [Math.round(ctc_data["variable_pay"] / 12), ctc_data["variable_pay"], ctc_data["variable_percentage"] + "% of Fixed"],
+        gratuity: ctc_data["gratuity"],
+        medical_insurance: ctc_data["insurance"],
+        total_c: Number(ctc_data["gratuity"]) + Number(ctc_data["insurance"]),
+        ctc: req.body.grand_ctc,
     }
     html = html.replace(/candidate_detail.rrf_no/gi, candidate_detail.rrf_number);
     html = html.replace(/candidate_detail.generated_date/gi, candidate_detail.generated_date);
@@ -728,7 +771,7 @@ exports.generate_offer_letter = async function (req, res, next) {
 
     pdf.create(html, options).toFile('./public/offer_letters/' + candidate_detail.first_name + '_' + new Date().getTime() + '.pdf', function (err, res1) {
         if (err) return console.log(err);
-        return res.status(201).json({ message: "Why Me??", data: res1.filename.split("\\").pop() });
+        return res.status(201).json({ message: "Offer Letter Generated Successfully", data: res1.filename.split("\\").pop() });
     });
 
 
@@ -743,7 +786,42 @@ exports.generate_offer_letter = async function (req, res, next) {
     //     return res.status(400).json({ status: 400, message: "Something Went Wrong" });
     // }
 }
+async function ctc_calculation(rrf_detail, other_detail) {
+    var parent_band = other_detail.band.charAt(0)
+    var ctc_configuration = await EmployeeSkillMappingService.get_ctc_configuration();
+    ctc_configuration = ctc_configuration[0];
+    var variable_pay = ctc_configuration["value"]["variable_pay"][parent_band];
+    var gpa = ctc_configuration["value"]["gpa"][parent_band];
+    //var =ctc_configuration["gpa"][parent_band];
+    var result = { fixed_pay: 0, variable_pay: 0, gratuity: 0, insurance: 0, variable_percentage: variable_pay };
+    other_detail["dependent_detail"].forEach(function (element) {
+        for (let key of Object.keys(ctc_configuration["value"]["insurance_calculation"])) {
+            if (element['age'] <= key) {
+                if (parent_band == 'L') {
+                    config_band = 'A'
+                } else {
+                    config_band = parent_band;
+                }
+                if (element['relation'] == 'Self') {
+                    result['insurance'] += Number(gpa)
+                    result['insurance'] += Number(ctc_configuration["value"]["insurance_calculation"][key][config_band]['employee'])
+                } else {
+                    result['insurance'] += Number(ctc_configuration["value"]["insurance_calculation"][key][config_band]['dependent'])
 
+                }
+                break
+            }
+        }
+    });
+    result['insurance'] += Math.round(result['insurance'] * 0.18);
+
+    var a = other_detail["grand_ctc"] - result['insurance'];
+    var b = 1 + Number(variable_pay / 100) + 0.01442307692307692;
+    result['fixed_pay'] = Math.round(a / b);
+    result['variable_pay'] = Math.round(result['fixed_pay'] * (Number(variable_pay) / 100));
+    result['gratuity'] = Math.round(result['fixed_pay'] * 0.01442307692307692);
+    return result;
+}
 
 exports.get_rrf_report_list = async function (req, res, next) {
     try {
@@ -773,6 +851,7 @@ exports.get_rrf_report_list = async function (req, res, next) {
                 }
             });
         }
+        var isExport = req.body.export;
         var rrf_list = await EmployeeSkillMappingService.get_rrf_report_list(condition)
         var employee_ids = [];
         for (var object of rrf_list) {
@@ -781,20 +860,114 @@ exports.get_rrf_report_list = async function (req, res, next) {
         getSelectedEmployeeList(employee_ids, function (error, employee_detail) {
             if (error)
                 return res.status(400).json({ status: 400, data: {}, message: "Something went wrong. Unable connect mysql webservices" })
-            else
-                return res.status(201).json({ status: 201, data: { rrf_list, employee_detail }, message: "RRF Report List Succesfully" })
+            else {
+                if (isExport) {
+                    var report = exportRRFList(rrf_list, employee_detail);
+                    return res.status(200).attachment('report.xlsx').send(report);
+                } else {
+                    return res.status(200).json({ status: 200, data: { rrf_list, employee_detail }, message: "RRF Report List Succesfully" });
+                }
+            }
         })
 
     } catch (e) {
         return res.status(400).json({ status: 400, message: "Something Went Wrong" });
     }
 }
+
+function exportRRFList(rrf_list, employee_detail) {
+    rrf_list.forEach(function (value, key) {
+        rrf_list[key]["requested_by"] = employee_detail[value["created_by"]]["employee_name"]
+        rrf_list[key]["created_on"] = moment(value["created_on"]).format('MMMM, DD YYYY')
+        rrf_list[key]["no_of_candidate_uploaded"] = value["candidate_detail"].length
+        rrf_list[key]["processing_candidate"] = value["candidate_detail"].length - (value["selected_candidate"] + value["rejected_candidate"])
+
+    });
+    const styles = {
+        headerDark: {
+            font: {
+                bold: true,
+            }
+        },
+    };
+
+    const specification = {
+        rrf_code: {
+            displayName: 'RRF ID',
+            headerStyle: styles.headerDark,
+            width: 150
+        },
+        requested_by: {
+            displayName: 'Requested By',
+            headerStyle: styles.headerDark,
+            width: 80
+        },
+        unit: {
+            displayName: 'Unit',
+            headerStyle: styles.headerDark,
+            width: 80
+        },
+        role: {
+            displayName: 'Role',
+            headerStyle: styles.headerDark,
+            width: 50
+        },
+        created_on: {
+            displayName: 'Created On',
+            headerStyle: styles.headerDark,
+            width: 50
+        },
+        status: {
+            displayName: 'Status',
+            headerStyle: styles.headerDark,
+            width: 150
+        },
+        no_of_position: {
+            displayName: 'No Of Opening',
+            headerStyle: styles.headerDark,
+            width: 150
+        },
+        no_of_candidate_uploaded: {
+            displayName: 'No of Candidate Uploaded',
+            headerStyle: styles.headerDark,
+            width: 100
+        },
+        selected_candidate: {
+            displayName: 'No of Candidate Selected',
+            headerStyle: styles.headerDark,
+            width: 50
+        },
+        rejected_candidate: {
+            displayName: 'No of Candidate Rejected',
+            headerStyle: styles.headerDark,
+            width: 50
+        },
+        processing_candidate: {
+            displayName: 'No of Candidate Processing',
+            headerStyle: styles.headerDark,
+            width: 50
+        }
+    }
+
+
+    const report = excel.buildExport(
+        [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
+            {
+                name: 'Report', // <- Specify sheet name (optional)
+                specification: specification, // <- Report specification
+                data: rrf_list // <-- Report data
+            }
+        ]
+    );
+    return report;
+}
+
 exports.upload_candidate_document = async function (req, res, next) {
     var form = new formidable.IncomingForm()
     form.parse(req);
     var file_name = '';
     candidate_id = '';
-    save_object = { payslips: [], bank_statement: [], degree_certificates: [], others: [], experience_letter: [] };
+    save_object = { payslips: [], bank_statement: [], degree_certificates: [], others: [], experience_letter: [], candidate_photo: [], cpif: [] };
     form.on('fileBegin', function (name, file) {
         file_name = name.split('[]')[0] + "_" + new Date().getTime() + "." + file.name.split('.').pop();
         file.path = path.join(__dirname, '..') + "\\public\\candidate_documents\\" + file_name;
@@ -943,7 +1116,7 @@ exports.generate_indicative_offer_letter = async function (req, res, next) {
     pdf.create(html, options).toFile('./public/indicative_offer_letter/' + candidate_detail.first_name + '_' + new Date().getTime() + '.pdf', function (err, res1) {
         if (err) return console.log(err);
         console.log(res1); // { filename: '/app/businesscard.pdf' }
-        return res.status(201).json({ message: "Why Me??" });
+        return res.status(201).json({ message: "Indicative Offer Letter Generated Successfully" });
     });
 
 
@@ -957,6 +1130,29 @@ exports.generate_indicative_offer_letter = async function (req, res, next) {
     // } catch (e) {
     //     return res.status(400).json({ status: 400, message: "Something Went Wrong" });
     // }
+}
+
+
+exports.get_organization_skill_list = async function (req, res, next) {
+    try {
+        var condition = { $match: { $and: [{ deleted: "0" }] } }
+        if (req.body.unit) {
+            condition.$match.$and.push({ 'company_structure_unit.id': req.body.unit });
+        }
+        if (req.body.practice) {
+            condition.$match.$and.push({ 'company_structure_practice.id': req.body.practice });
+        }
+        if (req.body.sub_practice) {
+            condition.$match.$and.push({ 'company_structure_sub_practice.id': req.body.sub_practice });
+        }
+
+        var organization_skill_list = await EmployeeSkillMappingService.get_organization_skill_list(condition)
+
+        return res.status(200).json({ status: 200, data: organization_skill_list, message: "Organization Skill List Succesfully" });
+
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: "Something Went Wrong" });
+    }
 }
 
 function getEmployeeDetail(employee_id, callback) {

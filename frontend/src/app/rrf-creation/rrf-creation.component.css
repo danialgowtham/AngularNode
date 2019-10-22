@@ -64,3 +64,7 @@
   ::ng-deep.selected-list .c-list .c-token{
     background: #ea8e00 !important;
 }
+.custom_css{
+  margin-top: -5px;
+    float: right;
+}
