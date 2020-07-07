@@ -54,7 +54,7 @@
     "ngx-mat-select-search": "^1.6.0",
     "ngx-material-file-input": "^1.1.1",
     "node-pre-gyp": "^0.10.0",
-    "npm": "^6.9.0",
+    "npm": "^6.14.6",
     "readable-stream": "^2.3.6",
     "rxjs": "^6.5.1",
     "rxjs-compat": "^6.5.1",
